@@ -30,6 +30,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_dotenv: ^5.2.1
+
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -57,6 +59,31 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  assets:
+    - assets/img/
+
+  fonts:
+    - family: Pretendard
+      fonts:
+        - asset: assets/font/Pretendard-Thin.ttf
+          weight: 100
+        - asset: assets/font/Pretendard-ExtraLight.ttf
+          weight: 200
+        - asset: assets/font/Pretendard-Light.ttf
+          weight: 300
+        - asset: assets/font/Pretendard-Regular.ttf
+          weight: 400
+        - asset: assets/font/Pretendard-Medium.ttf
+          weight: 500
+        - asset: assets/font/Pretendard-SemiBold.ttf
+          weight: 600
+        - asset: assets/font/Pretendard-Bold.ttf
+          weight: 700
+        - asset: assets/font/Pretendard-ExtraBold.ttf
+          weight: 800
+        - asset: assets/font/Pretendard-Black.ttf
+          weight: 900
 
   # To add assets to your application, add an assets section, like this:
   # assets:

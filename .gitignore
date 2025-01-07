@@ -1,3 +1,8 @@
+# Enviroment files
+.env
+.env.*
+!.env.example
+
 # Miscellaneous
 *.class
 *.log
@@ -25,11 +30,13 @@ migrate_working_dir/
 **/doc/api/
 **/ios/Flutter/.last_build_id
 .dart_tool/
+.packages
 .flutter-plugins
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
 /build/
+
 
 # Symbolication related
 app.*.symbols
@@ -41,3 +48,36 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+**/android/**/gradle-wrapper.jar
+**/android/.gradle
+**/android/captures/
+**/android/gradlew
+**/android/gradlew.bat
+**/android/local.properties
+**/android/**/GeneratedPluginRegistrant.*
+
+# iOS specific
+**/ios/**/*.mode1v3
+**/ios/**/*.mode2v3
+**/ios/**/*.moved-aside
+**/ios/**/*.pbxuser
+**/ios/**/*.perspectivev3
+**/ios/**/*sync/
+**/ios/**/.sconsign.dblite
+**/ios/**/.tags*
+**/ios/**/.vagrant/
+**/ios/**/DerivedData/
+**/ios/**/Icon?
+**/ios/**/Pods/
+**/ios/**/.symlinks/
+**/ios/**/profile
+**/ios/**/xcuserdata
+**/ios/.generated/
+**/ios/build/
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/Runner.xcworkspace/xcshareddata/
+
+# Generated files
+*.g.dart
+*.freezed.dart
