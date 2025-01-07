@@ -73,6 +73,10 @@ app.*.map.json
 **/ios/**/profile
 **/ios/**/xcuserdata
 **/ios/.generated/
+**/ios/build/
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/Runner.xcworkspace/xcshareddata/
 
 # Generated files
 *.g.dart
