@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:typed/Explore tastes/screens/feed_list_page.dart';
 import 'package:typed/member/screens/login_screen.dart';
-// 필요한 페이지 파일 import
 import 'package:typed/my_type/screens/my_type.dart';
 import 'package:typed/reading_note/screens/reading_empty_page.dart';
 
@@ -15,32 +14,35 @@ class EmptyPage extends StatefulWidget {
 class _EmptyPageState extends State<EmptyPage> {
   int _selectedIndex = 2; // 기본값을 '문장 수집' 탭으로 설정
 
-  // 하단 내비게이션 바 아이템에 따른 페이지 전환 로직
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+  // 페이지 전환용 위젯 리스트
+  late final List<Widget> _pages;
 
-    // 현재 페이지 외 다른 탭 선택 시 화면 전환
-    if (index == 0) {
+  @override
+  void initState() {
+    super.initState();
+    _pages = [
+      MyTypePage(),
+      ReadingEmptyPage(),
+      this.widget, // 현재 EmptyPage를 참조
+      FeedListPage(),
+      LoginScreen(),
+    ];
+  }
+
+  // 네비게이션 바 아이템 클릭 시 호출
+  void _onItemTapped(int index) {
+    if (index == _selectedIndex) return; // 동일한 탭 클릭 시 무시
+
+    if (index == 2) {
+      // 현재 페이지에서 처리 (문장 수집 페이지)
+      setState(() {
+        _selectedIndex = index;
+      });
+    } else {
+      // 다른 페이지로 이동
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => MyTypePage()),
-      );
-    } else if (index == 1) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => ReadingEmptyPage()),
-      );
-    } else if (index == 3) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => FeedListPage()),
-      );
-    } else if (index == 4) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => LoginScreen()),
+        MaterialPageRoute(builder: (context) => _pages[index]),
       );
     }
   }
@@ -50,70 +52,72 @@ class _EmptyPageState extends State<EmptyPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "문장 수집",
+          "문장 수집", // AppBar 제목 유지
           style: TextStyle(fontSize: 18),
         ),
-        backgroundColor: const Color(0xFFF3F3F2), // AppBar 배경색 설정
-        foregroundColor: Colors.black, // AppBar 텍스트 및 아이콘 색상 설정
-        elevation: 0, // 그림자 제거
+        backgroundColor: const Color(0xFFF3F3F2),
+        foregroundColor: Colors.black,
+        elevation: 0,
       ),
-      backgroundColor: const Color(0xFFFFFFFF), // Scaffold 배경색 설정
-      body: Column(
+      backgroundColor: const Color(0xFFFFFFFF),
+      body: Stack(
         children: [
-          // 상단바 바로 아래에 위치할 컨테이너
-          Container(
-            height: 60,
-            width: double.infinity, // 화면 너비를 가득 채움
-            decoration: BoxDecoration(
-              color: const Color(0xFFF3F3F2), // 컨테이너 배경색
-            ),
-            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-            child: const Center(
-              child: Text(
-                "사각형 박스 내용",
-                style: TextStyle(fontSize: 18, color: Colors.black),
+          Column(
+            children: [
+              Container(
+                height: 60,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF3F3F2),
+                ),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                child: const Center(
+                  child: Text(
+                    "사각형 박스 내용", // 기존 컨테이너 내용 유지
+                    style: TextStyle(fontSize: 18, color: Colors.black),
+                  ),
+                ),
               ),
-            ),
-          ),
-          Expanded(
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    "아직 수집된 문장이 없습니다.",
+              Expanded(
+                child: Center(
+                  child: const Text(
+                    "아직 수집된 문장이 없습니다.", // 기존 메시지 유지
                     style: TextStyle(fontSize: 16),
                   ),
-                  const SizedBox(height: 16), // 여백 추가
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SentenceInputPage()),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      fixedSize: const Size(50, 50), // 버튼 크기 고정
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6), // 둥근 모서리
-                      ),
-                      backgroundColor: const Color(0xFFF3F3F2), // 버튼 배경색
-                      foregroundColor: Colors.black, // 텍스트 색상
-                    ),
-                    child: const Text(
-                      "+",
-                      style: TextStyle(fontSize: 24), // 텍스트 크기
-                      textAlign: TextAlign.center, // 텍스트 정렬 명시
-                    ),
-                  ),
-                ],
+                ),
+              ),
+            ],
+          ),
+          Positioned(
+            bottom: 40,
+            right: 40,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SentenceInputPage()),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                fixedSize: const Size(50, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                backgroundColor: const Color(0xFFF3F3F2),
+                foregroundColor: Colors.black,
+              ),
+              child: const Text(
+                "+", // 플로팅 버튼 유지
+                style: TextStyle(fontSize: 24),
               ),
             ),
           ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: const Color(0xFFF3F3F2),
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -136,10 +140,10 @@ class _EmptyPageState extends State<EmptyPage> {
             label: '나의 계정',
           ),
         ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.black, // 선택된 아이템 색상
-        unselectedItemColor: Colors.grey, // 선택되지 않은 아이템 색상
-        onTap: _onItemTapped, // 아이템 클릭 이벤트 처리
+        currentIndex: _selectedIndex, // 현재 선택된 인덱스
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.grey,
+        onTap: _onItemTapped, // 네비게이션 아이템 클릭 이벤트 처리
       ),
     );
   }
