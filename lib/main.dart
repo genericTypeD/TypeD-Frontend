@@ -1,52 +1,62 @@
-/*import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-
-void main() async {
-  await dotenv.load(fileName: ".env");
-  runApp(_App());
-}
-
-class _App extends StatelessWidget {
-  const _App({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(),
-    );
-  }
-}*/
-
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:typed/Explore tastes/screens/feed_list_page.dart';
+import 'package:typed/common/layout/default_layout.dart';
+import 'package:typed/my_account/screens/my_account.dart';
+import 'package:typed/my_type/screens/my_type.dart';
+import 'package:typed/reading_note/screens/reading_empty_page.dart';
 import 'package:typed/sentence_collection/screens/empty_page.dart';
-import 'package:typed/sentence_collection/screens/sentence_list_page.dart';
-import 'package:typed/sentence_collection/state/sentence_provider.dart';
 
 void main() {
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => SentenceProvider()),
-      ],
-      child: const MyApp(),
-    ),
-  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Consumer<SentenceProvider>(
-        builder: (context, provider, child) {
-          // 문장이 없으면 empty_page.dart, 있으면 sentence_list_page.dart로 전환
-          return provider.sentences.isEmpty ? EmptyPage() : SentenceListPage();
-        },
-      ),
+      home: DefaultLayoutWithNavigation(), // DefaultLayout을 루트로 설정
+    );
+  }
+}
+
+class DefaultLayoutWithNavigation extends StatefulWidget {
+  @override
+  State<DefaultLayoutWithNavigation> createState() =>
+      _DefaultLayoutWithNavigationState();
+}
+
+class _DefaultLayoutWithNavigationState
+    extends State<DefaultLayoutWithNavigation> {
+  int _currentIndex = 0;
+
+  final List<Widget> _pages = [
+    MyType(),
+    ReadingEmptyPage(),
+    EmptyPage(),
+    FeedListPage(),
+    MyAccount(),
+  ];
+
+  final List<String> _titles = [
+    'My Type',
+    '서평 메모',
+    '문장 수집',
+    '취향 탐색',
+    '나의 계정',
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultLayout(
+      title: _titles[_currentIndex], // 현재 페이지 제목
+      currentIndex: _currentIndex, // 현재 선택된 인덱스
+      child: _pages[_currentIndex], // 현재 페이지를 child로 전달
+      onItemTapped: (index) {
+        setState(() {
+          _currentIndex = index; // 탭 전환 처리
+        });
+      },
     );
   }
 }
