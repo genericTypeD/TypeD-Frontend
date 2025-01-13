@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:typed/sentence_collection//state/sentence_provider.dart';
+import 'package:typed/sentence/provider/sentence_provider.dart';
 
 import 'sentence_detail_page.dart';
 

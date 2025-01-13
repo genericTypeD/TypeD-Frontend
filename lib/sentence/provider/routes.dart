@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'sentence_collection/screens/empty_page.dart';
-import 'sentence_collection/screens/sentence_list_page.dart';
+import '../screen/empty_page.dart';
+import '../screen/sentence_list_page.dart';
 
 class AppRoutes {
   static const String emptyPage = '/';

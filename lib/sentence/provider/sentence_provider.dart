@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:typed/sentence_collection/data/models/sentence_model.dart';
+import 'package:typed/sentence/model/sentence_model.dart';
 
 class SentenceProvider extends ChangeNotifier {
   final List<Sentence> _sentences = []; // 문장 리스트
