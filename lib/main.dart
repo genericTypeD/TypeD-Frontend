@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:typed/Explore tastes/screens/feed_list_page.dart';
 import 'package:typed/common/layout/default_layout.dart';
-import 'package:typed/my_account/screens/my_account.dart';
-import 'package:typed/my_type/screens/my_type.dart';
-import 'package:typed/reading_note/screens/reading_empty_page.dart';
-import 'package:typed/sentence_collection/screens/empty_page.dart';
+import 'package:typed/feed/screen/feed_list_page.dart';
+import 'package:typed/menu/screen/my_account.dart';
+import 'package:typed/review/screen/reading_empty_page.dart';
+import 'package:typed/sentence/screen/empty_page.dart';
+import 'package:typed/type/screen/my_type.dart';
 
 void main() {
   runApp(MyApp());

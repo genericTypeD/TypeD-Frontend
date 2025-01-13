@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:typed/sentence_collection/data/models/sentence_model.dart';
-import 'package:typed/sentence_collection/screens/sentence_list_page.dart';
-import 'package:typed/sentence_collection/state/sentence_provider.dart';
+import 'package:typed/sentence/model/sentence_model.dart';
+import 'package:typed/sentence/provider/sentence_provider.dart';
+import 'package:typed/sentence/screen/sentence_list_page.dart';
 
 class SentenceInputPage extends StatefulWidget {
   @override
