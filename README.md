@@ -47,7 +47,7 @@ git push origin feat/기능명
 ---
 ### 1. 다른 팀원 PR 확인 및 merge 되는대로 최신 dev 코드 -> local dev 브랜치에 반영
 ~~~
-git strash 
+git stash 
 ~~~
 #### ※ 작업중인 branch에서 작업중인 내용이 있거나 commit 전 상태인 경우, dev branch로 이동이 안됨 => 작업코드 임시저장
 ~~~
@@ -61,5 +61,5 @@ git merge dev
 ~~~
 #### ※ 임시저장한 작업코드가 있다면, 작업 내용 복원해오기
 ~~~
-git strash pop 
+git stash pop 
 ~~~
