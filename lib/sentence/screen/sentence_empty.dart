@@ -51,8 +51,6 @@ class SentenceEmpty extends StatelessWidget {
           style: TextStyle(fontSize: 24),
         ),
       ),
-      // 내비게이션 바를 DefaultLayout에서만 관리하도록 수정
-      bottomNavigationBar: null,
     );
   }
 }
