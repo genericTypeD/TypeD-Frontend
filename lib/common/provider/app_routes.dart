@@ -28,10 +28,6 @@ class AppRoutes {
       return MenuRoutes.generateRoute(settings);
     }
 
-    // 기본 라우팅 처리 (예: HomeTab)
-    String title = '';
-    Widget child;
-
     switch (settings.name) {
       case '/home':
         return MaterialPageRoute(builder: (context) => const HomeTab());
