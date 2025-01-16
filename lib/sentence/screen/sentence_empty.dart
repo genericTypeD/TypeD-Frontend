@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:typed/common/layout/default_layout.dart';
 
-class EmptyPage extends StatelessWidget {
+class SentenceEmpty extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
@@ -36,7 +36,7 @@ class EmptyPage extends StatelessWidget {
       ),
       floatingActionButton: ElevatedButton(
         onPressed: () {
-          Navigator.pushNamed(context, '/sentence_input');
+          Navigator.pushNamed(context, '/sentence_input'); // 문장 입력 페이지로 이동
         },
         style: ElevatedButton.styleFrom(
           fixedSize: const Size(50, 50),
@@ -51,6 +51,8 @@ class EmptyPage extends StatelessWidget {
           style: TextStyle(fontSize: 24),
         ),
       ),
+      // 내비게이션 바를 DefaultLayout에서만 관리하도록 수정
+      bottomNavigationBar: null,
     );
   }
 }

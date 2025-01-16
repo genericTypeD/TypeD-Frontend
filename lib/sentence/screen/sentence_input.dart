@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class MyAccount extends StatelessWidget {
+class SentenceInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: Text("나의 계정 페이지입니다."),
+      child: Text("수집할 문장 입력 페이지입니다."),
     );
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:typed/common/layout/default_layout.dart';
+import 'package:typed/common/layout/default_layout.dart'; // DefaultLayout 임포트
 import 'package:typed/common/screen/home_tab.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -16,7 +16,6 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-
     _startLetterAnimation();
   }
 
@@ -29,17 +28,17 @@ class _SplashScreenState extends State<SplashScreen> {
       });
     }
 
-    Future.delayed(
-        Duration(milliseconds: letters.length * 500 + 500), navigateToHome);
+    Future.delayed(Duration(milliseconds: letters.length * 500 + 500),
+        navigateToEmptyPage);
   }
 
-  void navigateToHome() {
+  void navigateToEmptyPage() {
     Navigator.pushReplacement(
       context,
       PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 50),
         pageBuilder: (context, animation, secondaryAnimation) =>
-            const HomeTab(),
+            HomeTab(), // SentenceEmpty로 이동
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(
             opacity: animation,
