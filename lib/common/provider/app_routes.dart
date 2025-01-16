@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:typed/common/screen/home_tab.dart'; // TypeRoutes 임포트
 import 'package:typed/feed/provider/feed_routes.dart'; // FeedRoutes 임포트
 import 'package:typed/menu/provider/menu_routes.dart'; // MenuRoutes 임포트
+import 'package:typed/review/provider/review_routes.dart';
 import 'package:typed/sentence/provider/sentence_routes.dart'; // SentenceRoutes 임포트
 import 'package:typed/type/provider/type_routes.dart';
 
@@ -13,7 +14,7 @@ class AppRoutes {
     }
 
     if (settings.name?.startsWith('/review') == true) {
-      return SentenceRoutes.generateRoute(settings);
+      return ReviewRoutes.generateRoute(settings);
     }
 
     if (settings.name?.startsWith('/sentence') == true) {
