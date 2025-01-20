@@ -95,7 +95,7 @@ class _MyTypeState extends State<MyType> {
                   resizable: true,
                   antiAliasingWorkaround: true,
                   builder: (context, horizontalArea) {
-                    return GridTextElement(
+                    return _GridTextElement(
                       key: ValueKey('${verticalIndex}_${horizontalArea.index}'),
                       title: '올해의 문장',
                       content: horizontalArea.data as String,
@@ -121,12 +121,12 @@ class _MyTypeState extends State<MyType> {
   }
 }
 
-class GridTextElement extends StatelessWidget {
+class _GridTextElement extends StatelessWidget {
   final String title;
   final String content;
   final double width;
 
-  const GridTextElement({
+  const _GridTextElement({
     required this.title,
     required this.content,
     required this.width,
@@ -173,10 +173,10 @@ class GridTextElement extends StatelessWidget {
   }
 }
 
-class GridImageElement extends StatelessWidget {
+class _GridImageElement extends StatelessWidget {
   final String title;
 
-  const GridImageElement({
+  const _GridImageElement({
     required this.title,
     super.key,
   });
@@ -190,13 +190,13 @@ class GridImageElement extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
         ),
         height: double.infinity,
-        margin: EdgeInsets.all(8),
+        margin: const EdgeInsets.all(8),
         child: Padding(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Column(
             children: [
               Text(
-                '${title}',
+                title,
                 style: AppTheme.heading3,
               ),
               // Expanded(
