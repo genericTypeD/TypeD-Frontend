@@ -45,7 +45,7 @@ class _HomeTabState extends State<HomeTab> {
   Widget _buildBottomNavigationBar() {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
-      backgroundColor: const Color(0xFFF3F3F2),
+      backgroundColor: const Color(0xFFFFFFFF),
       selectedFontSize: 10,
       unselectedFontSize: 10,
       selectedItemColor: Colors.black,
