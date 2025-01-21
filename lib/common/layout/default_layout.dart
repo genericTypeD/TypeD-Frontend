@@ -39,16 +39,16 @@ class DefaultLayout extends StatelessWidget {
       titleSpacing: 0,
       title: Row(
         children: [
-          const SizedBox(width: 20.0),
-          // Container(
-          //   width: 0.3,
-          //   height: kToolbarHeight,
-          //   color: Colors.black,
-          // ),
+          const SizedBox(width: 16.0),
+          Container(
+            width: 0.3,
+            height: kToolbarHeight,
+            color: Colors.black,
+          ),
           GestureDetector(
             onTap: () {},
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(10.0),
               child: Text(
                 'TypeD',
                 style: const TextStyle(
@@ -61,7 +61,7 @@ class DefaultLayout extends StatelessWidget {
           ),
           const Spacer(),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(10.0),
             child: GestureDetector(
               onTap: () {
                 // 알림 버튼 동작 추가
@@ -72,21 +72,21 @@ class DefaultLayout extends StatelessWidget {
               ),
             ),
           ),
-          // Container(
-          //   width: 0.3,
-          //   height: kToolbarHeight,
-          //   color: Colors.black,
-          // ),
-          const SizedBox(width: 20.0),
+          Container(
+            width: 0.3,
+            height: kToolbarHeight,
+            color: Colors.black,
+          ),
+          const SizedBox(width: 16.0),
         ],
       ),
-      // bottom: PreferredSize(
-      //   preferredSize: const Size.fromHeight(1.0), // 구분선 높이
-      //   child: Container(
-      //     color: Colors.black, // 구분선 색상
-      //     height: 0.3, // 구분선 두께
-      //   ),
-      // ),
+      bottom: PreferredSize(
+        preferredSize: const Size.fromHeight(1.0), // 구분선 높이
+        child: Container(
+          color: Colors.black, // 구분선 색상
+          height: 0.3, // 구분선 두께
+        ),
+      ),
     );
   }
 }
