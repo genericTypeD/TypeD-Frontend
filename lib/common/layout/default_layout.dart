@@ -37,21 +37,24 @@ class DefaultLayout extends StatelessWidget {
       foregroundColor: Colors.black,
       elevation: 0,
       titleSpacing: 0,
-      title: Row(
+      leadingWidth: 120.0, // Leading 영역 확장
+      leading: Row(
         children: [
-          const SizedBox(width: 16.0),
-          Container(
-            width: 0.3,
-            height: kToolbarHeight,
+          const SizedBox(width: 16.0), // 좌측 패딩
+          VerticalDivider(
+            thickness: 0.3,
+            width: 1.0,
             color: Colors.black,
           ),
-          GestureDetector(
-            onTap: () {},
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Text(
+          Padding(
+            padding: const EdgeInsets.only(left: 16.0), // 구분선과 텍스트 간격
+            child: GestureDetector(
+              onTap: () {
+                // TypeD 클릭 동작
+              },
+              child: const Text(
                 'TypeD',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
@@ -59,32 +62,38 @@ class DefaultLayout extends StatelessWidget {
               ),
             ),
           ),
-          const Spacer(),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: GestureDetector(
-              onTap: () {
-                // 알림 버튼 동작 추가
-              },
-              child: const Icon(
-                Icons.notifications,
-                color: Colors.black,
-              ),
-            ),
-          ),
-          Container(
-            width: 0.3,
-            height: kToolbarHeight,
-            color: Colors.black,
-          ),
-          const SizedBox(width: 16.0),
         ],
       ),
+      actions: [
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 16.0), // 아이콘 우측 간격
+              child: GestureDetector(
+                onTap: () {
+                  // 알림 아이콘 클릭 동작
+                },
+                child: const Icon(
+                  Icons.notifications,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            VerticalDivider(
+              thickness: 0.3,
+              width: 1.0,
+              color: Colors.black, // 수직 구분선
+            ),
+            const SizedBox(width: 16.0),
+          ],
+        ),
+      ],
       bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(1.0), // 구분선 높이
-        child: Container(
-          color: Colors.black, // 구분선 색상
-          height: 0.3, // 구분선 두께
+        preferredSize: const Size.fromHeight(1.0),
+        child: Divider(
+          height: 1.0,
+          thickness: 0.3,
+          color: Colors.black, // 수평 구분선
         ),
       ),
     );
