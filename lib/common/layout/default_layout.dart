@@ -22,14 +22,14 @@ class DefaultLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor ?? Colors.white,
-      appBar: appBar ?? _buildDefaultAppBar(),
+      appBar: appBar ?? _buildDefaultAppBar(context),
       body: child,
       bottomNavigationBar: bottomNavigationBar,
       floatingActionButton: floatingActionButton,
     );
   }
 
-  AppBar? _buildDefaultAppBar() {
+  AppBar? _buildDefaultAppBar(BuildContext context) {
     if (title == null) return null;
 
     return AppBar(
@@ -37,20 +37,24 @@ class DefaultLayout extends StatelessWidget {
       foregroundColor: Colors.black,
       elevation: 0,
       titleSpacing: 0,
-      leadingWidth: 120.0, // Leading 영역 확장
-      leading: Row(
+      title: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const SizedBox(width: 16.0), // 좌측 패딩
-          VerticalDivider(
-            thickness: 0.3,
-            width: 1.0,
-            color: Colors.black,
+          const SizedBox(width: 16.0),
+          SizedBox(
+            height: kToolbarHeight, // AppBar 높이와 맞춤
+            child: VerticalDivider(
+              thickness: 0.3,
+              width: 1.0,
+              color: Colors.black,
+            ),
           ),
           Padding(
             padding: const EdgeInsets.only(left: 16.0), // 구분선과 텍스트 간격
             child: GestureDetector(
               onTap: () {
-                // TypeD 클릭 동작
+                // TypeD 클릭 시 홈으로 이동
+                Navigator.pushNamed(context, '/type');
               },
               child: const Text(
                 'TypeD',
@@ -66,6 +70,7 @@ class DefaultLayout extends StatelessWidget {
       ),
       actions: [
         Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
               padding: const EdgeInsets.only(right: 16.0), // 아이콘 우측 간격
@@ -79,10 +84,13 @@ class DefaultLayout extends StatelessWidget {
                 ),
               ),
             ),
-            VerticalDivider(
-              thickness: 0.3,
-              width: 1.0,
-              color: Colors.black, // 수직 구분선
+            SizedBox(
+              height: kToolbarHeight, // AppBar 높이와 맞춤
+              child: VerticalDivider(
+                thickness: 0.3,
+                width: 1.0,
+                color: Colors.black, // 수직 구분선
+              ),
             ),
             const SizedBox(width: 16.0),
           ],
