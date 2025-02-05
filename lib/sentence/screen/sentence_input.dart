@@ -6,18 +6,18 @@ class SentenceInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return DefaultLayout(
       appBar: AppBar(
-        backgroundColor: const Color(0xFFF3F3F2),
+        backgroundColor: const Color(0xFFFFFFFF),
         elevation: 0,
         titleSpacing: 0,
         leading: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             const SizedBox(width: 16.0), // 좌측 간격
-            Container(
-              width: 0.3, // 수직 구분선 두께
-              height: kToolbarHeight,
-              color: Colors.black, // 수직 구분선 색상
-            ),
+            // Container(
+            //   width: 0.3, // 수직 구분선 두께
+            //   height: kToolbarHeight,
+            //   color: Colors.black, // 수직 구분선 색상
+            // ),
             GestureDetector(
               onTap: () {
                 Navigator.pop(context); // 뒤로가기 동작
@@ -34,7 +34,7 @@ class SentenceInput extends StatelessWidget {
           ],
         ),
         title: const Text(
-          "문장 입력",
+          "문장 수집",
           style: TextStyle(
             color: Colors.black,
             fontSize: 18,
@@ -57,26 +57,26 @@ class SentenceInput extends StatelessWidget {
                   "완료",
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: 16,
+                    fontSize: 14,
                   ),
                 ),
               ),
-              Container(
-                width: 0.3, // 수직 구분선 두께
-                height: kToolbarHeight,
-                color: Colors.black, // 수직 구분선 색상
-              ),
+              // Container(
+              //   width: 0.3, // 수직 구분선 두께
+              //   height: kToolbarHeight,
+              //   color: Colors.black, // 수직 구분선 색상
+              // ),
               const SizedBox(width: 16.0), // 우측 간격
             ],
           ),
         ],
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1.0), // 구분선 높이
-          child: Container(
-            color: Colors.black, // 구분선 색상
-            height: 0.3, // 구분선 두께
-          ),
-        ),
+        // bottom: PreferredSize(
+        //   preferredSize: const Size.fromHeight(1.0), // 구분선 높이
+        //   child: Container(
+        //     color: Colors.black, // 구분선 색상
+        //     height: 0.3, // 구분선 두께
+        //   ),
+        // ),
       ),
       child: const Center(
         child: Text("수집할 문장 입력 페이지입니다."),

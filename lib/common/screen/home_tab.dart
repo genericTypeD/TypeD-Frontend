@@ -58,10 +58,13 @@ class _HomeTabState extends State<HomeTab> {
       },
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'My Type'),
-        BottomNavigationBarItem(icon: Icon(Icons.book), label: '서평 메모'),
-        BottomNavigationBarItem(icon: Icon(Icons.edit), label: '문장 수집'),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.bookmark_outline), label: '서평 메모'),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.mode_edit_outlined), label: '문장 수집'),
         BottomNavigationBarItem(icon: Icon(Icons.search), label: '취향 탐색'),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: '나의 메뉴'),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.person_outline), label: '나의 메뉴'),
       ],
     );
   }
