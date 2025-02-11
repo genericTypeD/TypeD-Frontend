@@ -35,7 +35,7 @@ class _HomeTabState extends State<HomeTab> {
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
-      title: _titles[_currentIndex], // 현재 탭에 맞는 제목을 전달
+      //title: _titles[_currentIndex], // 현재 탭에 맞는 제목을 전달
       child: _pages[_currentIndex], // 현재 탭에 맞는 페이지를 전달
       bottomNavigationBar: _buildBottomNavigationBar(), // 내비게이션 바 전달
     );
