@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:typed/common/const/app_bar_style.dart';
 
 enum ContainerBorderType {
   left,
   right;
 
   BorderSide get borderSide {
-    return const BorderSide(
-      color: Colors.black,
-      width: 0.3,
-    );
+    return AppBarStyle.borderStyle;
   }
 }
 
@@ -23,7 +21,7 @@ class BorderContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 16,
+      width: AppBarStyle.borderContainerSize,
       decoration: BoxDecoration(
         border: Border(
           left: type == ContainerBorderType.right
