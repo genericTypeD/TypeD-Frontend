@@ -21,7 +21,7 @@ class BorderContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: AppBarStyle.borderContainerSize,
+      width: AppBarStyle.borderContainerWidth,
       decoration: BoxDecoration(
         border: Border(
           left: type == ContainerBorderType.right

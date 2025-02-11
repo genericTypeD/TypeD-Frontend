@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:typed/common/const/app_bar_style.dart';
 import 'package:typed/common/widgets/border_container.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -16,13 +17,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.bottomLeftWidget,
     this.bottomCenterWidget,
     this.bottomRightWidget,
-  }) : preferredSize = const Size.fromHeight(100);
+  }) : preferredSize = const Size.fromHeight(AppBarStyle.appbarHeight);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        color: Color(0xffF3F3F2),
+        color: AppBarStyle.backgroundColor,
       ),
       child: SafeArea(
         child: Column(
