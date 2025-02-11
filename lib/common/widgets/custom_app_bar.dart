@@ -28,68 +28,68 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: SafeArea(
         child: Column(
           children: [
-            // 상단 영역
-            Container(
-              height: 50,
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: Colors.black,
-                    width: 0.3,
-                  ),
-                ),
-              ),
-              child: Row(
-                children: [
-                  const BorderContainer(type: ContainerBorderType.left),
-                  const SizedBox(width: 16),
-                  const Text(
-                    'TypeD',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const Spacer(),
-                  topIconButton ?? Container(),
-                  const SizedBox(width: 16),
-                  const BorderContainer(type: ContainerBorderType.right),
-                ],
-              ),
-            ),
-            // 하단 영역
-            Container(
-              height: 50,
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: Colors.black,
-                    width: 0.3,
-                  ),
-                ),
-              ),
-              child: Row(
-                children: [
-                  const BorderContainer(type: ContainerBorderType.left),
-                  const SizedBox(width: 16),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.22,
-                    child: bottomLeftWidget ?? Container(),
-                  ),
-                  const BorderContainer(type: ContainerBorderType.left),
-                  const Spacer(),
-                  bottomCenterWidget ?? Container(),
-                  const SizedBox(width: 16),
-                  bottomRightWidget ?? Container(),
-                  const BorderContainer(type: ContainerBorderType.right),
-                ],
-              ),
-            ),
+            _buildHeaderSection(),
+            _buildBottomSection(context),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildHeaderSection() {
+    return Container(
+      height: AppBarStyle.sectionHeight,
+      width: double.infinity,
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: AppBarStyle.borderStyle,
+        ),
+      ),
+      child: Row(
+        children: [
+          const BorderContainer(type: ContainerBorderType.left),
+          const SizedBox(width: AppBarStyle.sizedBoxWidth),
+          const Text(
+            'TypeD',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+          const Spacer(),
+          topIconButton ?? Container(),
+          const SizedBox(width: AppBarStyle.sizedBoxWidth),
+          const BorderContainer(type: ContainerBorderType.right),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBottomSection(BuildContext context) {
+    return Container(
+      height: AppBarStyle.sectionHeight,
+      width: double.infinity,
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: AppBarStyle.borderStyle,
+        ),
+      ),
+      child: Row(
+        children: [
+          const BorderContainer(type: ContainerBorderType.left),
+          const SizedBox(width: AppBarStyle.sizedBoxWidth),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.22,
+            child: bottomLeftWidget ?? Container(),
+          ),
+          const BorderContainer(type: ContainerBorderType.left),
+          const Spacer(),
+          bottomCenterWidget ?? Container(),
+          const SizedBox(width: AppBarStyle.sizedBoxWidth),
+          bottomRightWidget ?? Container(),
+          const BorderContainer(type: ContainerBorderType.right),
+        ],
       ),
     );
   }
