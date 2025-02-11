@@ -5,7 +5,7 @@ enum ContainerBorderType {
   right;
 
   BorderSide get borderSide {
-    return BorderSide(
+    return const BorderSide(
       color: Colors.black,
       width: 0.3,
     );
