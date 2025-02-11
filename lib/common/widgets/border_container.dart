@@ -17,13 +17,13 @@ class BorderContainer extends StatelessWidget {
 
   const BorderContainer({
     required this.type,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 16.0,
+      width: 16,
       decoration: BoxDecoration(
         border: Border(
           left: type == ContainerBorderType.right
