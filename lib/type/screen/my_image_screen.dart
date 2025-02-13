@@ -27,7 +27,7 @@ class _MyMovieScreenState extends ConsumerState<MyImageScreen> {
   final List<XFile> _currentImageFiles = [];
 
   Future<void> _pickImage() async {
-    if (await Permission.storage.request().isGranted) {
+    if (await _checkGalleryPermission()) {
       try {
         final XFile? image =
             await _picker.pickImage(source: ImageSource.gallery);
@@ -45,6 +45,29 @@ class _MyMovieScreenState extends ConsumerState<MyImageScreen> {
         debugPrint('[Picking Image Error] $e');
       }
     }
+  }
+
+  Future<bool> _checkGalleryPermission() async {
+    final status = await Permission.storage.status;
+
+    debugPrint('[status]: ${status.name}');
+
+    if (status.isGranted) {
+      return true;
+    }
+
+    if (status.isPermanentlyDenied) {
+      _showPermissionDeniedDialog(true);
+      return false;
+    }
+
+    final result = await Permission.photos.request();
+    if (!result.isGranted) {
+      _showPermissionDeniedDialog(false);
+      return false;
+    }
+
+    return true;
   }
 
   @override
