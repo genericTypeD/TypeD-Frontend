@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:typed/common/layout/default_layout.dart';
 import 'package:multi_split_view/multi_split_view.dart';
-import 'package:typed/type/component/add_record_dialog.dart';
 import 'package:typed/type/component/component.dart';
 import 'package:typed/common/widgets/custom_app_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -97,20 +97,18 @@ final splitViewProvider =
   return SplitViewNotifier();
 });
 
-class MyType extends StatefulWidget {
+class MyType extends ConsumerStatefulWidget {
   const MyType({super.key});
 
   @override
-  State<MyType> createState() => _MyTypeState();
+  ConsumerState<MyType> createState() => _MyTypeState();
 }
 
-class _MyTypeState extends State<MyType> {
+class _MyTypeState extends ConsumerState<MyType> {
   final List<MultiSplitViewController> _horizontalControllers =
       List.generate(3, (_) => MultiSplitViewController());
   final MultiSplitViewController _verticalController =
       MultiSplitViewController();
-
-  bool _initialized = false;
 
   List<String> dropDownList = [
     '이주의 나',
@@ -128,26 +126,25 @@ class _MyTypeState extends State<MyType> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    final splitViewState = ref.read(splitViewProvider);
 
-    if (!_initialized) {
-      _verticalController.areas = List.generate(
-        3,
+    _verticalController.areas = List.generate(
+      3,
+      (index) => Area(
+        data: index,
+        min: 0.6,
+        flex: splitViewState.verticalFlexValues[index],
+      ),
+    );
+
+    for (var i = 0; i < 3; i++) {
+      _horizontalControllers[i].areas = List.generate(
+        2,
         (index) => Area(
-          data: index,
           min: 0.6,
+          flex: splitViewState.horizontalFlexValues[i][index],
         ),
       );
-
-      for (var i = 0; i < 3; i++) {
-        _horizontalControllers[i].areas = List.generate(
-          2,
-          (index) => Area(
-            // data: rockGenres[i * 2 + index],
-            min: 0.6,
-          ),
-        );
-      }
-      _initialized = true;
     }
   }
 
@@ -208,17 +205,6 @@ class _MyTypeState extends State<MyType> {
             );
           },
         ),
-        bottomRightWidget: TextButton(
-          onPressed: showAddDialog,
-          child: const Text(
-            '추가하기',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.black,
-              height: 1,
-            ),
-          ),
-        ),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(
@@ -245,11 +231,20 @@ class _MyTypeState extends State<MyType> {
                 controller: _horizontalControllers[verticalIndex],
                 resizable: true,
                 antiAliasingWorkaround: true,
+                onDividerDragUpdate: (dividerIndex) {
+                  final flexValues = _horizontalControllers[verticalIndex]
+                      .areas
+                      .map((area) => area.flex ?? 1.0)
+                      .toList();
+                  ref
+                      .read(splitViewProvider.notifier)
+                      .updateHorizontalFlex(verticalIndex, flexValues);
+                },
                 builder: (context, horizontalArea) {
                   return GridTextItem(
                     key: ValueKey('${verticalIndex}_${horizontalArea.index}'),
-                    // content: horizontalArea.data as String,
-                    content: dummyString,
+                    verticalIndex: verticalIndex,
+                    horizontalIndex: horizontalArea.index,
                     width: screenWidth / 2,
                   );
                 },
@@ -258,15 +253,6 @@ class _MyTypeState extends State<MyType> {
           ),
         ),
       ),
-    );
-  }
-
-  void showAddDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AddRecordDialog();
-      },
     );
   }
 }
