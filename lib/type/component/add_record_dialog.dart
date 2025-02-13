@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:typed/common/const/app_themes.dart';
 import 'package:typed/type/screen/screen.dart';
 
 class AddRecordDialog extends StatelessWidget {
+  final XFile? initialImage;
+
   final categories = [
     {'icon': Icons.subject, 'label': '문장', 'route': const MySentenceScreen()},
     {'icon': Icons.book, 'label': '책', 'route': const MyBookScreen()},
@@ -10,7 +13,10 @@ class AddRecordDialog extends StatelessWidget {
     {'icon': Icons.movie, 'label': '이미지', 'route': const MyMovieScreen()},
   ];
 
-  AddRecordDialog({super.key});
+  AddRecordDialog({
+    this.initialImage,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
