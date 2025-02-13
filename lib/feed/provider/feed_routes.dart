@@ -5,7 +5,7 @@ class FeedRoutes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/feed':
-        return MaterialPageRoute(builder: (_) => FeedListPage());
+        return MaterialPageRoute(builder: (_) => FeedList());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

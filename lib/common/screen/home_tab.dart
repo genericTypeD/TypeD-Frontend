@@ -20,7 +20,7 @@ class _HomeTabState extends State<HomeTab> {
     MyType(), // My Type
     ReviewEmpty(), // 서평 메모
     SentenceEmpty(), // 문장 수집
-    FeedListPage(), // 취향 탐색
+    FeedList(), // 취향 탐색
     MyMenu(), // 나의 메뉴
   ];
 
