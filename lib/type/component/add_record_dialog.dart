@@ -11,7 +11,7 @@ class AddRecordDialog extends StatelessWidget {
     {'icon': Icons.subject, 'label': '문장', 'route': const MySentenceScreen()},
     {'icon': Icons.book, 'label': '책', 'route': const MyBookScreen()},
     {'icon': Icons.music_note, 'label': '음악', 'route': const MyMusicScreen()},
-    {'icon': Icons.movie, 'label': '이미지', 'route': const MyMovieScreen()},
+    {'icon': Icons.movie, 'label': '이미지', 'route': const MyImageScreen()},
   ];
 
   AddRecordDialog({
@@ -88,8 +88,8 @@ class AddRecordDialog extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (BuildContext context) {
                             final nextScreen = category['route'] as Widget;
-                            if (nextScreen.runtimeType == MyMovieScreen) {
-                              return MyMovieScreen(initialImage: initialImage);
+                            if (nextScreen.runtimeType == MyImageScreen) {
+                              return MyImageScreen(initialImage: initialImage);
                             } else {
                               return nextScreen;
                             }

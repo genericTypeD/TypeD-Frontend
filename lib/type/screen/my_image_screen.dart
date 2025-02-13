@@ -8,19 +8,19 @@ import 'package:typed/common/const/app_bar_style.dart';
 import 'package:typed/common/widgets/custom_app_bar.dart';
 import 'package:typed/type/component/grid_text_item.dart';
 
-class MyMovieScreen extends ConsumerStatefulWidget {
+class MyImageScreen extends ConsumerStatefulWidget {
   final XFile? initialImage;
 
-  const MyMovieScreen({
+  const MyImageScreen({
     this.initialImage,
     super.key,
   });
 
   @override
-  ConsumerState<MyMovieScreen> createState() => _MyMovieScreenState();
+  ConsumerState<MyImageScreen> createState() => _MyMovieScreenState();
 }
 
-class _MyMovieScreenState extends ConsumerState<MyMovieScreen> {
+class _MyMovieScreenState extends ConsumerState<MyImageScreen> {
   final ImagePicker _picker = ImagePicker();
 
   XFile? _selectedImageFile;
