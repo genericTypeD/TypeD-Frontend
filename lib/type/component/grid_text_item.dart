@@ -1,9 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:typed/common/const/app_colors.dart';
 import 'package:typed/common/const/app_themes.dart';
 
-class GridTextItem extends StatelessWidget {
-  final String content;
+class GridItemData {
+  final String? content;
+  final XFile? imageFile;
+  final bool isEmpty;
+
+  GridItemData({
+    this.content,
+    this.imageFile,
+    String? id,
+  }) : isEmpty = content == null && imageFile == null;
+}
+
+class GridState {
+  final List<List<GridItemData>> items;
+
+  GridState({required this.items});
+
+  factory GridState.initial() {
+    return GridState(
+      items: List.generate(
+        3,
+        (_) => List.generate(2, (_) => GridItemData()),
+      ),
+    );
+  }
+}
+
+final gridProvider = StateNotifierProvider<GridNotifier, GridState>((ref) {
+  return GridNotifier();
+});
+
+class GridNotifier extends StateNotifier<GridState> {
+  GridNotifier() : super(GridState.initial());
+
+  void updateGridItem(
+      int verticalIndex, int horizontalIndex, GridItemData data) {
+    final newItems = List<List<GridItemData>>.from(state.items);
+    newItems[verticalIndex][horizontalIndex] = data;
+    state = GridState(items: newItems);
+  }
+}
+
   final double width;
 
   const GridTextItem({
