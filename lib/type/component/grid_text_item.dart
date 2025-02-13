@@ -78,4 +78,23 @@ class GridNotifier extends StateNotifier<GridState> {
       ),
     );
   }
+
+  void _showAddDialog(
+    BuildContext context,
+    WidgetRef ref,
+    XFile? initialImage,
+  ) async {
+    final result = await showDialog<GridItemData>(
+      context: context,
+      builder: (context) => AddRecordDialog(initialImage: initialImage),
+    );
+
+    if (result != null) {
+      ref.read(gridProvider.notifier).updateGridItem(
+            verticalIndex,
+            horizontalIndex,
+            result,
+          );
+    }
+  }
 }
