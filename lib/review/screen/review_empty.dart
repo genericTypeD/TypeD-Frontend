@@ -1,39 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:typed/common/const/app_colors.dart';
+import 'package:typed/common/const/app_themes.dart';
 import 'package:typed/common/layout/default_layout.dart';
 import 'package:typed/common/widgets/custom_app_bar.dart';
 
 class ReviewEmpty extends StatelessWidget {
+  const ReviewEmpty({super.key});
+
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
       appBar: CustomAppBar(
         bottomLeftWidget: GestureDetector(
-          onTap: () {
-            debugPrint('클릭됨!');
-          },
           child: const Text(
             "텍스트A",
-            style: TextStyle(fontSize: 14),
+            style: AppTheme.title3,
           ),
-        ),
-        bottomRightWidget: GestureDetector(
           onTap: () {
             debugPrint('클릭됨!');
           },
-          child: const Text(
-            "글쓰기",
-            style: TextStyle(fontSize: 14),
-          ),
         ),
-      ),
-      child: Column(
-        children: [
-          Expanded(
-            child: Center(
-              child: Text("서평메모를 해볼까요?"),
+        bottomRightWidget: GestureDetector(
+          child: const Align(
+            alignment: Alignment.centerRight,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 13, vertical: 8),
+              child: Text(
+                "글쓰기",
+                style: AppTheme.title3,
+              ),
             ),
           ),
-        ],
+          onTap: () {
+            debugPrint('클릭됨!');
+          },
+        ),
+      ),
+      child: Container(
+        color: AppColors.backgroundSecondary,
+        child: const Column(
+          children: [
+            Expanded(
+              child: Center(
+                child: Text("서평메모를 해볼까요?"),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
