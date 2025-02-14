@@ -19,12 +19,8 @@ class HeaderSection extends StatelessWidget {
           const BorderContainer(type: ContainerBorderType.left),
           const SizedBox(width: AppBarStyle.sizedBoxWidth),
           const Text(
-            'TypeD',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
+            AppBarStyle.titleAppName,
+            style: AppBarStyle.titleTextStyle,
           ),
           const Spacer(),
           iconButton ?? Container(),
