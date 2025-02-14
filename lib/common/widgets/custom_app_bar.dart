@@ -79,8 +79,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           const BorderContainer(type: ContainerBorderType.left),
           const SizedBox(width: AppBarStyle.sizedBoxWidth),
-          SizedBox(
+          Container(
             width: MediaQuery.of(context).size.width * 0.22,
+            alignment: Alignment.centerLeft,
             child: bottomLeftWidget ?? Container(),
           ),
           const BorderContainer(type: ContainerBorderType.left),
