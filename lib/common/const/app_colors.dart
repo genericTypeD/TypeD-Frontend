@@ -19,4 +19,22 @@ class AppColors {
   static const INPUT_BG_COLOR = Color(0xFFFBFBFB);
   // 텍스트필드 테두리 색상
   static const INPUT_BORDER_COLOR = Color(0xFFF3F2F2);
+
+  static const background = _Background();
+  static const border = _Border();
+}
+
+/// Background Colors
+class _Background {
+  const _Background();
+
+  final primary = const Color(0xFFF3F3F2);
+}
+
+/// Border Colors
+class _Border {
+  const _Border();
+
+  final primary = Colors.black;
+  final divider = const Color(0x00000000);
 }
