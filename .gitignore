@@ -80,6 +80,15 @@ app.*.map.json
 **/ios/.symlinks/
 **/ios/Runner.xcworkspace/xcshareddata/
 
+# iOS 빌드 관련 파일 추가
+ios/Runner.xcworkspace/
+ios/Runner.xcodeproj/
+ios/Flutter/Debug.xcconfig
+ios/Flutter/Release.xcconfig
+ios/Podfile
+ios/Podfile.lock
+
+
 # Generated files
 *.g.dart
 *.freezed.dart
