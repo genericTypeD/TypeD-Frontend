@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:multi_split_view/multi_split_view.dart';
+import 'package:typed/common/const/app_colors.dart';
+import 'package:typed/common/const/app_themes.dart';
 import 'package:typed/common/layout/default_layout.dart';
 import 'package:typed/common/widgets/custom_app_bar.dart';
 import 'package:typed/type/component/add_record_dialog.dart';
@@ -92,7 +94,8 @@ class _MyTypeState extends State<MyType> {
             fontSize: 14,
             color: Colors.black,
           ),
-          dropdownColor: Colors.white,
+          // dropdownColor: Colors.white,
+          dropdownColor: AppColors.backgroundSecondary,
           elevation: 0,
           icon: Container(),
           underline: Container(),
@@ -123,49 +126,53 @@ class _MyTypeState extends State<MyType> {
           onPressed: showAddDialog,
           child: const Text(
             '추가하기',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.black,
-              height: 1,
-            ),
+            style: AppTheme.title3,
+            // style: TextStyle(
+            //   fontSize: 14,
+            //   color: Colors.black,
+            //   height: 1,
+            // ),
           ),
         ),
       ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: 16,
-          horizontal: 8,
-        ),
-        child: MultiSplitViewTheme(
-          data: MultiSplitViewThemeData(
-            dividerThickness: 5,
-            dividerPainter: DividerPainter(
-              backgroundColor: Colors.transparent,
-              highlightedBackgroundColor: const Color(0xFFF3F3F2),
-              animationEnabled: false,
-            ),
+      child: Container(
+        color: AppColors.backgroundSecondary,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: 16,
+            horizontal: 8,
           ),
-          child: MultiSplitView(
-            controller: _verticalController,
-            axis: Axis.vertical,
-            resizable: true,
-            antiAliasingWorkaround: true,
-            builder: (context, verticalArea) {
-              final verticalIndex = verticalArea.data as int;
-              return MultiSplitView(
-                controller: _horizontalControllers[verticalIndex],
-                resizable: true,
-                antiAliasingWorkaround: true,
-                builder: (context, horizontalArea) {
-                  return GridTextItem(
-                    key: ValueKey('${verticalIndex}_${horizontalArea.index}'),
-                    // content: horizontalArea.data as String,
-                    content: dummyString,
-                    width: screenWidth / 2,
-                  );
-                },
-              );
-            },
+          child: MultiSplitViewTheme(
+            data: MultiSplitViewThemeData(
+              dividerThickness: 5,
+              dividerPainter: DividerPainter(
+                backgroundColor: Colors.transparent,
+                highlightedBackgroundColor: const Color(0xFFF3F3F2),
+                animationEnabled: false,
+              ),
+            ),
+            child: MultiSplitView(
+              controller: _verticalController,
+              axis: Axis.vertical,
+              resizable: true,
+              antiAliasingWorkaround: true,
+              builder: (context, verticalArea) {
+                final verticalIndex = verticalArea.data as int;
+                return MultiSplitView(
+                  controller: _horizontalControllers[verticalIndex],
+                  resizable: true,
+                  antiAliasingWorkaround: true,
+                  builder: (context, horizontalArea) {
+                    return GridTextItem(
+                      key: ValueKey('${verticalIndex}_${horizontalArea.index}'),
+                      // content: horizontalArea.data as String,
+                      content: dummyString,
+                      width: screenWidth / 2,
+                    );
+                  },
+                );
+              },
+            ),
           ),
         ),
       ),

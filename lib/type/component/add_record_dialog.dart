@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:typed/common/const/app_colors.dart';
 import 'package:typed/common/const/app_themes.dart';
 import 'package:typed/type/screen/screen.dart';
 
@@ -15,14 +16,15 @@ class AddRecordDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      backgroundColor: AppColors.backgroundSecondary,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.zero,
       ),
       child: Container(
         width: MediaQuery.of(context).size.width * 0.8,
         decoration: const BoxDecoration(
-          color: Colors.white,
-        ),
+            //color: Colors.white,
+            ),
         child: Padding(
           padding: const EdgeInsets.symmetric(
             vertical: 32,

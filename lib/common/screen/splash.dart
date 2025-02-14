@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:typed/common/layout/default_layout.dart'; // DefaultLayout 임포트
+import 'package:typed/common/const/app_colors.dart';
+import 'package:typed/common/layout/default_layout.dart';
 import 'package:typed/common/screen/home_tab.dart';
+
+import '../const/app_themes.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -38,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
       PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 50),
         pageBuilder: (context, animation, secondaryAnimation) =>
-            HomeTab(), // SentenceEmpty로 이동
+            const HomeTab(), // SentenceEmpty로 이동
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(
             opacity: animation,
@@ -52,7 +55,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
-      backgroundColor: const Color(0xFFF3F3F2),
+      backgroundColor: AppColors.backgroundSecondary,
       child: SafeArea(
         child: Center(
           child: Row(
@@ -66,13 +69,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 children: [
                   Text(
                     letter,
-                    style: TextStyle(
-                      fontSize: 32.0,
-                      fontWeight: FontWeight.bold,
-                      color: currentIndex >= index
-                          ? Colors.black
-                          : Colors.transparent,
-                    ),
+                    style: AppTheme.heading1,
                   ),
                   AnimatedAlign(
                     alignment: currentIndex == index

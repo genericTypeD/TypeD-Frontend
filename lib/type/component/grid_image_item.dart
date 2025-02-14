@@ -16,7 +16,7 @@ class GridImageItem extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
         border: Border.all(
-          color: AppColors.blackPrimary,
+          color: AppColors.borderTertiary,
           width: 0.4,
         ),
       ),

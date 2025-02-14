@@ -18,7 +18,7 @@ class GridTextItem extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
         border: Border.all(
-          color: AppColors.blackPrimary,
+          color: AppColors.borderBlack,
           width: 0.4,
         ),
       ),
@@ -28,7 +28,7 @@ class GridTextItem extends StatelessWidget {
         child: SingleChildScrollView(
           child: Text(
             content,
-            style: AppTheme.body3,
+            style: AppTheme.body1,
             overflow: TextOverflow.clip,
             softWrap: true,
             textAlign: TextAlign.start,

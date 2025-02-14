@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:typed/common/const/app_bar_style.dart';
+import 'package:typed/common/const/app_themes.dart';
 import 'package:typed/common/widgets/border_container.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -52,12 +53,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           const SizedBox(width: AppBarStyle.sizedBoxWidth),
           const Text(
             'TypeD',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
+            style: AppTheme.heading3,
+
+            // style: TextStyle(
+            //   fontSize: 18,
+            //   fontWeight: FontWeight.bold,
+            //   color: Colors.black,
           ),
+
           const Spacer(),
           //topIconButton ?? Container(),
           topIconButton ??

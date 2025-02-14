@@ -3,6 +3,8 @@ import 'package:typed/common/layout/default_layout.dart';
 import 'package:typed/common/widgets/custom_app_bar.dart';
 
 class MyMenu extends StatelessWidget {
+  const MyMenu({super.key});
+
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
@@ -26,7 +28,7 @@ class MyMenu extends StatelessWidget {
           ),
         ),
       ),
-      child: Column(
+      child: const Column(
         children: [
           Expanded(
             child: Center(
