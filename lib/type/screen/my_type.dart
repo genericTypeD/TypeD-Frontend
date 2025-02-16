@@ -124,7 +124,7 @@ class _MyTypeState extends State<MyType> {
         ),
         bottomRightWidget: TextButton(
           onPressed: showAddDialog,
-          child: const Text(
+          child: Text(
             '추가하기',
             style: AppTheme.title3,
             // style: TextStyle(

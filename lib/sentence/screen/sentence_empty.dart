@@ -15,7 +15,7 @@ class SentenceEmpty extends StatelessWidget {
           onTap: () {
             debugPrint('클릭됨!');
           },
-          child: const Text(
+          child: Text(
             "텍스트A",
             style: AppTheme.title3,
           ),
@@ -24,10 +24,10 @@ class SentenceEmpty extends StatelessWidget {
           onTap: () {
             debugPrint('클릭됨!');
           },
-          child: const Align(
+          child: Align(
             alignment: Alignment.centerRight,
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 13, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 8),
               child: Text(
                 "글쓰기",
                 style: AppTheme.title3,
@@ -35,13 +35,6 @@ class SentenceEmpty extends StatelessWidget {
             ),
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.pushNamed(context, '/sentence_input'),
-        backgroundColor: const Color(0xFFF3F3F2),
-        foregroundColor: Colors.black,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-        child: const Text("+", style: TextStyle(fontSize: 24)),
       ),
       child: Container(
         color: AppColors.backgroundSecondary,

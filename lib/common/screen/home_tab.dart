@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:typed/common/const/app_colors.dart';
-import 'package:typed/common/layout/default_layout.dart'; // DefaultLayout 임포트
+import 'package:typed/common/layout/default_layout.dart';
 import 'package:typed/feed/screen/feed_list.dart';
 import 'package:typed/menu/screen/my_menu.dart';
 import 'package:typed/review/screen/review_empty.dart';
@@ -38,7 +38,6 @@ class _HomeTabState extends State<HomeTab> {
     return DefaultLayout(
       //title: _titles[_currentIndex], // 현재 탭에 맞는 제목을 전달
       bottomNavigationBar: _buildBottomNavigationBar(),
-      //title: _titles[_currentIndex], // 현재 탭에 맞는 제목을 전달
       child: _pages[_currentIndex], // 내비게이션 바 전달
     );
   }

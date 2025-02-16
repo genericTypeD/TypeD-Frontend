@@ -82,7 +82,7 @@ class _MyTypeLayoutState extends State<MyTypeLayout> {
                   ),
                 ),
               ),
-              child: const Text(
+              child: Text(
                 '저장하기',
                 style: AppTheme.body1,
               ),

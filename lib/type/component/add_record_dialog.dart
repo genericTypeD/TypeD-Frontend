@@ -34,7 +34,7 @@ class AddRecordDialog extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Center(
+              Center(
                 child: Text(
                   '기록을 추가하세요',
                   style: AppTheme.title1,

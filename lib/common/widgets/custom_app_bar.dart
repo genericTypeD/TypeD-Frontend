@@ -51,7 +51,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           const BorderContainer(type: ContainerBorderType.left),
           const SizedBox(width: AppBarStyle.sizedBoxWidth),
-          const Text(
+          Text(
             'TypeD',
             style: AppTheme.heading3,
 
