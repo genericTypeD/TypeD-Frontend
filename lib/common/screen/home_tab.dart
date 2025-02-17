@@ -52,18 +52,29 @@ class _HomeTabState extends State<HomeTab> {
       unselectedFontSize: 10,
       selectedItemColor: Colors.black,
       unselectedItemColor: Colors.grey,
-      currentIndex: _currentIndex, // 현재 탭의 인덱스
+      currentIndex: _currentIndex,
       onTap: (int index) {
         setState(() {
           _currentIndex = index; // 탭 클릭 시 해당 화면으로 전환
         });
       },
-      items: const [
+      items: [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'My Type'),
         BottomNavigationBarItem(
             icon: Icon(Icons.bookmark_outline), label: '서평 메모'),
         BottomNavigationBarItem(
-            icon: Icon(Icons.mode_edit_outlined), label: '문장 수집'),
+          icon: Container(
+            width: 32,
+            height: 32,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: AppColors.backgroundTertiary,
+            ),
+            child: const Icon(Icons.add,
+                size: 24, color: AppColors.backgroundQuaternary),
+          ),
+          label: '문장 수집',
+        ),
         BottomNavigationBarItem(icon: Icon(Icons.search), label: '취향 탐색'),
         BottomNavigationBarItem(
             icon: Icon(Icons.person_outline), label: '나의 메뉴'),

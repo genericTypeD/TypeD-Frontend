@@ -6,6 +6,7 @@ class DefaultLayout extends StatelessWidget {
   final PreferredSizeWidget? appBar;
   final Widget? bottomNavigationBar;
   final Widget? floatingActionButton;
+  final FloatingActionButtonLocation? floatingActionButtonLocation;
   final Widget child; // 필수 속성은 항상 마지막에 배치
 
   const DefaultLayout({
@@ -14,6 +15,7 @@ class DefaultLayout extends StatelessWidget {
     this.appBar,
     this.bottomNavigationBar,
     this.floatingActionButton,
+    this.floatingActionButtonLocation,
     required this.child,
     super.key,
   });
@@ -27,6 +29,7 @@ class DefaultLayout extends StatelessWidget {
       body: child,
       bottomNavigationBar: bottomNavigationBar,
       floatingActionButton: floatingActionButton,
+      floatingActionButtonLocation: floatingActionButtonLocation,
     );
   }
 }

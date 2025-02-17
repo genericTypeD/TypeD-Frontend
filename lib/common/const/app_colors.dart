@@ -31,7 +31,7 @@ abstract class AppColors {
   static const Color backgroundPrimary = Color(0xFFBAE800);
   static const Color backgroundSecondary = Color(0xFFFAF7F3);
   static const Color backgroundTertiary = Color(0xFFEEEAE7);
-  static const Color backgroundQuaternary = Color(0xFFE5E5E5);
+  static const Color backgroundQuaternary = Color(0xFF222222);
 
   // ===========================
   // 버튼 색상
