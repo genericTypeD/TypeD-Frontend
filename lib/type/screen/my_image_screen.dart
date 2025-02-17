@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:typed/common/layout/default_layout.dart';
 import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:typed/common/const/app_bar_style.dart';
-import 'package:typed/common/widgets/custom_app_bar.dart';
 import 'package:typed/type/component/grid_text_item.dart';
 import 'package:typed/common/const/app_themes.dart';
+import 'package:typed/common/index.dart';
 
 class MyImageScreen extends ConsumerStatefulWidget {
   final XFile? initialImage;
