@@ -1,87 +1,181 @@
 import 'package:flutter/material.dart';
+import 'package:typed/common/const/app_colors.dart';
+import 'package:typed/common/const/app_themes.dart';
 import 'package:typed/common/layout/default_layout.dart';
 
-class SentenceInput extends StatelessWidget {
+class SentenceInput extends StatefulWidget {
   const SentenceInput({super.key});
+
+  @override
+  State<SentenceInput> createState() => _SentenceInputState();
+}
+
+class _SentenceInputState extends State<SentenceInput>
+    with WidgetsBindingObserver {
+  final TextEditingController _controller = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
+  bool _isKeyboardVisible = false;
+  bool _isPrivate = true;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+
+    _focusNode.addListener(() {
+      setState(() {
+        _isKeyboardVisible = _focusNode.hasFocus;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _controller.dispose();
+    _focusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
       appBar: AppBar(
-        backgroundColor: const Color(0xFFFFFFFF),
+        backgroundColor: AppColors.backgroundSecondary, // ✅ 기존 컬러 유지
         elevation: 0,
         titleSpacing: 0,
-        leading: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(width: 16.0), // 좌측 간격
-            // Container(
-            //   width: 0.3, // 수직 구분선 두께
-            //   height: kToolbarHeight,
-            //   color: Colors.black, // 수직 구분선 색상
-            // ),
-            GestureDetector(
-              onTap: () {
-                Navigator.pop(context); // 뒤로가기 동작
-              },
-              child: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.0), // 원하는 패딩 조정
-                child: Icon(
-                  Icons.arrow_back,
-                  size: 20.0, // 화살표 크기
-                  color: Colors.black,
-                ),
-              ),
-            ),
-          ],
-        ),
-        title: const Text(
-          "문장 수집",
-          style: TextStyle(
+        leading: IconButton(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(
+            Icons.close,
+            size: 24.0,
             color: Colors.black,
-            fontSize: 18,
           ),
         ),
+        title: Text(
+          "문장 수집",
+          style: AppTheme.title2,
+        ),
         actions: [
-          Row(
-            mainAxisSize: MainAxisSize.min,
+          TextButton(
+            onPressed: () {
+              print("완료 버튼 클릭됨");
+            },
+            style: TextButton.styleFrom(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            ),
+            child: Text(
+              "완료",
+              style: AppTheme.title3,
+            ),
+          ),
+        ],
+      ),
+      child: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus(); // 화면 터치하면 키보드 닫힘
+        },
+        child: Container(
+          color: AppColors.backgroundSecondary,
+          child: Stack(
             children: [
-              TextButton(
-                onPressed: () {
-                  // 완료 버튼 동작 추가
-                  print("완료 버튼 클릭됨");
-                },
-                style: TextButton.styleFrom(
-                  padding: EdgeInsets.zero, // 기본 패딩 제거
-                  minimumSize: const Size(0, kToolbarHeight), // 높이 조정
-                ),
-                child: const Text(
-                  "완료",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14,
+              // 키보드가 보일 때만 문구 숨기기
+              AnimatedOpacity(
+                opacity: _isKeyboardVisible ? 0.0 : 1.0,
+                duration: const Duration(milliseconds: 300),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 80.0,
+                  ),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      "수집한 문장이\n내일을 바꿀지 몰라요",
+                      style: AppTheme.title2,
+                    ),
                   ),
                 ),
               ),
-              // Container(
-              //   width: 0.3, // 수직 구분선 두께
-              //   height: kToolbarHeight,
-              //   color: Colors.black, // 수직 구분선 색상
-              // ),
-              const SizedBox(width: 16.0), // 우측 간격
+              // TextField 위치 조정 (포커스 시 앱바 아래 20px)
+              AnimatedPositioned(
+                duration: const Duration(milliseconds: 300),
+                top: _isKeyboardVisible ? 20.0 : 160.0, // 포커스 시 앱바 20px 아래로 이동
+                left: 16.0,
+                right: 16.0,
+                child: Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.topCenter,
+                      child: TextField(
+                        focusNode: _focusNode,
+                        controller: _controller,
+                        cursorHeight: 20.0,
+                        autofocus: false,
+                        maxLines: 8,
+                        keyboardType: TextInputType.multiline,
+                        style: AppTheme.body1,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: AppColors.backgroundSecondary,
+                          hintText: "예) 감명 깊은 문장을 입력해 보세요.",
+                          hintStyle: AppTheme.body2.copyWith(
+                            color: AppColors.textSecondary,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.borderBlack,
+                              width: 0.3, // 기본 상태의 테두리 유지
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.borderBlack,
+                              width: 0.3, // 포커스되지 않은 상태에서도 같은 테두리 유지
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.borderBlack,
+                              width: 0.3, // 포커스 상태에서도 같은 두께 유지
+                            ),
+                          ),
+                          contentPadding: const EdgeInsets.all(12.0),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8.0), // TextField와 토글 간 간격
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton.icon(
+                        onPressed: () {
+                          setState(() {
+                            _isPrivate = !_isPrivate;
+                          });
+                        },
+                        icon: Icon(
+                          _isPrivate ? Icons.lock_outline : Icons.public,
+                          size: 20.0,
+                          color: Colors.black,
+                        ),
+                        label: Text(
+                          _isPrivate ? "비공개" : "공개",
+                          style: AppTheme.body2.copyWith(
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
-        ],
-        // bottom: PreferredSize(
-        //   preferredSize: const Size.fromHeight(1.0), // 구분선 높이
-        //   child: Container(
-        //     color: Colors.black, // 구분선 색상
-        //     height: 0.3, // 구분선 두께
-        //   ),
-        // ),
-      ),
-      child: const Center(
-        child: Text("수집할 문장 입력 페이지입니다."),
+        ),
       ),
     );
   }
