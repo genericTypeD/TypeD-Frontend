@@ -3,7 +3,6 @@ import 'package:typed/common/component/custom_text_form_field.dart';
 import 'package:typed/common/layout/default_layout.dart';
 
 import '../const/app_strings.dart';
-import '../const/app_themes.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -42,7 +41,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 8),
                     const Text(
                       'TypeD',
-                      style: AppTheme.heading1,
                     ),
                   ],
                 ),

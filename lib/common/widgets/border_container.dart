@@ -12,9 +12,11 @@ enum ContainerBorderType {
 
 class BorderContainer extends StatelessWidget {
   final ContainerBorderType type;
+  final Color? backgroundColor;
 
   const BorderContainer({
     required this.type,
+    this.backgroundColor,
     super.key,
   });
 
@@ -23,6 +25,7 @@ class BorderContainer extends StatelessWidget {
     return Container(
       width: AppBarStyle.borderContainerWidth,
       decoration: BoxDecoration(
+        color: backgroundColor,
         border: Border(
           left: type == ContainerBorderType.right
               ? type.borderSide

@@ -5,7 +5,7 @@ class TypeRoutes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/type':
-        return MaterialPageRoute(builder: (_) => MyType());
+        return MaterialPageRoute(builder: (_) => const MyType());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

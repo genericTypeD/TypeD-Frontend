@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:typed/common/const/app_colors.dart';
-import 'package:typed/common/screen/login_screen.dart';
+
+import '../../common/const/app_colors.dart';
+import '../../common/screen/login_screen.dart';
 
 class MyMenu extends StatefulWidget {
   const MyMenu({super.key});
@@ -130,7 +131,7 @@ class _MyMenuState extends State<MyMenu> {
     ];
 
     return Container(
-      color: AppColors.whitePrimary,
+      color: Colors.white,
       child: ListView.separated(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),

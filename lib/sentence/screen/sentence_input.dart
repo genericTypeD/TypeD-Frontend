@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:typed/common/layout/default_layout.dart'; // DefaultLayout 임포트
+import 'package:typed/common/layout/default_layout.dart';
 
 class SentenceInput extends StatelessWidget {
+  const SentenceInput({super.key});
+
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(

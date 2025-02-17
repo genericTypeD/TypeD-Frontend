@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:typed/common/const/app_bar_style.dart';
+import 'package:typed/common/const/app_themes.dart';
 import 'package:typed/common/widgets/border_container.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -42,6 +43,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       width: double.infinity,
       decoration: const BoxDecoration(
         border: Border(
+          top: AppBarStyle.borderStyle,
           bottom: AppBarStyle.borderStyle,
         ),
       ),
@@ -49,16 +51,28 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           const BorderContainer(type: ContainerBorderType.left),
           const SizedBox(width: AppBarStyle.sizedBoxWidth),
-          const Text(
+          Text(
             'TypeD',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
+            style: AppTheme.heading3,
+
+            // style: TextStyle(
+            //   fontSize: 18,
+            //   fontWeight: FontWeight.bold,
+            //   color: Colors.black,
           ),
+
           const Spacer(),
-          topIconButton ?? Container(),
+          //topIconButton ?? Container(),
+          topIconButton ??
+              GestureDetector(
+                onTap: () {
+                  debugPrint('알림 클릭됨');
+                },
+                child: const Icon(
+                  Icons.notifications,
+                  color: Colors.black,
+                ),
+              ),
           const SizedBox(width: AppBarStyle.sizedBoxWidth),
           const BorderContainer(type: ContainerBorderType.right),
         ],
@@ -86,8 +100,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           const BorderContainer(type: ContainerBorderType.left),
           const Spacer(),
           bottomCenterWidget ?? Container(),
+
+          // Right
           const SizedBox(width: AppBarStyle.sizedBoxWidth),
-          bottomRightWidget ?? Container(),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.22,
+            child: bottomRightWidget ?? Container(),
+          ),
+
           const BorderContainer(type: ContainerBorderType.right),
         ],
       ),

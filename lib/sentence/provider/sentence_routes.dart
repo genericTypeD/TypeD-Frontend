@@ -8,13 +8,13 @@ class SentenceRoutes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/sentence_input':
-        return MaterialPageRoute(builder: (_) => SentenceInput());
+        return MaterialPageRoute(builder: (_) => const SentenceInput());
       case '/sentence_list':
-        return MaterialPageRoute(builder: (_) => SentenceList());
+        return MaterialPageRoute(builder: (_) => const SentenceList());
       case '/sentence_empty':
-        return MaterialPageRoute(builder: (_) => SentenceEmpty());
+        return MaterialPageRoute(builder: (_) => const SentenceEmpty());
       case '/sentence_edit':
-        return MaterialPageRoute(builder: (_) => SentenceEdit());
+        return MaterialPageRoute(builder: (_) => const SentenceEdit());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
