@@ -1,12 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:typed/common/const/app_bar_style.dart';
-import 'package:typed/type/component/grid_text_item.dart';
 import 'package:typed/common/const/app_themes.dart';
 import 'package:typed/common/index.dart';
+import 'package:typed/type/component/grid_text_item.dart';
 
 class MyImageScreen extends ConsumerStatefulWidget {
   final XFile? initialImage;
@@ -89,7 +90,7 @@ class _MyMovieScreenState extends ConsumerState<MyImageScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               const SizedBox(height: 24),
-              const Text(
+              Text(
                 '갤러리 접근 권한',
                 style: AppTheme.title2,
               ),
@@ -128,10 +129,10 @@ class _MyMovieScreenState extends ConsumerState<MyImageScreen> {
                               ),
                               color: Color(0xFFF3F3F2),
                             ),
-                            child: const Center(
+                            child: Center(
                               child: Text(
                                 '취소',
-                                style: AppTheme.title4,
+                                style: AppTheme.title3,
                               ),
                             ),
                           ),
@@ -154,7 +155,7 @@ class _MyMovieScreenState extends ConsumerState<MyImageScreen> {
                             child: Center(
                               child: Text(
                                 isPermanentlyDenied ? '설정으로 이동' : '권한 허용',
-                                style: AppTheme.title4,
+                                style: AppTheme.title3,
                               ),
                             ),
                           ),

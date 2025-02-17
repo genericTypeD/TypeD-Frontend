@@ -20,7 +20,7 @@ class ReviewRoutes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/review':
-        return MaterialPageRoute(builder: (_) => ReviewEmpty());
+        return MaterialPageRoute(builder: (_) => const ReviewEmpty());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

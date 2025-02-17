@@ -5,7 +5,7 @@ class MenuRoutes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/menu':
-        return MaterialPageRoute(builder: (_) => MyMenu());
+        return MaterialPageRoute(builder: (_) => const MyMenu());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
