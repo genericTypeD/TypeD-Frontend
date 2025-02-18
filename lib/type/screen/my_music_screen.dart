@@ -69,6 +69,71 @@ class _MyMusicScreenState extends State<MyMusicScreen> {
       );
     }
   }
+
+  Widget renderBottomSheetContainer() {
+    return SafeArea(
+      child: Column(
+        children: [
+          TextField(
+            controller: searchController,
+            decoration: const InputDecoration(
+              hintText: '노래, 아티스트 또는 앨범을 검색하세요.',
+              prefixIcon: Icon(Icons.search),
+              border: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  width: 0.3,
+                  color: Color(0xffF3F3F2),
+                ),
+                borderRadius: BorderRadius.zero,
+              ),
+            ),
+            onChanged: (value) {
+              Future.delayed(const Duration(milliseconds: 500), () {
+                if (value == searchController.text) {
+                  searchMusic(value);
+                }
+              });
+            },
+          ),
+          Expanded(
+            child: isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : ListView.builder(
+                    itemCount: searchResults.length,
+                    itemBuilder: (context, index) {
+                      final track = searchResults[index];
+                      return ListTile(
+                        leading: track.album?.images?.isNotEmpty ?? false
+                            ? Image.network(
+                                track.album!.images!.first.url!,
+                                width: 50,
+                                height: 50,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    const Icon(Icons.music_note),
+                              )
+                            : const Icon(Icons.music_note),
+                        title: Text(track.name ?? 'Unknown Track'),
+                        subtitle: Text(
+                          '${track.artists?.first.name ?? 'Unknown Artist'} - ${track.album?.name ?? 'Unknown Album'}',
+                        ),
+                        onTap: () {
+                          setState(
+                            () {
+                              selectedTrack = track;
+                              currentTracks.insert(0, track);
+                            },
+                          );
+                          Navigator.pop(context);
+                        },
+                      );
+                    },
+                  ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
   @override
