@@ -90,3 +90,10 @@ app.*.map.json
 # Generated files
 *.g.dart
 *.freezed.dart
+
+
+ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme
+ios/Podfile.lock
+pubspec.lock
+
+android/spotify-app-remote/
