@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:typed/common/layout/default_layout.dart';
-import 'package:typed/common/widgets/custom_app_bar.dart';
+import 'package:typed/common/index.dart';
 
 class FeedList extends StatelessWidget {
   const FeedList({super.key});
