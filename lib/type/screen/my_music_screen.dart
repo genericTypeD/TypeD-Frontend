@@ -35,6 +35,40 @@ class _MyMusicScreenState extends State<MyMusicScreen> {
   void initState() {
     super.initState();
   }
+
+  Future<void> searchMusic(String query) async {
+    if (query.isEmpty) return;
+
+    setState(
+      () => isLoading = true,
+    );
+
+    try {
+      var results = await spotify.search
+          .get(
+            query,
+            types: [
+              SearchType.track,
+            ],
+            market: Market.KR,
+          )
+          .first();
+
+      var tracks = results.first.items ?? [];
+
+      setState(
+        () {
+          searchResults = tracks.whereType<Track>().toList();
+          isLoading = false;
+        },
+      );
+    } catch (e) {
+      debugPrint('$e');
+      setState(
+        () => isLoading = false,
+      );
+    }
+  }
   @override
   Widget build(BuildContext context) {
   @override
