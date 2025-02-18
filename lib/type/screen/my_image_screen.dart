@@ -187,6 +187,8 @@ class _MyMovieScreenState extends ConsumerState<MyImageScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return DefaultLayout(
+      // backgroundColor: Colors.white,
+      backgroundColor: const Color(0xffF3F3F2),
       appBar: CustomAppBar(
         bottomLeftWidget: TextButton(
           onPressed: () => Navigator.pop(context),
@@ -213,7 +215,7 @@ class _MyMovieScreenState extends ConsumerState<MyImageScreen> {
                 }
               : null,
           child: const Text(
-            '기록',
+            '기록하기',
             style: TextStyle(
               fontSize: 14,
               color: Colors.black,
