@@ -87,12 +87,10 @@ class _MyMusicScreenState extends State<MyMusicScreen> {
                 borderRadius: BorderRadius.zero,
               ),
             ),
-            onChanged: (value) {
-              Future.delayed(const Duration(milliseconds: 500), () {
-                if (value == searchController.text) {
-                  searchMusic(value);
-                }
-              });
+            onSubmitted: (value) {
+              debugPrint('onSubmitted: ${value}');
+              searchMusic(value);
+              // }
             },
           ),
           Expanded(
