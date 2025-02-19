@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart'
-    as riverpod; // riverpod으로 변경
+import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
 import 'package:provider/provider.dart' as provider;
-import 'package:typed/common/provider/app_routes.dart'; // AppRoutes 임포트
+import 'package:typed/common/provider/app_routes.dart';
 import 'package:typed/common/screen/splash.dart';
 import 'package:typed/sentence/provider/sentence_provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';

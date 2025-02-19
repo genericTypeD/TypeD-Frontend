@@ -7,7 +7,7 @@ class DefaultLayout extends StatelessWidget {
   final Widget? bottomNavigationBar;
   final Widget? floatingActionButton;
   final FloatingActionButtonLocation? floatingActionButtonLocation;
-  final Widget child; // 필수 속성은 항상 마지막에 배치
+  final Widget child;
 
   const DefaultLayout({
     this.backgroundColor,
@@ -23,7 +23,6 @@ class DefaultLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //backgroundColor: backgroundColor ?? Colors.white,
       backgroundColor: backgroundColor,
       appBar: appBar,
       body: child,

@@ -29,7 +29,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: SafeArea(
         child: Column(
           children: [
-            // HeaderSection(topIconButton),
             HeaderSection(
               iconButton: topIconButton,
             ),
@@ -38,70 +37,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               centerWidget: bottomCenterWidget,
               rightWidget: bottomRightWidget,
             ),
-            // _buildHeaderSection(),
-            // _buildBottomSection(context),
           ],
         ),
       ),
     );
   }
-
-  // Widget _buildHeaderSection() {
-  //   return Container(
-  //     height: AppBarStyle.sectionHeight,
-  //     width: double.infinity,
-  //     decoration: const BoxDecoration(
-  //       border: Border(
-  //         bottom: AppBarStyle.borderStyle,
-  //       ),
-  //     ),
-  //     child: Row(
-  //       children: [
-  //         const BorderContainer(type: ContainerBorderType.left),
-  //         const SizedBox(width: AppBarStyle.sizedBoxWidth),
-  //         const Text(
-  //           'TypeD',
-  //           style: TextStyle(
-  //             fontSize: 18,
-  //             fontWeight: FontWeight.bold,
-  //             color: Colors.black,
-  //           ),
-  //         ),
-  //         const Spacer(),
-  //         topIconButton ?? Container(),
-  //         const SizedBox(width: AppBarStyle.sizedBoxWidth),
-  //         const BorderContainer(type: ContainerBorderType.right),
-  //       ],
-  //     ),
-  //   );
-  // }
-
-  // Widget _buildBottomSection(BuildContext context) {
-  //   return Container(
-  //     height: AppBarStyle.sectionHeight,
-  //     width: double.infinity,
-  //     decoration: const BoxDecoration(
-  //       border: Border(
-  //         bottom: AppBarStyle.borderStyle,
-  //       ),
-  //     ),
-  //     child: Row(
-  //       children: [
-  //         const BorderContainer(type: ContainerBorderType.left),
-  //         const SizedBox(width: AppBarStyle.sizedBoxWidth),
-  //         Container(
-  //           width: MediaQuery.of(context).size.width * 0.22,
-  //           alignment: Alignment.centerLeft,
-  //           child: bottomLeftWidget ?? Container(),
-  //         ),
-  //         const BorderContainer(type: ContainerBorderType.left),
-  //         const Spacer(),
-  //         bottomCenterWidget ?? Container(),
-  //         const SizedBox(width: AppBarStyle.sizedBoxWidth),
-  //         bottomRightWidget ?? Container(),
-  //         const BorderContainer(type: ContainerBorderType.right),
-  //       ],
-  //     ),
-  //   );
-  // }
 }
