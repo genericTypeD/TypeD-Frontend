@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:typed/common/layout/default_layout.dart';
-import 'package:typed/common/widgets/custom_app_bar.dart';
+// import 'package:typed/common/widgets/custom_app_bar.dart';
 
 class MyMenu extends StatelessWidget {
   const MyMenu({super.key});
@@ -8,26 +8,26 @@ class MyMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
-      appBar: CustomAppBar(
-        bottomLeftWidget: GestureDetector(
-          onTap: () {
-            debugPrint('클릭됨!');
-          },
-          child: const Text(
-            "텍스트A",
-            style: TextStyle(fontSize: 14),
-          ),
-        ),
-        bottomRightWidget: GestureDetector(
-          onTap: () {
-            debugPrint('클릭됨!');
-          },
-          child: const Text(
-            "글쓰기",
-            style: TextStyle(fontSize: 14),
-          ),
-        ),
-      ),
+      // appBar: CustomAppBar(
+      //   bottomLeftWidget: GestureDetector(
+      //     onTap: () {
+      //       debugPrint('클릭됨!');
+      //     },
+      //     child: const Text(
+      //       "텍스트A",
+      //       style: TextStyle(fontSize: 14),
+      //     ),
+      //   ),
+      //   bottomRightWidget: GestureDetector(
+      //     onTap: () {
+      //       debugPrint('클릭됨!');
+      //     },
+      //     child: const Text(
+      //       "글쓰기",
+      //       style: TextStyle(fontSize: 14),
+      //     ),
+      //   ),
+      // ),
       child: const Column(
         children: [
           Expanded(
