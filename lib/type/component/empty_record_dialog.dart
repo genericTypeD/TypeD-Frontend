@@ -3,11 +3,11 @@ import 'package:typed/common/const/index.dart';
 
 class EmptyRecordDialog extends StatelessWidget {
   final String title;
-  final String confirmButtonText;
+  final String acceptButtonText;
 
   const EmptyRecordDialog({
-    this.title = '기록이 비었습니다',
-    this.confirmButtonText = '확인',
+    this.title = AppStrings.emptyRecordDialogTitle,
+    this.acceptButtonText = AppStrings.acceptButton,
     super.key,
   });
 
