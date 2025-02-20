@@ -114,6 +114,21 @@ class _MySentenceScreenState extends State<MySentenceScreen> {
         ),
         bottomRightWidget: TextButton(
           onPressed: () {
+            final trimmedText = _trimControllerText();
+
+            if (trimmedText.isNotEmpty) {
+              final result = GridItemData(
+                content: _textController.text,
+              );
+
+              debugPrint('_textController.text: ${_textController.text}');
+              debugPrint('result.isEmpty: ${result.isEmpty}');
+              debugPrint('result.imageFile: ${result.imageFile}');
+
+              Navigator.pop(context, result);
+            } else {
+              showAlertBlankSentence();
+            }
           },
           child: const Text(
             '기록하기',
