@@ -2,7 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:typed/common/const/index.dart';
 
 class EmptyRecordDialog extends StatelessWidget {
-  const EmptyRecordDialog({super.key});
+  final String title;
+  final String confirmButtonText;
+
+  const EmptyRecordDialog({
+    this.title = '기록이 비었습니다',
+    this.confirmButtonText = '확인',
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

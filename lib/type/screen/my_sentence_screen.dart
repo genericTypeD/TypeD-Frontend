@@ -3,7 +3,7 @@ import 'package:typed/common/const/app_bar_style.dart';
 import 'package:typed/common/const/app_themes.dart';
 import 'package:typed/common/index.dart';
 import 'package:typed/type/component/grid_text_item.dart';
-import 'package:typed/type/component/empty_content_alert_dialog.dart';
+import 'package:typed/type/component/empty_record_dialog.dart';
 
 class MySentenceScreen extends StatefulWidget {
   final String? initialText;
