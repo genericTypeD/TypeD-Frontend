@@ -136,30 +136,43 @@ class _MySentenceScreenState extends State<MySentenceScreen> {
                                   width: 0.3,
                                 ),
                               ),
-                              child: TextField(
-                                // TODO: - width, height, drag할 때 색상
-                                maxLines: null,
-                                controller: _textController,
-                                style: AppTheme.body2.copyWith(
-                                  color: Colors.black,
-                                ),
-                                decoration: InputDecoration(
-                                  constraints: BoxConstraints(
-                                    maxWidth:
-                                        MediaQuery.of(context).size.width * 0.5,
+                              child: Theme(
+                                data: ThemeData(
+                                  textSelectionTheme:
+                                      const TextSelectionThemeData(
+                                    cursorColor: Colors.black54,
+                                    selectionColor: Colors.black54,
+                                    selectionHandleColor: Colors.black54,
                                   ),
-                                  hintText: '문장을 입력하세요',
-                                  hintStyle: AppTheme.body2.copyWith(
+                                ),
+                                child: TextField(
+                                  // TODO: - width, height, drag할 때 색상
+                                  maxLines: null,
+                                  controller: _textController,
+                                  style: AppTheme.body2.copyWith(
                                     color: Colors.black,
                                   ),
-                                  contentPadding: const EdgeInsets.all(16),
-                                  border: InputBorder.none,
+                                  cursorColor: Colors.black54,
+                                  cursorErrorColor: Colors.black54,
+                                  decoration: InputDecoration(
+                                    constraints: BoxConstraints(
+                                      maxWidth:
+                                          MediaQuery.of(context).size.width *
+                                              0.5,
+                                    ),
+                                    hintText: '문장을 입력하세요',
+                                    hintStyle: AppTheme.body2.copyWith(
+                                      color: Colors.black,
+                                    ),
+                                    contentPadding: const EdgeInsets.all(16),
+                                    border: InputBorder.none,
+                                  ),
+                                  onTapOutside: (event) =>
+                                      FocusScope.of(context).unfocus(),
+                                  onSubmitted: (value) {
+                                    debugPrint('onSubmitted value: ${value}');
+                                  },
                                 ),
-                                onTapOutside: (event) =>
-                                    FocusScope.of(context).unfocus(),
-                                onSubmitted: (value) {
-                                  debugPrint('onSubmitted value: ${value}');
-                                },
                               ),
                             ),
                             SizedBox(
