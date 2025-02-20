@@ -255,6 +255,20 @@ class _MySentenceScreenState extends State<MySentenceScreen> {
                                   ),
                                   const Spacer(),
                                   GestureDetector(
+                                    onTap: () async {
+                                      final trimmedText = _trimControllerText();
+
+                                      if (trimmedText.isNotEmpty) {
+                                        setState(() {
+                                          _currentTexts.insert(
+                                            0,
+                                            trimmedText,
+                                          );
+                                        });
+                                      } else {
+                                        showAlertBlankSentence();
+                                      }
+                                    },
                                     child: Container(
                                       width: MediaQuery.of(context).size.width *
                                           0.1,
