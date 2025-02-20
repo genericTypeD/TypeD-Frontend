@@ -33,6 +33,10 @@ class _MySentenceScreenState extends State<MySentenceScreen> {
     }
   }
 
+  String _trimControllerText() {
+    return _textController.text.replaceAll(RegExp(r'\s+'), ' ').trim();
+  }
+
   void showAlertBlankSentence() {
     showDialog(
       context: context,
