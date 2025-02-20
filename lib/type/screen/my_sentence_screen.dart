@@ -335,14 +335,16 @@ class _MySentenceScreenState extends State<MySentenceScreen> {
                                   child: Container(
                                     decoration: BoxDecoration(
                                       color: Colors.white,
-                                      border: index != _currentTexts.length - 1
-                                          ? const Border(
-                                              bottom: BorderSide(
-                                                color: Colors.black,
-                                                width: 0.3,
-                                              ),
-                                            )
-                                          : null,
+                                      border:
+                                          index != _currentTexts.length - 1 ||
+                                                  _currentTexts.length == 1
+                                              ? const Border(
+                                                  bottom: BorderSide(
+                                                    color: Colors.black,
+                                                    width: 0.3,
+                                                  ),
+                                                )
+                                              : null,
                                     ),
                                     padding: const EdgeInsets.all(16),
                                     child: Text(
