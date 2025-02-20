@@ -190,23 +190,6 @@ class _MySentenceScreenState extends State<MySentenceScreen> {
                                     FocusScope.of(context).unfocus(),
                                 onSubmitted: (value) {
                                   debugPrint('onSubmitted value: ${value}');
-                                  // if (value.isNotEmpty) {
-                                  //   setState(() {
-                                  //     _selectedText = value;
-                                  //     _currentTexts.insert(0, value);
-                                  //     _textController.clear();
-                                  //   });
-                                  // }
-                                  // if (_textController.text.isNotEmpty) {
-                                  //   final _trimmedText =
-                                  //       _textController.text.trim();
-                                  //   setState(() {
-                                  //     _currentTexts.insert(
-                                  //       0,
-                                  //       _trimmedText,
-                                  //     );
-                                  //   });
-                                  // }
                                 },
                               ),
                             ),
