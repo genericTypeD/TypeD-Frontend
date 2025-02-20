@@ -3,6 +3,7 @@ import 'package:typed/common/const/app_bar_style.dart';
 import 'package:typed/common/const/app_themes.dart';
 import 'package:typed/common/index.dart';
 import 'package:typed/type/component/grid_text_item.dart';
+import 'package:typed/type/component/empty_content_alert_dialog.dart';
 
 class MySentenceScreen extends StatefulWidget {
   final String? initialText;
@@ -37,57 +38,11 @@ class _MySentenceScreenState extends State<MySentenceScreen> {
     return text.split('\n').where((line) => line.trim().isNotEmpty).join('\n');
   }
 
-  void showAlertBlankSentence() {
+  void _showEmptyContentAlertDialog() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          actions: [
-            const SizedBox(height: 24),
-            Center(
-              child: Text(
-                '빈 값입니다.',
-                style: AppTheme.body2.copyWith(
-                  fontWeight: FontWeight.bold,
-                  height: 1,
-                ),
-              ),
-            ),
-            const SizedBox(height: 24),
-            const Divider(
-              color: Colors.black,
-              thickness: 0.3,
-              height: 0.3,
-            ),
-            const SizedBox(height: 16),
-            Center(
-              child: TextButton(
-                style: TextButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  minimumSize: Size.zero,
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                ),
-                child: Text(
-                  '확인',
-                  style: AppTheme.body2.copyWith(
-                    height: 1,
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ),
-            const SizedBox(height: 16),
-          ],
-          actionsPadding: EdgeInsets.zero,
-          backgroundColor: Colors.white,
-          elevation: 0,
-          shape: Border.all(
-            color: Colors.black,
-            width: 0.3,
-          ),
-        );
+        return const EmptyContentAlertDialog();
       },
     );
   }
@@ -122,7 +77,7 @@ class _MySentenceScreenState extends State<MySentenceScreen> {
               );
               Navigator.pop(context, result);
             } else {
-              showAlertBlankSentence();
+              _showEmptyContentAlertDialog();
             }
           },
           child: const Text(
@@ -262,7 +217,7 @@ class _MySentenceScreenState extends State<MySentenceScreen> {
                                           );
                                         });
                                       } else {
-                                        showAlertBlankSentence();
+                                        _showEmptyContentAlertDialog();
                                       }
                                     },
                                     child: Container(
