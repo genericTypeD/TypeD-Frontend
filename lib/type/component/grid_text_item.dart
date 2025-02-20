@@ -110,7 +110,9 @@ class GridTextItem extends ConsumerWidget {
                       )
                     : Text(
                         item.content ?? '',
-                        style: AppTheme.body3,
+                        style: AppTheme.body3.copyWith(
+                          color: Colors.black,
+                        ),
                         overflow: TextOverflow.clip,
                         softWrap: true,
                         textAlign: TextAlign.start,
