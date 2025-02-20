@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:typed/common/const/index.dart';
 
-class EmptyContentAlertDialog extends StatelessWidget {
-  const EmptyContentAlertDialog({super.key});
+class EmptyRecordDialog extends StatelessWidget {
+  const EmptyRecordDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
