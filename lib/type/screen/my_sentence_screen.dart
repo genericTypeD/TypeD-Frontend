@@ -42,7 +42,7 @@ class _MySentenceScreenState extends State<MySentenceScreen> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return const EmptyContentAlertDialog();
+        return const EmptyRecordDialog();
       },
     );
   }
