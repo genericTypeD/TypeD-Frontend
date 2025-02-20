@@ -33,8 +33,8 @@ class _MySentenceScreenState extends State<MySentenceScreen> {
     }
   }
 
-  String _trimControllerText() {
-    return _textController.text.replaceAll(RegExp(r'\s+'), ' ').trim();
+  String _trimText(String text) {
+    return text.split('\n').where((line) => line.trim().isNotEmpty).join('\n');
   }
 
   void showAlertBlankSentence() {
@@ -114,11 +114,11 @@ class _MySentenceScreenState extends State<MySentenceScreen> {
         ),
         bottomRightWidget: TextButton(
           onPressed: () {
-            final trimmedText = _trimControllerText();
+            final trimmedText = _trimText(_textController.text);
 
             if (trimmedText.isNotEmpty) {
               final result = GridItemData(
-                content: _textController.text,
+                content: trimmedText,
               );
 
               debugPrint('_textController.text: ${_textController.text}');
@@ -256,7 +256,8 @@ class _MySentenceScreenState extends State<MySentenceScreen> {
                                   const Spacer(),
                                   GestureDetector(
                                     onTap: () async {
-                                      final trimmedText = _trimControllerText();
+                                      final trimmedText =
+                                          _trimText(_textController.text);
 
                                       if (trimmedText.isNotEmpty) {
                                         setState(() {
