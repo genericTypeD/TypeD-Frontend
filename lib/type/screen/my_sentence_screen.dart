@@ -120,11 +120,6 @@ class _MySentenceScreenState extends State<MySentenceScreen> {
               final result = GridItemData(
                 content: trimmedText,
               );
-
-              debugPrint('_textController.text: ${_textController.text}');
-              debugPrint('result.isEmpty: ${result.isEmpty}');
-              debugPrint('result.imageFile: ${result.imageFile}');
-
               Navigator.pop(context, result);
             } else {
               showAlertBlankSentence();
