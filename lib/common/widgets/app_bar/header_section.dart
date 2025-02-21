@@ -11,8 +11,7 @@ class HeaderSection extends StatelessWidget {
     super.key,
     required this.titleWidget,
     required this.iconButton,
-  })  : assert(titleWidget != null, 'titleWidget이 null일 수 없습니다'),
-        assert(iconButton != null, 'iconButton이 null일 수 없습니다');
+  });
 
   @override
   Widget build(BuildContext context) {
