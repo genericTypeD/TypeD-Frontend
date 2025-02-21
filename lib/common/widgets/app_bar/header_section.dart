@@ -4,12 +4,15 @@ import 'package:typed/common/widgets/app_bar/section_container.dart';
 import 'package:typed/common/widgets/border_container.dart';
 
 class HeaderSection extends StatelessWidget {
-  final Widget? iconButton;
+  final Widget titleWidget;
+  final Widget iconButton;
 
   const HeaderSection({
     super.key,
-    this.iconButton,
-  });
+    required this.titleWidget,
+    required this.iconButton,
+  })  : assert(titleWidget != null, 'titleWidget이 null일 수 없습니다'),
+        assert(iconButton != null, 'iconButton이 null일 수 없습니다');
 
   @override
   Widget build(BuildContext context) {
@@ -18,12 +21,9 @@ class HeaderSection extends StatelessWidget {
         children: [
           const BorderContainer(type: ContainerBorderType.left),
           const SizedBox(width: AppBarStyle.sizedBoxWidth),
-          const Text(
-            AppBarStyle.titleAppName,
-            style: AppBarStyle.titleTextStyle,
-          ),
+          titleWidget,
           const Spacer(),
-          iconButton ?? Container(),
+          iconButton,
           const SizedBox(width: AppBarStyle.sizedBoxWidth),
           const BorderContainer(type: ContainerBorderType.right),
         ],
