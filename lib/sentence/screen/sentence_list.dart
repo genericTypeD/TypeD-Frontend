@@ -1,14 +1,51 @@
 import 'package:flutter/material.dart';
-import 'package:typed/common/layout/default_layout.dart';
+import 'package:typed/common/const/app_colors.dart';
+import 'package:typed/common/const/app_themes.dart';
+import 'package:typed/common/index.dart';
 
 class SentenceList extends StatelessWidget {
   const SentenceList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const DefaultLayout(
-      child: Center(
-        child: Text("문장 리스트 페이지입니다."),
+    return DefaultLayout(
+      appBar: CustomAppBar(
+        bottomLeftWidget: GestureDetector(
+          onTap: () {
+            debugPrint('클릭됨!');
+          },
+          child: Text(
+            "텍스트A",
+            style: AppTheme.title3,
+          ),
+        ),
+        bottomRightWidget: GestureDetector(
+          onTap: () {
+            debugPrint('클릭됨!');
+          },
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 8),
+              child: Text(
+                "글쓰기",
+                style: AppTheme.title3,
+              ),
+            ),
+          ),
+        ),
+      ),
+      child: Container(
+        color: AppColors.backgroundSecondary,
+        child: const Column(
+          children: [
+            Expanded(
+              child: Center(
+                child: Text("아직 수집된 문장이 없습니다."),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

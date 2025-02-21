@@ -41,7 +41,7 @@ class _SentenceInputState extends State<SentenceInput>
   Widget build(BuildContext context) {
     return DefaultLayout(
       appBar: AppBar(
-        backgroundColor: AppColors.backgroundSecondary, // ✅ 기존 컬러 유지
+        backgroundColor: AppColors.backgroundSecondary,
         elevation: 0,
         titleSpacing: 0,
         leading: IconButton(
@@ -60,7 +60,7 @@ class _SentenceInputState extends State<SentenceInput>
         actions: [
           TextButton(
             onPressed: () {
-              print("완료 버튼 클릭됨");
+              Navigator.pushNamed(context, '/sentence_list');
             },
             style: TextButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -74,13 +74,12 @@ class _SentenceInputState extends State<SentenceInput>
       ),
       child: GestureDetector(
         onTap: () {
-          FocusScope.of(context).unfocus(); // 화면 터치하면 키보드 닫힘
+          FocusScope.of(context).unfocus();
         },
         child: Container(
           color: AppColors.backgroundSecondary,
           child: Stack(
             children: [
-              // 키보드가 보일 때만 문구 숨기기
               AnimatedOpacity(
                 opacity: _isKeyboardVisible ? 0.0 : 1.0,
                 duration: const Duration(milliseconds: 300),
@@ -98,10 +97,9 @@ class _SentenceInputState extends State<SentenceInput>
                   ),
                 ),
               ),
-              // TextField 위치 조정 (포커스 시 앱바 아래 20px)
               AnimatedPositioned(
                 duration: const Duration(milliseconds: 300),
-                top: _isKeyboardVisible ? 20.0 : 160.0, // 포커스 시 앱바 20px 아래로 이동
+                top: _isKeyboardVisible ? 20.0 : 160.0,
                 left: 16.0,
                 right: 16.0,
                 child: Column(
@@ -127,28 +125,28 @@ class _SentenceInputState extends State<SentenceInput>
                             borderRadius: BorderRadius.circular(8.0),
                             borderSide: const BorderSide(
                               color: AppColors.borderBlack,
-                              width: 0.3, // 기본 상태의 테두리 유지
+                              width: 0.3,
                             ),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8.0),
                             borderSide: const BorderSide(
                               color: AppColors.borderBlack,
-                              width: 0.3, // 포커스되지 않은 상태에서도 같은 테두리 유지
+                              width: 0.3,
                             ),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8.0),
                             borderSide: const BorderSide(
                               color: AppColors.borderBlack,
-                              width: 0.3, // 포커스 상태에서도 같은 두께 유지
+                              width: 0.3,
                             ),
                           ),
                           contentPadding: const EdgeInsets.all(12.0),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 8.0), // TextField와 토글 간 간격
+                    const SizedBox(height: 8.0),
                     Align(
                       alignment: Alignment.centerRight,
                       child: TextButton.icon(
@@ -158,7 +156,7 @@ class _SentenceInputState extends State<SentenceInput>
                           });
                         },
                         icon: Icon(
-                          _isPrivate ? Icons.lock_outline : Icons.public,
+                          _isPrivate ? Icons.lock_outline : Icons.lock_open,
                           size: 20.0,
                           color: Colors.black,
                         ),
