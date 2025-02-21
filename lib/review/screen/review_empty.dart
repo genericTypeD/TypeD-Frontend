@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:typed/common/const/app_colors.dart';
 import 'package:typed/common/const/app_themes.dart';
-import 'package:typed/common/layout/default_layout.dart';
-import 'package:typed/common/widgets/custom_app_bar.dart';
+import 'package:typed/common/index.dart';
 
 class ReviewEmpty extends StatelessWidget {
   const ReviewEmpty({super.key});
