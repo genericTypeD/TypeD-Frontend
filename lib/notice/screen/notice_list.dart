@@ -11,7 +11,7 @@ class NoticeList extends StatelessWidget {
         centerTitle: true,
       ),
       body: const Center(
-        child: Text('📢 여기는 알림 페이지입니다.'),
+        child: Text('여기는 알림 페이지입니다.'),
       ),
     );
   }

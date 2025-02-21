@@ -11,7 +11,7 @@ class NoticeEmpty extends StatelessWidget {
         centerTitle: true,
       ),
       body: const Center(
-        child: Text('📢 여기는 알림 페이지입니다.'),
+        child: Text('알림 메세지가 없습니다.'),
       ),
     );
   }

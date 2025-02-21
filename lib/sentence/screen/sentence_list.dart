@@ -41,7 +41,7 @@ class SentenceList extends StatelessWidget {
           children: [
             Expanded(
               child: Center(
-                child: Text("아직 수집된 문장이 없습니다."),
+                child: Text("우헤헤."),
               ),
             ),
           ],

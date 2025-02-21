@@ -39,8 +39,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
               iconButton: GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(
-                      context, '/notifications'); // 추후 알림 페이지로 이동 예정
+                  Navigator.pushNamed(context, '/notifications');
                 },
                 child: const Icon(
                   Icons.notifications,

@@ -1,19 +1,11 @@
-import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:typed/menu/screen/my_menu.dart';
 
 class MenuRoutes {
-  static Route<dynamic> generateRoute(RouteSettings settings) {
-    switch (settings.name) {
-      case '/menu':
-        return MaterialPageRoute(builder: (_) => const MyMenu());
-      default:
-        return MaterialPageRoute(
-          builder: (_) => Scaffold(
-            body: Center(
-              child: Text('No route defined for ${settings.name}'),
-            ),
-          ),
-        );
-    }
-  }
+  static final List<GoRoute> routes = [
+    GoRoute(
+      path: '/menu',
+      builder: (context, state) => const MyMenu(),
+    ),
+  ];
 }

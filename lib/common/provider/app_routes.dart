@@ -1,51 +1,75 @@
-import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:typed/common/screen/home_tab.dart';
+import 'package:typed/common/screen/splash.dart';
 import 'package:typed/feed/provider/feed_routes.dart';
+import 'package:typed/feed/screen/feed_list.dart';
 import 'package:typed/menu/provider/menu_routes.dart';
-import 'package:typed/notice/screen/notice_list.dart';
+import 'package:typed/menu/screen/my_menu.dart';
 import 'package:typed/review/provider/review_routes.dart';
+import 'package:typed/review/screen/review_empty.dart';
 import 'package:typed/sentence/provider/sentence_routes.dart';
+import 'package:typed/sentence/screen/sentence_empty.dart';
+import 'package:typed/sentence/screen/sentence_input.dart';
 import 'package:typed/type/provider/type_routes.dart';
+import 'package:typed/type/screen/my_type.dart';
 
 class AppRoutes {
-  static Route<dynamic> generateRoute(RouteSettings settings) {
-    // 타입 관련 라우팅은 TypeRoutes에서 처리
-    if (settings.name?.startsWith('/type') == true) {
-      return TypeRoutes.generateRoute(settings);
-    }
+  static final GoRouter router = GoRouter(
+    initialLocation: '/splash',
+    routes: [
+      GoRoute(
+        path: '/splash',
+        builder: (context, state) => const SplashScreen(),
+      ),
 
-    if (settings.name?.startsWith('/review') == true) {
-      return ReviewRoutes.generateRoute(settings);
-    }
-
-    if (settings.name?.startsWith('/sentence') == true) {
-      return SentenceRoutes.generateRoute(settings);
-    }
-
-    if (settings.name?.startsWith('/feed') == true) {
-      return FeedRoutes.generateRoute(settings);
-    }
-
-    if (settings.name?.startsWith('/menu') == true) {
-      return MenuRoutes.generateRoute(settings);
-    }
-
-    switch (settings.name) {
-      case '/home':
-        return MaterialPageRoute(builder: (context) => const HomeTab());
-
-      /// 🔔 알림 페이지 추가
-      case '/notifications':
-        return MaterialPageRoute(builder: (context) => const NoticeList());
-
-      default:
-        return MaterialPageRoute(
-          builder: (_) => Scaffold(
-            body: Center(
-              child: Text('No route defined for ${settings.name}'),
+      // StatefulShellRoute 적용 (바텀 네비게이션 관리)
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) {
+          return HomeTab(navigationShell: navigationShell);
+        },
+        branches: [
+          StatefulShellBranch(routes: [
+            GoRoute(
+              path: '/home/type',
+              builder: (context, state) => const MyType(),
             ),
-          ),
-        );
-    }
-  }
+          ]),
+          StatefulShellBranch(routes: [
+            GoRoute(
+              path: '/home/review',
+              builder: (context, state) => const ReviewEmpty(),
+            ),
+          ]),
+          StatefulShellBranch(routes: [
+            GoRoute(
+              path: '/home/sentence',
+              builder: (context, state) => const SentenceEmpty(),
+            ),
+          ]),
+          StatefulShellBranch(routes: [
+            GoRoute(
+              path: '/home/feed',
+              builder: (context, state) => const FeedList(),
+            ),
+          ]),
+          StatefulShellBranch(routes: [
+            GoRoute(
+              path: '/home/menu',
+              builder: (context, state) => const MyMenu(),
+            ),
+          ]),
+        ],
+      ),
+      GoRoute(
+        path: '/sentence_input',
+        builder: (context, state) => const SentenceInput(),
+      ),
+      // 각 도메인별 경로 포함
+      ...TypeRoutes.routes,
+      ...ReviewRoutes.routes,
+      ...SentenceRoutes.routes,
+      ...FeedRoutes.routes,
+      ...MenuRoutes.routes,
+    ],
+  );
 }

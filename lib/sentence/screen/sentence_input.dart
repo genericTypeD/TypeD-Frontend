@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:typed/common/const/app_colors.dart';
 import 'package:typed/common/const/app_themes.dart';
 import 'package:typed/common/layout/default_layout.dart';
@@ -60,7 +61,7 @@ class _SentenceInputState extends State<SentenceInput>
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.pushNamed(context, '/sentence_list');
+              context.go('/sentence_list');
             },
             style: TextButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
