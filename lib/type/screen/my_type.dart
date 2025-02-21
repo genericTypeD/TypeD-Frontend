@@ -161,6 +161,7 @@ class _MyTypeState extends ConsumerState<MyType> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return DefaultLayout(
+      backgroundColor: Colors.white,
       appBar: CustomAppBar(
         topIconButton: GestureDetector(
           onTap: () {
