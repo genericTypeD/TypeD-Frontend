@@ -57,6 +57,7 @@ class AddRecordDialog extends StatelessWidget {
                     icon: Icon(
                       category['icon'] as IconData,
                       size: 16,
+                      color: Colors.black,
                     ),
                     label: Text(
                       category['label'] as String,
