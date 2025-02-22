@@ -49,9 +49,7 @@ class Book {
     return Book(
       authors: List<String>.from(json['authors']),
       contents: json['contents'] ?? '',
-      datetime: json['datetime'] ?? '',
-      // datetime:
-      //     DateTime.parse(json['datetime']), // 2022-06-03T00:00:00.000+09:00
+      datetime: DateTime.parse(json['datetime']),
       isbn: json['isbn'] ?? '',
       price: json['price'] ?? -1,
       publisher: json['publisher'] ?? '',
