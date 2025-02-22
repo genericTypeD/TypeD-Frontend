@@ -11,14 +11,14 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'dart:convert';
 
-class MyBookScreen extends StatefulWidget {
-  const MyBookScreen({super.key});
+class MyBookRecordScreen extends StatefulWidget {
+  const MyBookRecordScreen({super.key});
 
   @override
-  State<MyBookScreen> createState() => _MyBookScreenState();
+  State<MyBookRecordScreen> createState() => _MyBookRecordScreenState();
 }
 
-class _MyBookScreenState extends State<MyBookScreen> {
+class _MyBookRecordScreenState extends State<MyBookRecordScreen> {
   static const String _apiKey = Env.kakaoRestApiKey;
 
   List<Book> searchResults = [];
