@@ -21,6 +21,21 @@ class AppColors {
   static const Color bodyTextColor = Color(0xFF868686);
 
   // ===========================
+  // 입력 필드 관련 색상
+  // ===========================
+  static const Color inputBgColor = Color(0xFFFBFBFB);
+  static const Color inputBorderColor = Color(0xFFF3F2F2);
+
+  // ===========================
+  // 구분선 (Divider) 색상
+  // ===========================
+  static const Color dividerPrimary = Color(0xFFE0E0E0); // 기본 구분선 (리스트뷰, 섹션 구분)
+  static const Color dividerThin = Color(0xFFF3F3F3); // 얇은 구분선 (설정 화면 등)
+  static const Color dividerDark = Color(0xFFBDBDBD); // 짙은 구분선 (대비 강조 필요 시)
+  static const Color dividerBlack = Color(0xFF333333);
+  static const Color dividerGray = Color(0xFF888888);
+
+  // ===========================
   // 경계선 (Border) 색상
   // ===========================
   static const Color borderPrimary = Color(0xFFD1D1D1); // 기본 테두리 (입력 필드, 카드)

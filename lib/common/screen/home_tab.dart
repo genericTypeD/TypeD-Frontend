@@ -1,84 +1,61 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:typed/common/const/app_colors.dart';
-import 'package:typed/common/layout/default_layout.dart';
-import 'package:typed/feed/screen/feed_list.dart';
-import 'package:typed/menu/screen/my_menu.dart';
-import 'package:typed/review/screen/review_empty.dart';
-import 'package:typed/sentence/screen/sentence_empty.dart';
-import 'package:typed/type/screen/my_type.dart';
 
-class HomeTab extends StatefulWidget {
-  const HomeTab({super.key});
+class HomeTab extends StatelessWidget {
+  final StatefulNavigationShell navigationShell;
 
-  @override
-  _HomeTabState createState() => _HomeTabState();
-}
-
-class _HomeTabState extends State<HomeTab> {
-  int _currentIndex = 2; // 기본적으로 문장 수집 페이지로 시작
-
-  final List<Widget> _pages = [
-    const MyType(), // My Type
-    const ReviewEmpty(), // 서평 메모
-    const SentenceEmpty(), // 문장 수집
-    const FeedList(), // 취향 탐색
-    const MyMenu(), // 나의 메뉴
-  ];
-
-  final List<String> _titles = [
-    'My Type',
-    '서평 메모',
-    '문장 수집',
-    '취향 탐색',
-    '나의 메뉴',
-  ];
+  const HomeTab({super.key, required this.navigationShell});
 
   @override
   Widget build(BuildContext context) {
-    return DefaultLayout(
-      //title: _titles[_currentIndex], // 현재 탭에 맞는 제목을 전달
-      bottomNavigationBar: _buildBottomNavigationBar(),
-      child: _pages[_currentIndex], // 내비게이션 바 전달
-    );
-  }
+    return Theme(
+      data: Theme.of(context).copyWith(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+      ),
+      child: Scaffold(
+        body: navigationShell,
+        bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: AppColors.backgroundSecondary,
+          selectedFontSize: 10,
+          unselectedFontSize: 10,
+          selectedItemColor: Colors.black,
+          unselectedItemColor: Colors.grey,
+          currentIndex: navigationShell.currentIndex,
+          onTap: (int index) {
+            navigationShell.goBranch(index); // 바텀 네비게이션 클릭 시 이동
+          },
+          items: [
+            const BottomNavigationBarItem(
+                icon: Icon(Icons.home), label: 'My Type'),
+            const BottomNavigationBarItem(
+                icon: Icon(Icons.bookmark_outline), label: '서평 메모'),
 
-  // 내비게이션 바를 관리하는 함수
-  Widget _buildBottomNavigationBar() {
-    return BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      // backgroundColor: const Color(0xFFFFFFFF),
-      backgroundColor: AppColors.backgroundSecondary,
-      selectedFontSize: 10,
-      unselectedFontSize: 10,
-      selectedItemColor: Colors.black,
-      unselectedItemColor: Colors.grey,
-      currentIndex: _currentIndex,
-      onTap: (int index) {
-        setState(() {
-          _currentIndex = index; // 탭 클릭 시 해당 화면으로 전환
-        });
-      },
-      items: [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'My Type'),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.bookmark_outline), label: '서평 메모'),
-        BottomNavigationBarItem(
-          icon: Container(
-            width: 32,
-            height: 32,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: AppColors.backgroundTertiary,
+            // Add 버튼
+            BottomNavigationBarItem(
+              icon: GestureDetector(
+                onTap: () {
+                  context.go('/sentence_input');
+                },
+                child: CircleAvatar(
+                  radius: 20,
+                  backgroundColor: AppColors.backgroundTertiary,
+                  child: const Icon(Icons.add,
+                      size: 24, color: AppColors.backgroundQuaternary),
+                ),
+              ),
+              label: '',
             ),
-            child: const Icon(Icons.add,
-                size: 24, color: AppColors.backgroundQuaternary),
-          ),
-          label: '문장 수집',
+
+            const BottomNavigationBarItem(
+                icon: Icon(Icons.search), label: '취향 탐색'),
+            const BottomNavigationBarItem(
+                icon: Icon(Icons.person_outline), label: '나의 메뉴'),
+          ],
         ),
-        BottomNavigationBarItem(icon: Icon(Icons.search), label: '취향 탐색'),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline), label: '나의 메뉴'),
-      ],
+      ),
     );
   }
 }

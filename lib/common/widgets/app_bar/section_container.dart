@@ -3,9 +3,11 @@ import 'package:typed/common/const/index.dart';
 
 class SectionContainer extends StatelessWidget {
   final Widget child;
+  final bool showTopBorder;
 
   const SectionContainer({
     required this.child,
+    this.showTopBorder = false,
     super.key,
   });
 
@@ -14,7 +16,7 @@ class SectionContainer extends StatelessWidget {
     return Container(
       height: AppBarStyle.sectionHeight,
       width: double.infinity,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         border: Border(
           bottom: AppBarStyle.borderStyle,
         ),
