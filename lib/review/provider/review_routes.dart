@@ -4,7 +4,7 @@ import 'package:typed/review/screen/review_empty.dart';
 import 'package:typed/review/screen/review_input.dart';
 import 'package:typed/review/screen/review_list.dart';
 
-class SentenceRoutes {
+class ReviewRoutes {
   static final List<GoRoute> routes = [
     GoRoute(
       path: '/review_input',
