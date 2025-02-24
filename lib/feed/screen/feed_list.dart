@@ -27,7 +27,7 @@ class _FeedListState extends State<FeedList> {
         bottomRightWidget: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 8),
           child: Text(
-            "구독자 • 관심작가",
+            "공개된 서평 • 공개된 문장",
             style: AppTheme.title3,
           ),
         ),
@@ -38,7 +38,7 @@ class _FeedListState extends State<FeedList> {
           children: [
             Expanded(
               child: Center(
-                child: Text("취향 탐색 피드입니다."),
+                child: Text("취향 탐색 리스트 입니다."),
               ),
             ),
           ],

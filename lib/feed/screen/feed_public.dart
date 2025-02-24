@@ -1,0 +1,49 @@
+import 'package:flutter/material.dart';
+import 'package:typed/common/const/app_colors.dart';
+import 'package:typed/common/const/app_themes.dart';
+import 'package:typed/common/index.dart';
+
+class FeedPublic extends StatefulWidget {
+  const FeedPublic({super.key});
+
+  @override
+  State<FeedPublic> createState() => _FeedPublicState();
+}
+
+class _FeedPublicState extends State<FeedPublic> {
+  @override
+  Widget build(BuildContext context) {
+    return DefaultLayout(
+      appBar: CustomAppBar(
+        bottomLeftWidget: GestureDetector(
+          onTap: () {
+            debugPrint('클릭됨!');
+          },
+          child: Text(
+            "취향 탐색",
+            style: AppTheme.title3,
+          ),
+        ),
+        bottomRightWidget: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 8),
+          child: Text(
+            "구독자 • 관심작가",
+            style: AppTheme.title3,
+          ),
+        ),
+      ),
+      child: Container(
+        color: AppColors.backgroundSecondary,
+        child: Column(
+          children: [
+            Expanded(
+              child: Center(
+                child: Text("취향 탐색 피드입니다."),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

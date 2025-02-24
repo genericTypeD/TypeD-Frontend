@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:typed/common/screen/home_tab.dart';
 import 'package:typed/common/screen/splash.dart';
 import 'package:typed/feed/provider/feed_routes.dart';
-import 'package:typed/feed/screen/feed_list.dart';
+import 'package:typed/feed/screen/feed_public.dart';
 import 'package:typed/menu/provider/menu_routes.dart';
 import 'package:typed/menu/screen/my_menu.dart';
 import 'package:typed/review/provider/review_routes.dart';
@@ -50,7 +50,7 @@ class AppRoutes {
           StatefulShellBranch(routes: [
             GoRoute(
               path: '/home/feed',
-              builder: (context, state) => const FeedList(),
+              builder: (context, state) => const FeedPublic(),
             ),
           ]),
           StatefulShellBranch(routes: [
