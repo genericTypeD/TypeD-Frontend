@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:typed/common/const/app_colors.dart';
+import 'package:typed/common/const/app_themes.dart';
 import 'package:typed/common/layout/default_layout.dart';
-import 'package:typed/common/screen/home_tab.dart';
-
-import '../const/app_themes.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -36,20 +35,9 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void navigateToEmptyPage() {
-    Navigator.pushReplacement(
-      context,
-      PageRouteBuilder(
-        transitionDuration: const Duration(milliseconds: 50),
-        pageBuilder: (context, animation, secondaryAnimation) =>
-            const HomeTab(), // SentenceEmpty로 이동
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return FadeTransition(
-            opacity: animation,
-            child: child,
-          );
-        },
-      ),
-    );
+    if (mounted) {
+      context.go('/home/sentence'); // GoRouter를 사용하여 페이지 이동
+    }
   }
 
   @override

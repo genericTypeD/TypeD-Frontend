@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:typed/common/const/app_bar_style.dart';
-import 'package:typed/common/widgets/app_bar/header_section.dart';
 import 'package:typed/common/widgets/app_bar/bottom_section.dart';
+import 'package:typed/common/widgets/app_bar/header_section.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final Widget? topIconButton;
   final Widget? bottomLeftWidget;
   final Widget? bottomCenterWidget;
   final Widget? bottomRightWidget;
@@ -14,7 +13,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   const CustomAppBar({
     super.key,
-    this.topIconButton,
     this.bottomLeftWidget,
     this.bottomCenterWidget,
     this.bottomRightWidget,
@@ -29,79 +27,34 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: SafeArea(
         child: Column(
           children: [
-            // HeaderSection(topIconButton),
             HeaderSection(
-              iconButton: topIconButton,
+              titleWidget: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/type');
+                },
+                child: Text(
+                  AppBarStyle.titleAppName,
+                  style: AppBarStyle.titleTextStyle,
+                ),
+              ),
+              iconButton: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/notifications');
+                },
+                child: const Icon(
+                  Icons.notifications,
+                  color: Colors.black,
+                ),
+              ),
             ),
             BottomSection(
               leftWidget: bottomLeftWidget,
               centerWidget: bottomCenterWidget,
               rightWidget: bottomRightWidget,
             ),
-            // _buildHeaderSection(),
-            // _buildBottomSection(context),
           ],
         ),
       ),
     );
   }
-
-  // Widget _buildHeaderSection() {
-  //   return Container(
-  //     height: AppBarStyle.sectionHeight,
-  //     width: double.infinity,
-  //     decoration: const BoxDecoration(
-  //       border: Border(
-  //         bottom: AppBarStyle.borderStyle,
-  //       ),
-  //     ),
-  //     child: Row(
-  //       children: [
-  //         const BorderContainer(type: ContainerBorderType.left),
-  //         const SizedBox(width: AppBarStyle.sizedBoxWidth),
-  //         const Text(
-  //           'TypeD',
-  //           style: TextStyle(
-  //             fontSize: 18,
-  //             fontWeight: FontWeight.bold,
-  //             color: Colors.black,
-  //           ),
-  //         ),
-  //         const Spacer(),
-  //         topIconButton ?? Container(),
-  //         const SizedBox(width: AppBarStyle.sizedBoxWidth),
-  //         const BorderContainer(type: ContainerBorderType.right),
-  //       ],
-  //     ),
-  //   );
-  // }
-
-  // Widget _buildBottomSection(BuildContext context) {
-  //   return Container(
-  //     height: AppBarStyle.sectionHeight,
-  //     width: double.infinity,
-  //     decoration: const BoxDecoration(
-  //       border: Border(
-  //         bottom: AppBarStyle.borderStyle,
-  //       ),
-  //     ),
-  //     child: Row(
-  //       children: [
-  //         const BorderContainer(type: ContainerBorderType.left),
-  //         const SizedBox(width: AppBarStyle.sizedBoxWidth),
-  //         Container(
-  //           width: MediaQuery.of(context).size.width * 0.22,
-  //           alignment: Alignment.centerLeft,
-  //           child: bottomLeftWidget ?? Container(),
-  //         ),
-  //         const BorderContainer(type: ContainerBorderType.left),
-  //         const Spacer(),
-  //         bottomCenterWidget ?? Container(),
-  //         const SizedBox(width: AppBarStyle.sizedBoxWidth),
-  //         bottomRightWidget ?? Container(),
-  //         const BorderContainer(type: ContainerBorderType.right),
-  //       ],
-  //     ),
-  //   );
-  // }
 }

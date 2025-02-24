@@ -75,7 +75,7 @@ class GridTextItem extends ConsumerWidget {
       child: Container(
         clipBehavior: Clip.hardEdge,
         decoration: BoxDecoration(
-          color: item.isEmpty ? const Color(0xffF3F3F2) : Colors.white,
+          color: item.isEmpty ? AppColors.backgroundSecondary : Colors.white,
           border: Border.all(
             color: AppColors.borderBlack,
             width: 0.4,
@@ -110,7 +110,9 @@ class GridTextItem extends ConsumerWidget {
                       )
                     : Text(
                         item.content ?? '',
-                        style: AppTheme.body3,
+                        style: AppTheme.body3.copyWith(
+                          color: Colors.black,
+                        ),
                         overflow: TextOverflow.clip,
                         softWrap: true,
                         textAlign: TextAlign.start,

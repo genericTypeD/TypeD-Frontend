@@ -8,10 +8,18 @@ class AddRecordDialog extends StatelessWidget {
   final XFile? initialImage;
 
   final categories = [
-    {'icon': Icons.subject, 'label': '문장', 'route': const MySentenceScreen()},
-    {'icon': Icons.book, 'label': '책', 'route': const MyBookScreen()},
-    {'icon': Icons.music_note, 'label': '음악', 'route': const MyMusicScreen()},
-    {'icon': Icons.movie, 'label': '이미지', 'route': const MyImageScreen()},
+    {
+      'icon': Icons.subject,
+      'label': '문장',
+      'route': const MySentenceRecordScreen()
+    },
+    {'icon': Icons.book, 'label': '책', 'route': const MyBookRecordScreen()},
+    {
+      'icon': Icons.music_note,
+      'label': '음악',
+      'route': const MyMusicRecordScreen()
+    },
+    {'icon': Icons.movie, 'label': '이미지', 'route': const MyImageRecordScreen()},
   ];
 
   AddRecordDialog({
@@ -57,6 +65,7 @@ class AddRecordDialog extends StatelessWidget {
                     icon: Icon(
                       category['icon'] as IconData,
                       size: 16,
+                      color: Colors.black,
                     ),
                     label: Text(
                       category['label'] as String,
@@ -88,8 +97,9 @@ class AddRecordDialog extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (BuildContext context) {
                             final nextScreen = category['route'] as Widget;
-                            if (nextScreen.runtimeType == MyImageScreen) {
-                              return MyImageScreen(initialImage: initialImage);
+                            if (nextScreen.runtimeType == MyImageRecordScreen) {
+                              return MyImageRecordScreen(
+                                  initialImage: initialImage);
                             } else {
                               return nextScreen;
                             }

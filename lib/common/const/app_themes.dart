@@ -129,7 +129,7 @@ class AppTheme {
     color: AppColors.textPrimary,
   );
 
-  static final TextStyle heading2 = GoogleFonts.ibmPlexSansKr(
+  static final TextStyle heading2 = GoogleFonts.dmSerifDisplay(
     fontWeight: FontWeight.w600, // SemiBold
     fontSize: 28,
     height: 1.4,
@@ -140,7 +140,7 @@ class AppTheme {
   static final TextStyle heading3 = GoogleFonts.dmSerifDisplay(
     fontWeight: FontWeight.w400, // Regular
     fontSize: 20,
-    height: 1.4, // 줄 높이 1.4 유지
+    height: 1.4,
     letterSpacing: 0.0,
     color: AppColors.textPrimary,
   );
@@ -152,7 +152,7 @@ class AppTheme {
     fontWeight: FontWeight.w500, // Medium
     fontSize: 20,
     height: 1.5,
-    letterSpacing: 0.0,
+    letterSpacing: 0.2,
     color: AppColors.textPrimary,
   );
 
@@ -188,7 +188,7 @@ class AppTheme {
     fontSize: 14,
     height: 1.7,
     letterSpacing: 0.4,
-    color: AppColors.textSecondary,
+    color: AppColors.textPrimary,
   );
 
   static final TextStyle body3 = GoogleFonts.ibmPlexSansKr(
