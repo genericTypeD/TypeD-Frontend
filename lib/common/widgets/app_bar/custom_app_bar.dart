@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:typed/common/const/app_bar_style.dart';
 import 'package:typed/common/widgets/app_bar/bottom_section.dart';
 import 'package:typed/common/widgets/app_bar/header_section.dart';
@@ -30,7 +31,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             HeaderSection(
               titleWidget: GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, '/type');
+                  context.push('/home/type');
                 },
                 child: Text(
                   AppBarStyle.titleAppName,
@@ -39,7 +40,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
               iconButton: GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, '/notifications');
+                  context.push('/notifications');
                 },
                 child: const Icon(
                   Icons.notifications,

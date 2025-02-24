@@ -37,7 +37,7 @@ class HomeTab extends StatelessWidget {
             BottomNavigationBarItem(
               icon: GestureDetector(
                 onTap: () {
-                  context.go('/sentence_input');
+                  GoRouter.of(context).go('/sentence_input');
                 },
                 child: CircleAvatar(
                   radius: 20,

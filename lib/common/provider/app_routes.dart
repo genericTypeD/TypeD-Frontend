@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:typed/common/screen/home_tab.dart';
 import 'package:typed/common/screen/splash.dart';
@@ -22,7 +23,7 @@ class AppRoutes {
         builder: (context, state) => const SplashScreen(),
       ),
 
-      // StatefulShellRoute 적용 (바텀 네비게이션 관리)
+      // StatefulShellRoute 적용
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return HomeTab(navigationShell: navigationShell);
@@ -60,9 +61,28 @@ class AppRoutes {
           ]),
         ],
       ),
+      // AppRoutes.dart 내부
+      // AppRoutes.dart
       GoRoute(
         path: '/sentence_input',
-        builder: (context, state) => const SentenceInput(),
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            key: state.pageKey,
+            child: const SentenceInput(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return SlideTransition(
+                position: Tween<Offset>(
+                  begin: const Offset(0, 1),
+                  end: Offset.zero, // 현재 위치
+                ).animate(animation),
+                child: child,
+              );
+            },
+            transitionDuration: const Duration(milliseconds: 300),
+            reverseTransitionDuration: const Duration(milliseconds: 300),
+          );
+        },
       ),
       // 각 도메인별 경로 포함
       ...TypeRoutes.routes,
