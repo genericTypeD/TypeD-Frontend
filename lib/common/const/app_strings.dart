@@ -30,27 +30,22 @@ class AppStrings {
   static const String pleaseEnterPassword = '비밀번호를 입력해주세요.';
   static const String invalidPassword = '유효하지 않는 비밀번호입니다.';
 
-  static const galleryPermission = _GalleryPermission();
-  static const appBar = _AppBar();
-}
+  /// 갤러리 권한
+  static const String galleryPermissionTitle = '갤러리 접근 권한';
+  static const String galleryPermissionContentPermanetlyDenied =
+      '설정에서 갤러리 접근 권한을 허용해주세요.';
+  static const String galleryPermissionContentInitially = '갤러리 접근 권한이 필요합니다.';
+  static const String galleryPermissionAcceptButtonIfPermanetlyDenied =
+      '설정으로 이동';
+  static const String galleryPermissionAcceptButtonInitially = '권한 허용';
 
-/// 갤러리 권한 관련 GalleryPermission Strings
-class _GalleryPermission {
-  const _GalleryPermission();
+  /// 앱바
+  static const String backButton = '뒤로 가기';
+  static const String saveRecordButton = '기록';
 
-  final title = '갤러리 접근 권한';
-  final bodyIfPermanetlyDenied = '설정에서 갤러리 접근 권한을 허용해주세요.';
-  final bodyInitially = '갤러리 접근 권한이 필요합니다.';
+  /// 기록 추가
+  static const String emptyRecordDialogTitle = '기록이 비었습니다.';
 
-  final cancelButton = '취소';
-  final acceptButtonIfPermanetlyDenied = '설정으로 이동';
-  final acceptButtonInitially = '권한 허용';
-}
-
-/// 앱바 관련 AppBar Strings
-class _AppBar {
-  const _AppBar();
-
-  final backButton = '뒤로 가기';
-  final saveButton = '기록';
+  static const String cancelButton = '취소';
+  static const String acceptButton = '확인';
 }
