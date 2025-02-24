@@ -4,6 +4,9 @@ import 'package:typed/common/const/app_colors.dart';
 import 'package:typed/common/const/app_strings.dart';
 import 'package:typed/common/const/app_themes.dart';
 import 'package:typed/common/layout/default_layout.dart';
+import 'package:typed/common/repository/auth_repository.dart';
+import 'package:typed/common/screen/sign_up_screen.dart';
+import 'package:typed/type/screen/my_type.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -15,6 +18,56 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   String email = '';
   String password = '';
+  final AuthRepository authRepository = AuthRepository();
+  bool isLoading = false;
+
+  // 로그인 처리 함수
+  Future<void> _login() async {
+    if (email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('이메일과 비밀번호를 입력해주세요'),
+        ),
+      );
+      return;
+    }
+
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      final token = await authRepository.login(
+        email: email,
+        password: password,
+      );
+
+      // 로그인 성공 후 처리
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => const MyType(),
+          ),
+        );
+      }
+    } catch (e) {
+      // 에러 처리
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('로그인에 실패했습니다'),
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,13 +86,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Text(
-                    //   '나의 컬렉션 Mate',
-                    //   style: TextStyle(
-                    //     fontSize: 16,
-                    //     color: Colors.grey[600],
-                    //   ),
-                    // ),
                     const SizedBox(height: 8),
                     Text(
                       'TypeD',
@@ -93,7 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: isLoading ? null : _login,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.backgroundTertiary,
                     padding: const EdgeInsets.symmetric(vertical: 16),
@@ -153,7 +199,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 24),
                 Center(
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const SignUpScreen(),
+                        ),
+                      );
+                    },
                     child: Text.rich(
                       TextSpan(
                         text: '계정이 없으신가요? ',
