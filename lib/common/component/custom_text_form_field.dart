@@ -37,7 +37,7 @@ class CustomTextFormField extends StatelessWidget {
     );
 
     return TextFormField(
-      cursorColor: AppColors.blackPrimary,
+      cursorColor: Colors.black,
       obscureText: obscureText,
       autofocus: autofocus,
       focusNode: focusNode,
@@ -46,8 +46,8 @@ class CustomTextFormField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: labelText,
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        floatingLabelStyle: TextStyle(
-            color: AppColors.TextTertiary, fontWeight: FontWeight.w500),
+        floatingLabelStyle:
+            TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
         contentPadding: EdgeInsets.all(20),
         hintText: hintText,
         errorText: errorText,
