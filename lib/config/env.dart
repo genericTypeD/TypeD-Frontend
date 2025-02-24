@@ -9,4 +9,7 @@ abstract class Env {
 
   @EnviedField(varName: 'SPOTIFY_CLIENT_SECRET')
   static const String spotifyClientSecret = _Env.spotifyClientSecret;
+
+  @EnviedField(varName: 'KAKAO_REST_API_KEY')
+  static const String kakaoRestApiKey = _Env.kakaoRestApiKey;
 }

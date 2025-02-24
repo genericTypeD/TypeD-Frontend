@@ -10,14 +10,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:spotify/spotify.dart' hide Image;
 import 'dart:io';
 
-class MyMusicScreen extends StatefulWidget {
-  const MyMusicScreen({super.key});
+class MyMusicRecordScreen extends StatefulWidget {
+  const MyMusicRecordScreen({super.key});
 
   @override
-  State<MyMusicScreen> createState() => _MyMusicScreenState();
+  State<MyMusicRecordScreen> createState() => _MyMusicRecordScreenState();
 }
 
-class _MyMusicScreenState extends State<MyMusicScreen> {
+class _MyMusicRecordScreenState extends State<MyMusicRecordScreen> {
   SpotifyApi spotify = SpotifyApi(
     SpotifyApiCredentials(
       Env.spotifyClientId,
