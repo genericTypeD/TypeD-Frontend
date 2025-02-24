@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:typed/common/index.dart';
 
 import '../../common/const/app_colors.dart';
 import '../../common/screen/login_screen.dart';
@@ -13,10 +14,14 @@ class MyMenu extends StatefulWidget {
 class _MyMenuState extends State<MyMenu> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: AppColors.backgroundPrimary,
+    return DefaultLayout(
+      backgroundColor: AppColors.backgroundSecondary,
+      //appBar: CustomAppBar(),
       child: Column(
         children: [
+          SizedBox(
+            height: 80,
+          ),
           _buildProfileCard(),
           _buildMenuList(),
         ],
@@ -131,7 +136,7 @@ class _MyMenuState extends State<MyMenu> {
     ];
 
     return Container(
-      color: Colors.white,
+      color: AppColors.backgroundSecondary,
       child: ListView.separated(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),

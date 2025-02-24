@@ -55,19 +55,18 @@ class CustomTextFormField extends StatelessWidget {
           color: AppColors.BODY_TEXT_COLOR,
           fontSize: 14.0,
         ),
-        fillColor: AppColors.INPUT_BG_COLOR,
+        fillColor: AppColors.backgroundSecondary,
         filled: true,
         border: baseBorder,
         enabledBorder: baseBorder.copyWith(
           borderSide: BorderSide(
-            color: AppColors.INPUT_BORDER_COLOR.withOpacity(0.5),
+            color: AppColors.backgroundTertiary.withOpacity(0.5),
             width: 1.6,
           ),
         ),
         focusedBorder: baseBorder.copyWith(
-          borderSide: baseBorder.borderSide.copyWith(
-            color: Colors.grey,
-          ),
+          borderSide:
+              baseBorder.borderSide.copyWith(color: Colors.grey, width: 1.0),
         ),
       ),
     );

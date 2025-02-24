@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:typed/common/component/custom_text_form_field.dart';
+import 'package:typed/common/const/app_colors.dart';
+import 'package:typed/common/const/app_strings.dart';
+import 'package:typed/common/const/app_themes.dart';
 import 'package:typed/common/layout/default_layout.dart';
-
-import '../const/app_strings.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -18,6 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
+      backgroundColor: AppColors.backgroundSecondary,
       child: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: SafeArea(
@@ -31,16 +33,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      '나의 컬렉션 Mate',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey[600],
-                      ),
-                    ),
+                    // Text(
+                    //   '나의 컬렉션 Mate',
+                    //   style: TextStyle(
+                    //     fontSize: 16,
+                    //     color: Colors.grey[600],
+                    //   ),
+                    // ),
                     const SizedBox(height: 8),
-                    const Text(
+                    Text(
                       'TypeD',
+                      style: AppTheme.heading1,
                     ),
                   ],
                 ),
@@ -89,11 +92,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
                 const SizedBox(height: 16),
-
                 ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.grey[200],
+                    backgroundColor: AppColors.backgroundTertiary,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -131,13 +133,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.chat_bubble,
                         color: Colors.black,
                         size: 20,
                       ),
                       const SizedBox(width: 8),
-                      Text(
+                      const Text(
                         '카카오 계정으로 계속하기',
                         style: TextStyle(
                           color: Colors.black,
@@ -162,7 +164,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         children: [
                           TextSpan(
                             text: '회원가입 하러가기',
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.black,
                               decoration: TextDecoration.underline,
                             ),
