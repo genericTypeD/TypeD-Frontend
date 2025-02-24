@@ -51,7 +51,7 @@ class _SentenceInputState extends State<SentenceInput>
             if (context.canPop()) {
               context.pop();
             } else {
-              context.go('/sentence_empty');
+              context.go('/home/sentence');
             }
           },
           icon: const Icon(
