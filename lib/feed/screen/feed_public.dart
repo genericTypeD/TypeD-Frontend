@@ -11,6 +11,8 @@ class FeedPublic extends StatefulWidget {
 }
 
 class _FeedPublicState extends State<FeedPublic> {
+  final TextEditingController _searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
@@ -26,9 +28,31 @@ class _FeedPublicState extends State<FeedPublic> {
         ),
         bottomRightWidget: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 8),
-          child: Text(
-            "구독자 • 관심작가",
-            style: AppTheme.title3,
+          child: Container(
+            width: 200, // 검색 입력란의 크기 조절
+            height: 40,
+            decoration: BoxDecoration(
+              color: AppColors.backgroundTertiary,
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+            child: TextField(
+              controller: _searchController,
+              cursorHeight: 16.0,
+              cursorColor: AppColors.backgroundQuaternary,
+              decoration: InputDecoration(
+                prefixIcon: const Icon(Icons.search, color: Colors.black54),
+                hintText: "Search",
+                hintStyle:
+                    AppTheme.body2.copyWith(color: AppColors.textSecondary),
+                border: InputBorder.none,
+                contentPadding: const EdgeInsets.symmetric(vertical: 10),
+              ),
+              style: AppTheme.body1,
+              onChanged: (value) {
+                // 검색 기능 추가 가능
+                debugPrint("검색어 입력: $value");
+              },
+            ),
           ),
         ),
       ),

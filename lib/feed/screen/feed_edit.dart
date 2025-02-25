@@ -27,7 +27,7 @@ class _FeedEditState extends State<FeedEdit> {
         bottomRightWidget: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 8),
           child: Text(
-            "공개된 서평 • 공개된 문장",
+            "피드 관리",
             style: AppTheme.title3,
           ),
         ),
@@ -38,7 +38,7 @@ class _FeedEditState extends State<FeedEdit> {
           children: [
             Expanded(
               child: Center(
-                child: Text("취향 탐색 리스트 입니다."),
+                child: Text("공개된 피드 콘텐츠 관리"),
               ),
             ),
           ],

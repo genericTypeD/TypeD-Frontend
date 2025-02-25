@@ -27,7 +27,7 @@ class _FeedEmptyState extends State<FeedEmpty> {
         bottomRightWidget: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 8),
           child: Text(
-            "공개된 서평 • 공개된 문장",
+            "북마크한 피드",
             style: AppTheme.title3,
           ),
         ),
@@ -38,7 +38,7 @@ class _FeedEmptyState extends State<FeedEmpty> {
           children: [
             Expanded(
               child: Center(
-                child: Text("이 페이지가 필요할까?? "),
+                child: Text("아직 북마크한 피드가 없습니다 "),
               ),
             ),
           ],
