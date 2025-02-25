@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:typed/common/const/app_colors.dart';
+import 'package:typed/common/const/app_themes.dart';
 import 'package:typed/common/index.dart';
 
-class FeedList extends StatelessWidget {
+class FeedList extends StatefulWidget {
   const FeedList({super.key});
 
+  @override
+  State<FeedList> createState() => _FeedListState();
+}
+
+class _FeedListState extends State<FeedList> {
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
@@ -12,29 +19,30 @@ class FeedList extends StatelessWidget {
           onTap: () {
             debugPrint('클릭됨!');
           },
-          child: const Text(
-            "텍스트A",
-            style: TextStyle(fontSize: 14),
+          child: Text(
+            "취향 탐색",
+            style: AppTheme.title3,
           ),
         ),
-        bottomRightWidget: GestureDetector(
-          onTap: () {
-            debugPrint('클릭됨!');
-          },
-          child: const Text(
-            "글쓰기",
-            style: TextStyle(fontSize: 14),
+        bottomRightWidget: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 8),
+          child: Text(
+            "구독자 • 관심작가",
+            style: AppTheme.title3,
           ),
         ),
       ),
-      child: const Column(
-        children: [
-          Expanded(
-            child: Center(
-              child: Text("취향 탐색 피드입니다."),
+      child: Container(
+        color: AppColors.backgroundSecondary,
+        child: Column(
+          children: [
+            Expanded(
+              child: Center(
+                child: Text("취향 탐색 피드입니다."),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

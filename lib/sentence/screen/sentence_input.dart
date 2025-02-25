@@ -47,7 +47,13 @@ class _SentenceInputState extends State<SentenceInput>
         titleSpacing: 0,
         leading: IconButton(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            if (context.canPop()) {
+              context.pop();
+            } else {
+              context.go('/home/sentence');
+            }
+          },
           icon: const Icon(
             Icons.close,
             size: 24.0,
