@@ -1,25 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:typed/common/const/app_colors.dart';
 import 'package:typed/common/const/app_themes.dart';
 import 'package:typed/common/index.dart';
+import 'package:typed/sentence/provider/sentence_provider.dart';
 
-class SentenceList extends StatefulWidget {
+class SentenceList extends ConsumerStatefulWidget {
   const SentenceList({super.key});
 
   @override
   _SentenceListState createState() => _SentenceListState();
 }
 
-class _SentenceListState extends State<SentenceList>
+class _SentenceListState extends ConsumerState<SentenceList>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  final int privateCount = 12; // 비공개 글 개수
-  final int publicCount = 8; // 공개 글 개수
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    Future.microtask(() {
+      ref.read(sentenceListProvider.notifier).fetchSentences();
+    });
   }
 
   @override
@@ -30,6 +34,11 @@ class _SentenceListState extends State<SentenceList>
 
   @override
   Widget build(BuildContext context) {
+    final sentences = ref.watch(sentenceListProvider);
+
+    final privateSentences = sentences.where((s) => !s['isPublic']).toList();
+    final publicSentences = sentences.where((s) => s['isPublic']).toList();
+
     return DefaultLayout(
       appBar: CustomAppBar(
         bottomLeftWidget: GestureDetector(
@@ -44,7 +53,7 @@ class _SentenceListState extends State<SentenceList>
         bottomRightWidget: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 8),
           child: Text(
-            "비공개 $privateCount • 공개 $publicCount",
+            "비공개 ${privateSentences.length} • 공개 ${publicSentences.length}",
             style: AppTheme.title3,
           ),
         ),
@@ -71,8 +80,8 @@ class _SentenceListState extends State<SentenceList>
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  _buildSentenceList(private: true),
-                  _buildSentenceList(private: false),
+                  _buildSentenceList(privateSentences),
+                  _buildSentenceList(publicSentences),
                 ],
               ),
             ),
@@ -82,57 +91,83 @@ class _SentenceListState extends State<SentenceList>
     );
   }
 
-  /// 문장 리스트 UI 빌드 함수
-  Widget _buildSentenceList({required bool private}) {
-    Map<String, List<String>> groupedSentences = {
-      "2024. 12": List.generate(7, (index) => "당신의 취향을 채워줄 문장을 기록해보세요."),
-      "2024. 11": List.generate(5, (index) => "기록해보세요. 당신의 취향을 채워줄 문장을 ..."),
-    };
+  /// 문장 리스트 UI 빌드 함수 (수정 및 삭제 기능 추가)
+  Widget _buildSentenceList(List<dynamic> sentences) {
+    if (sentences.isEmpty) {
+      return Center(
+        child: Text(
+          "저장된 문장이 없습니다.",
+          style: AppTheme.body1.copyWith(color: AppColors.textSecondary),
+        ),
+      );
+    }
 
-    return SingleChildScrollView(
-      child: Column(
-        children: groupedSentences.entries.map((entry) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Container(
-              margin: const EdgeInsets.symmetric(vertical: 8.0),
-              padding: const EdgeInsets.all(16.0),
-              decoration: BoxDecoration(
-                color: private
-                    ? AppColors.backgroundTertiary
-                    : AppColors.backgroundTertiary,
-                borderRadius: BorderRadius.circular(10.0),
+    return ListView.builder(
+      itemCount: sentences.length,
+      itemBuilder: (context, index) {
+        final sentence = sentences[index];
+
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          child: Container(
+            padding: const EdgeInsets.all(16.0),
+            decoration: BoxDecoration(
+              color: AppColors.backgroundTertiary,
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: ListTile(
+              title: Text(
+                sentence['content'],
+                style: AppTheme.body1,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    entry.key,
-                    style: AppTheme.title3,
-                  ),
-                  const SizedBox(height: 8),
-                  ...entry.value.map((sentence) => Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            sentence,
-                            style: AppTheme.body1,
+              subtitle: Text(
+                sentence['createdAt'].substring(0, 10), // YYYY-MM-DD 형식
+                style:
+                    AppTheme.caption1.copyWith(color: AppColors.textSecondary),
+              ),
+              trailing: PopupMenuButton<String>(
+                onSelected: (String value) async {
+                  if (value == 'edit') {
+                    context.go('/sentence_edit', extra: {
+                      'sentenceId': sentence['id'],
+                      'initialContent': sentence['content'],
+                      'isPublic': sentence['isPublic'],
+                    });
+                  } else if (value == 'delete') {
+                    final confirmed = await showDialog<bool>(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: Text("삭제 확인"),
+                        content: Text("이 문장을 삭제하시겠습니까?"),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, false),
+                            child: Text("취소"),
                           ),
-                          const SizedBox(height: 4),
-                          Text(
-                            "2/2/25",
-                            style: AppTheme.caption1
-                                .copyWith(color: AppColors.textSecondary),
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, true),
+                            child: Text("삭제"),
                           ),
-                          const Divider(),
                         ],
-                      )),
+                      ),
+                    );
+
+                    if (confirmed == true) {
+                      await ref
+                          .read(sentenceListProvider.notifier)
+                          .deleteSentence(sentence['id']);
+                    }
+                  }
+                },
+                itemBuilder: (context) => [
+                  PopupMenuItem(value: 'edit', child: Text("수정")),
+                  PopupMenuItem(value: 'delete', child: Text("삭제")),
                 ],
               ),
             ),
-          );
-        }).toList(),
-      ),
+          ),
+        );
+      },
     );
   }
 }
