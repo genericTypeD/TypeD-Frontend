@@ -11,7 +11,7 @@ final sentenceListProvider =
     StateNotifierProvider<SentenceListNotifier, List<Map<String, dynamic>>>(
         (ref) {
   final repository = ref.read(sentenceRepositoryProvider);
-  return SentenceListNotifier(repository)..fetchSentences(); // ✅ 자동으로 API 호출
+  return SentenceListNotifier(repository)..fetchSentences(); // 자동으로 API 호출
 });
 
 class SentenceListNotifier extends StateNotifier<List<Map<String, dynamic>>> {
