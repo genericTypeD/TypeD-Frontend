@@ -41,7 +41,7 @@ class SentenceEmpty extends StatelessWidget {
           children: [
             Expanded(
               child: Center(
-                child: Text("아직 수집된 문장이 없습니다."),
+                child: Text("문장을 수집해볼까요?"),
               ),
             ),
           ],
