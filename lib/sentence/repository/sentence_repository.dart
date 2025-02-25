@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 class SentenceRepository {
-  final String baseUrl = "https://api.example.com"; // 실제 API 주소로 변경
+  final String baseUrl = "http://43.201.193.230"; // 실제 API 주소로 변경
 
   // 디바이스 ID 가져오기
   Future<String> _getDeviceId() async {
