@@ -163,15 +163,6 @@ class _MyTypeState extends ConsumerState<MyType> {
     return DefaultLayout(
       backgroundColor: Colors.white,
       appBar: CustomAppBar(
-        // topIconButton: GestureDetector(
-        //   onTap: () {
-        //     debugPrint('Notifications Icon Pressed');
-        //   },
-        //   child: const Icon(
-        //     Icons.notifications_none_outlined,
-        //     color: Colors.black,
-        //   ),
-        // ),
         bottomLeftWidget: DropdownButton(
           alignment: Alignment.centerLeft,
           style: const TextStyle(
