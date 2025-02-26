@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:typed/common/const/app_colors.dart';
 import 'package:typed/common/const/app_themes.dart';
 import 'package:typed/common/index.dart';
@@ -29,7 +30,7 @@ class _FeedPublicState extends State<FeedPublic> {
         bottomRightWidget: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 8),
           child: Container(
-            width: 200, // 검색 입력란의 크기 조절
+            width: 180, // 검색 입력란의 크기 조절
             height: 40,
             decoration: BoxDecoration(
               color: AppColors.backgroundTertiary,
@@ -39,6 +40,10 @@ class _FeedPublicState extends State<FeedPublic> {
               controller: _searchController,
               cursorHeight: 16.0,
               cursorColor: AppColors.backgroundQuaternary,
+              onTap: () {
+                // 검색창 클릭 시 FeedSearch 페이지로 이동
+                context.push('/feed_search');
+              },
               decoration: InputDecoration(
                 prefixIcon: const Icon(Icons.search, color: Colors.black54),
                 hintText: "Search",
