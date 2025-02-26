@@ -85,6 +85,7 @@ app.*.map.json
 **/ios/Runner.xcodeproj/
 **/ios/Flutter/*.xcconfig
 **/ios/Podfile*
+**/ios/Podfile.lock
 
 
 # Generated files
@@ -94,9 +95,7 @@ app.*.map.json
 
 ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme
 ios/Podfile.lock
-pubspec.lock
+.pubspec.lock
 
 android/spotify-app-remote/
 
-*.env
-.env*
