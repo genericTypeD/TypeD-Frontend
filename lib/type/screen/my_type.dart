@@ -212,13 +212,23 @@ class _MyTypeState extends ConsumerState<MyType> {
             ),
           ),
           child: MultiSplitView(
+            key: const ValueKey('vertical_split'),
             controller: _verticalController,
             axis: Axis.vertical,
             resizable: true,
             antiAliasingWorkaround: true,
+            onDividerDragUpdate: (dividerIndex) {
+              final flexValues = _verticalController.areas
+                  .map((area) => area.flex ?? 1.0)
+                  .toList();
+              ref
+                  .read(splitViewProvider.notifier)
+                  .updateVerticalFlex(flexValues);
+            },
             builder: (context, verticalArea) {
               final verticalIndex = verticalArea.data as int;
               return MultiSplitView(
+                key: ValueKey('horizontal_split_$verticalIndex'),
                 controller: _horizontalControllers[verticalIndex],
                 resizable: true,
                 antiAliasingWorkaround: true,
