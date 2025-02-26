@@ -5,24 +5,24 @@ import 'package:typed/common/widgets/border_container.dart';
 
 class HeaderSection extends StatelessWidget {
   final Widget titleWidget;
-  final Widget iconButton;
+  final Widget? iconButton;
 
   const HeaderSection({
     super.key,
     required this.titleWidget,
-    required this.iconButton,
+    this.iconButton,
   });
 
   @override
   Widget build(BuildContext context) {
-    return SectionContainer(
+    return SectionContainer.headerSection(
       child: Row(
         children: [
           const BorderContainer(type: ContainerBorderType.left),
           const SizedBox(width: AppBarStyle.sizedBoxWidth),
           titleWidget,
           const Spacer(),
-          iconButton,
+          iconButton ?? Container(),
           const SizedBox(width: AppBarStyle.sizedBoxWidth),
           const BorderContainer(type: ContainerBorderType.right),
         ],
