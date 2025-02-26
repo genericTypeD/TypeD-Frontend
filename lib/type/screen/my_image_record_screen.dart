@@ -7,7 +7,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:typed/common/const/app_bar_style.dart';
 import 'package:typed/common/const/app_themes.dart';
 import 'package:typed/common/index.dart';
-import 'package:typed/type/component/grid_text_item.dart';
+import 'package:typed/type/component/grid_item_widget.dart';
 
 class MyImageRecordScreen extends ConsumerStatefulWidget {
   final XFile? initialImage;

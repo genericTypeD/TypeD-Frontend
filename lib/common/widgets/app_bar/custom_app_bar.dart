@@ -8,6 +8,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? bottomLeftWidget;
   final Widget? bottomCenterWidget;
   final Widget? bottomRightWidget;
+  final Widget? iconButton;
+  final bool isMyPage;
+  final bool isShowingNotifications;
 
   @override
   final Size preferredSize;
@@ -17,7 +20,22 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.bottomLeftWidget,
     this.bottomCenterWidget,
     this.bottomRightWidget,
+    this.iconButton,
+    this.isMyPage = false,
+    this.isShowingNotifications = false,
   }) : preferredSize = const Size.fromHeight(AppBarStyle.appbarHeight);
+
+  factory CustomAppBar.myPage({
+    Widget? bottomLeftWidget,
+    Widget? bottomCenterWidget,
+    Widget? bottomRightWidget,
+  }) =>
+      CustomAppBar(
+        bottomLeftWidget: bottomLeftWidget,
+        bottomCenterWidget: bottomCenterWidget,
+        bottomRightWidget: bottomRightWidget,
+        isMyPage: true,
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -38,21 +56,24 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   style: AppBarStyle.titleTextStyle,
                 ),
               ),
-              iconButton: GestureDetector(
-                onTap: () {
-                  context.push('/notifications');
-                },
-                child: const Icon(
-                  Icons.notifications,
-                  color: Colors.black,
-                ),
+              iconButton: isShowingNotifications
+                  ? GestureDetector(
+                      onTap: () {
+                        context.push('/notifications');
+                      },
+                      child: const Icon(
+                        Icons.notifications,
+                        color: Colors.black,
+                      ),
+                    )
+                  : null,
+            ),
+            if (!isMyPage)
+              BottomSection(
+                leftWidget: bottomLeftWidget,
+                centerWidget: bottomCenterWidget,
+                rightWidget: bottomRightWidget,
               ),
-            ),
-            BottomSection(
-              leftWidget: bottomLeftWidget,
-              centerWidget: bottomCenterWidget,
-              rightWidget: bottomRightWidget,
-            ),
           ],
         ),
       ),
