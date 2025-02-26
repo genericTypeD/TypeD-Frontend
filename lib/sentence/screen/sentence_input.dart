@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:typed/common/const/app_colors.dart';
 import 'package:typed/common/const/app_themes.dart';
 import 'package:typed/common/layout/default_layout.dart';
+import 'package:typed/sentence/provider/sentence_provider.dart';
 
-class SentenceInput extends StatefulWidget {
+class SentenceInput extends ConsumerStatefulWidget {
   const SentenceInput({super.key});
 
   @override
-  State<SentenceInput> createState() => _SentenceInputState();
+  ConsumerState<SentenceInput> createState() => _SentenceInputState();
 }
 
-class _SentenceInputState extends State<SentenceInput>
+class _SentenceInputState extends ConsumerState<SentenceInput>
     with WidgetsBindingObserver {
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
@@ -66,8 +68,14 @@ class _SentenceInputState extends State<SentenceInput>
         ),
         actions: [
           TextButton(
-            onPressed: () {
-              context.go('/sentence_list');
+            onPressed: () async {
+              final content = _controller.text.trim();
+              if (content.isNotEmpty) {
+                await ref
+                    .read(sentenceListProvider.notifier)
+                    .addSentence(content, !_isPrivate);
+                context.go('/sentence_list'); // 문장 목록으로 이동
+              }
             },
             style: TextButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),

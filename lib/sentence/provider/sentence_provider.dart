@@ -1,30 +1,62 @@
-import 'package:flutter/material.dart';
-import 'package:typed/sentence/model/sentence_model.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:typed/sentence/repository/sentence_repository.dart';
 
-class SentenceProvider extends ChangeNotifier {
-  final List<Sentence> _sentences = []; // 문장 리스트
+// Repository Provider (API 요청 담당)
+final sentenceRepositoryProvider = Provider<SentenceRepository>((ref) {
+  return SentenceRepository();
+});
 
-  List<Sentence> get sentences => _sentences;
+// 문장 목록 Provider (자동으로 fetchSentences() 실행)
+final sentenceListProvider =
+    StateNotifierProvider<SentenceListNotifier, List<Map<String, dynamic>>>(
+        (ref) {
+  final repository = ref.read(sentenceRepositoryProvider);
+  return SentenceListNotifier(repository)..fetchSentences(); // 자동으로 API 호출
+});
 
-  // 문장 추가
-  void addSentence(Sentence sentence) {
-    _sentences.add(sentence);
-    notifyListeners(); // 상태 갱신
-  }
+class SentenceListNotifier extends StateNotifier<List<Map<String, dynamic>>> {
+  final SentenceRepository _repository;
 
-  // 문장 삭제
-  void deleteSentence(int index) {
-    if (index >= 0 && index < _sentences.length) {
-      _sentences.removeAt(index);
-      notifyListeners(); // 상태 갱신
+  SentenceListNotifier(this._repository) : super([]);
+
+  // 문장 목록 불러오기
+  Future<void> fetchSentences() async {
+    final sentences = await _repository.fetchSentences();
+    if (sentences != null) {
+      state = List<Map<String, dynamic>>.from(sentences);
     }
   }
 
-  // 문장 업데이트
-  void updateSentence(int index, Sentence updatedSentence) {
-    if (index >= 0 && index < _sentences.length) {
-      _sentences[index] = updatedSentence; // 특정 인덱스의 문장 업데이트
-      notifyListeners(); // 상태 갱신
+  // 문장 추가
+  Future<void> addSentence(String content, bool isPublic) async {
+    final newSentence = await _repository.saveSentence(content, isPublic);
+    if (newSentence != null) {
+      state = [...state, newSentence];
+    }
+  }
+
+  // 문장 수정
+  Future<void> updateSentence(int id, String content, bool isPublic) async {
+    final success = await _repository.updateSentence(id, content, isPublic);
+    if (success) {
+      state = state.map((sentence) {
+        if (sentence['id'] == id) {
+          return {
+            ...sentence,
+            "content": content,
+            "isPublic": isPublic,
+          };
+        }
+        return sentence;
+      }).toList();
+    }
+  }
+
+  // 문장 삭제
+  Future<void> deleteSentence(int id) async {
+    final success = await _repository.deleteSentence(id);
+    if (success) {
+      state = state.where((sentence) => sentence['id'] != id).toList();
     }
   }
 }
