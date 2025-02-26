@@ -15,7 +15,7 @@ class HeaderSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SectionContainer.headerSection(
+    return SectionContainer.header(
       child: Row(
         children: [
           const BorderContainer(type: ContainerBorderType.left),

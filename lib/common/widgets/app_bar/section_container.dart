@@ -11,7 +11,7 @@ class SectionContainer extends StatelessWidget {
     super.key,
   });
 
-  factory SectionContainer.headerSection({
+  factory SectionContainer.header({
     required Widget child,
   }) =>
       SectionContainer(
@@ -19,7 +19,7 @@ class SectionContainer extends StatelessWidget {
         child: child,
       );
 
-  factory SectionContainer.bottomSection({
+  factory SectionContainer.bottom({
     required Widget child,
   }) =>
       SectionContainer(
