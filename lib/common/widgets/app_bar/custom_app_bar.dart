@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:typed/common/const/app_bar_style.dart';
+import 'package:typed/common/const/index.dart';
 import 'package:typed/common/widgets/app_bar/bottom_section.dart';
 import 'package:typed/common/widgets/app_bar/header_section.dart';
 
@@ -23,7 +23,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        color: AppBarStyle.backgroundColor,
+        color: AppColors.backgroundSecondary,
       ),
       child: SafeArea(
         child: Column(
