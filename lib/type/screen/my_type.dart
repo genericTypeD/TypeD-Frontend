@@ -104,10 +104,8 @@ class MyType extends ConsumerStatefulWidget {
 }
 
 class _MyTypeState extends ConsumerState<MyType> {
-  final List<MultiSplitViewController> _horizontalControllers =
-      List.generate(3, (_) => MultiSplitViewController());
-  final MultiSplitViewController _verticalController =
-      MultiSplitViewController();
+  late final List<MultiSplitViewController> _horizontalControllers;
+  late final MultiSplitViewController _verticalController;
 
   List<String> dropDownList = [
     '이주의 나',
@@ -119,32 +117,34 @@ class _MyTypeState extends ConsumerState<MyType> {
   @override
   void initState() {
     super.initState();
-    currentDropDown = dropDownList.first;
-  }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+    currentDropDown = dropDownList.first;
+
     final splitViewState = ref.read(splitViewProvider);
 
-    _verticalController.areas = List.generate(
-      3,
-      (index) => Area(
-        data: index,
-        min: 0.6,
-        flex: splitViewState.verticalFlexValues[index],
+    _verticalController = MultiSplitViewController(
+      areas: List.generate(
+        3,
+        (index) => Area(
+          data: index,
+          min: 0.6,
+          flex: splitViewState.verticalFlexValues[index],
+        ),
       ),
     );
 
-    for (var i = 0; i < 3; i++) {
-      _horizontalControllers[i].areas = List.generate(
-        2,
-        (index) => Area(
-          min: 0.6,
-          flex: splitViewState.horizontalFlexValues[i][index],
+    _horizontalControllers = List.generate(
+      3,
+      (index) => MultiSplitViewController(
+        areas: List.generate(
+          2,
+          (index2) => Area(
+            min: 0.6,
+            flex: splitViewState.horizontalFlexValues[index][index2],
+          ),
         ),
-      );
-    }
+      ),
+    );
   }
 
   @override
