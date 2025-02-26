@@ -160,6 +160,8 @@ class _MyTypeState extends ConsumerState<MyType> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
 
+    ref.watch(splitViewProvider);
+
     return DefaultLayout(
       backgroundColor: Colors.white,
       appBar: CustomAppBar(
