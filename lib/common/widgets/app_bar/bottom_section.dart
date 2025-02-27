@@ -17,7 +17,7 @@ class BottomSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SectionContainer(
+    return SectionContainer.bottom(
       child: Row(
         children: [
           const BorderContainer(type: ContainerBorderType.left),

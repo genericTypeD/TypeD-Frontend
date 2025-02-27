@@ -3,13 +3,29 @@ import 'package:typed/common/const/index.dart';
 
 class SectionContainer extends StatelessWidget {
   final Widget child;
-  final bool showTopBorder;
+  final bool? isHeaderSection;
 
   const SectionContainer({
     required this.child,
-    this.showTopBorder = false,
+    this.isHeaderSection,
     super.key,
   });
+
+  factory SectionContainer.header({
+    required Widget child,
+  }) =>
+      SectionContainer(
+        isHeaderSection: true,
+        child: child,
+      );
+
+  factory SectionContainer.bottom({
+    required Widget child,
+  }) =>
+      SectionContainer(
+        isHeaderSection: false,
+        child: child,
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +34,9 @@ class SectionContainer extends StatelessWidget {
       width: double.infinity,
       decoration: BoxDecoration(
         border: Border(
+          top: isHeaderSection == true
+              ? AppBarStyle.borderStyle
+              : BorderSide.none,
           bottom: AppBarStyle.borderStyle,
         ),
       ),

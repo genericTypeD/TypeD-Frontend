@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -49,12 +48,12 @@ class GridNotifier extends StateNotifier<GridState> {
   }
 }
 
-class GridTextItem extends ConsumerWidget {
+class GridItemWidget extends ConsumerWidget {
   final int verticalIndex;
   final int horizontalIndex;
   final double width;
 
-  const GridTextItem({
+  const GridItemWidget({
     required this.verticalIndex,
     required this.horizontalIndex,
     required this.width,
@@ -75,10 +74,10 @@ class GridTextItem extends ConsumerWidget {
       child: Container(
         clipBehavior: Clip.hardEdge,
         decoration: BoxDecoration(
-          color: item.isEmpty ? AppColors.backgroundSecondary : Colors.white,
+          color: AppColors.backgroundTertiary,
           border: Border.all(
             color: AppColors.borderBlack,
-            width: 0.4,
+            width: 0.3,
           ),
         ),
         margin: const EdgeInsets.all(8),
@@ -91,7 +90,7 @@ class GridTextItem extends ConsumerWidget {
                 ),
               )
             : Padding(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.zero,
                 child: item.imageFile != null
                     // TODO: - 이미지 확대/축소 기능
                     ? Image.file(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:typed/common/const/app_bar_style.dart';
-import 'package:typed/type/component/grid_text_item.dart';
+import 'package:typed/type/component/grid_item_widget.dart';
 import 'package:typed/common/const/app_themes.dart';
 import 'package:typed/config/env.dart';
 import 'package:typed/common/index.dart';
@@ -145,12 +145,11 @@ class _MyMusicRecordScreenState extends State<MyMusicRecordScreen> {
             padding: EdgeInsets.zero,
             minimumSize: Size.zero,
           ),
-          child: const Text(
+          child: Text(
             '뒤로 가기',
             textAlign: TextAlign.left,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.black,
+            style: AppTheme.title3.copyWith(
+              height: 1,
             ),
           ),
         ),
@@ -275,11 +274,9 @@ class _MyMusicRecordScreenState extends State<MyMusicRecordScreen> {
               },
             );
           },
-          child: const Text(
+          child: Text(
             '검색하기',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.black,
+            style: AppTheme.title3.copyWith(
               height: 1,
             ),
           ),
@@ -309,11 +306,9 @@ class _MyMusicRecordScreenState extends State<MyMusicRecordScreen> {
                   }
                 }
               : null,
-          child: const Text(
+          child: Text(
             '기록하기',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.black,
+            style: AppTheme.title3.copyWith(
               height: 1,
             ),
           ),
