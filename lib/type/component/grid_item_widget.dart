@@ -5,18 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:typed/common/const/app_colors.dart';
 import 'package:typed/common/const/app_themes.dart';
 import 'package:typed/type/component/add_record_dialog.dart';
-
-class GridItem {
-  final String? content;
-  final XFile? imageFile;
-  final bool isEmpty;
-
-  GridItem({
-    this.content,
-    this.imageFile,
-    String? id,
-  }) : isEmpty = content == null && imageFile == null;
-}
+import 'package:typed/type/presentation/models/grid_item.dart';
 
 class GridState {
   final List<List<GridItem>> items;
