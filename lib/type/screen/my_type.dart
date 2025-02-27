@@ -166,10 +166,7 @@ class _MyTypeState extends ConsumerState<MyType> {
       appBar: CustomAppBar(
         bottomLeftWidget: DropdownButton(
           alignment: Alignment.centerLeft,
-          style: const TextStyle(
-            fontSize: 14,
-            color: Colors.black,
-          ),
+          style: AppTheme.title3,
           dropdownColor: Colors.white,
           elevation: 0,
           icon: Container(),
@@ -182,7 +179,7 @@ class _MyTypeState extends ConsumerState<MyType> {
                   value: dropDownValue,
                   child: Text(
                     dropDownValue,
-                    style: const TextStyle(fontSize: 14),
+                    style: AppTheme.title3,
                   ),
                 ),
               )
