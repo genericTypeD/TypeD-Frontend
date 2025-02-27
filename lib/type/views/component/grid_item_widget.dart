@@ -3,24 +3,10 @@ import 'dart:io';
 import 'package:typed/common/const/index.dart';
 import 'package:typed/type/models/grid_item.dart';
 import 'package:typed/type/models/grid_item_type.dart';
-import 'package:typed/type/models/grid_state.dart';
+import 'package:typed/type/viewmodels/grid_notifier.dart';
 import 'package:typed/type/views/component/add_record_dialog.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-
-final gridProvider = StateNotifierProvider<GridNotifier, GridState>((ref) {
-  return GridNotifier();
-});
-
-class GridNotifier extends StateNotifier<GridState> {
-  GridNotifier() : super(GridState.initial());
-
-  void updateGridItem(int verticalIndex, int horizontalIndex, GridItem data) {
-    final newItems = List<List<GridItem>>.from(state.items);
-    newItems[verticalIndex][horizontalIndex] = data;
-    state = GridState(items: newItems);
-  }
-}
 
 class GridItemWidget extends ConsumerWidget {
   final int verticalIndex;
