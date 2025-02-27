@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:multi_split_view/multi_split_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:typed/common/index.dart';
+import 'package:typed/common/const/index.dart';
 import 'package:typed/type/component/component.dart';
 
 class SplitViewState {
@@ -104,10 +105,8 @@ class MyType extends ConsumerStatefulWidget {
 }
 
 class _MyTypeState extends ConsumerState<MyType> {
-  final List<MultiSplitViewController> _horizontalControllers =
-      List.generate(3, (_) => MultiSplitViewController());
-  final MultiSplitViewController _verticalController =
-      MultiSplitViewController();
+  late final List<MultiSplitViewController> _horizontalControllers;
+  late final MultiSplitViewController _verticalController;
 
   List<String> dropDownList = [
     '이주의 나',
@@ -119,32 +118,34 @@ class _MyTypeState extends ConsumerState<MyType> {
   @override
   void initState() {
     super.initState();
-    currentDropDown = dropDownList.first;
-  }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+    currentDropDown = dropDownList.first;
+
     final splitViewState = ref.read(splitViewProvider);
 
-    _verticalController.areas = List.generate(
-      3,
-      (index) => Area(
-        data: index,
-        min: 0.6,
-        flex: splitViewState.verticalFlexValues[index],
+    _verticalController = MultiSplitViewController(
+      areas: List.generate(
+        3,
+        (index) => Area(
+          data: index,
+          min: 0.6,
+          flex: splitViewState.verticalFlexValues[index],
+        ),
       ),
     );
 
-    for (var i = 0; i < 3; i++) {
-      _horizontalControllers[i].areas = List.generate(
-        2,
-        (index) => Area(
-          min: 0.6,
-          flex: splitViewState.horizontalFlexValues[i][index],
+    _horizontalControllers = List.generate(
+      3,
+      (index) => MultiSplitViewController(
+        areas: List.generate(
+          2,
+          (index2) => Area(
+            min: 0.6,
+            flex: splitViewState.horizontalFlexValues[index][index2],
+          ),
         ),
-      );
-    }
+      ),
+    );
   }
 
   @override
@@ -160,24 +161,14 @@ class _MyTypeState extends ConsumerState<MyType> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
 
+    ref.watch(splitViewProvider);
+
     return DefaultLayout(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.backgroundSecondary,
       appBar: CustomAppBar(
-        // topIconButton: GestureDetector(
-        //   onTap: () {
-        //     debugPrint('Notifications Icon Pressed');
-        //   },
-        //   child: const Icon(
-        //     Icons.notifications_none_outlined,
-        //     color: Colors.black,
-        //   ),
-        // ),
         bottomLeftWidget: DropdownButton(
           alignment: Alignment.centerLeft,
-          style: const TextStyle(
-            fontSize: 14,
-            color: Colors.black,
-          ),
+          style: AppTheme.title3,
           dropdownColor: Colors.white,
           elevation: 0,
           icon: Container(),
@@ -190,7 +181,7 @@ class _MyTypeState extends ConsumerState<MyType> {
                   value: dropDownValue,
                   child: Text(
                     dropDownValue,
-                    style: const TextStyle(fontSize: 14),
+                    style: AppTheme.title3,
                   ),
                 ),
               )
@@ -221,13 +212,23 @@ class _MyTypeState extends ConsumerState<MyType> {
             ),
           ),
           child: MultiSplitView(
+            key: const ValueKey('vertical_split'),
             controller: _verticalController,
             axis: Axis.vertical,
             resizable: true,
             antiAliasingWorkaround: true,
+            onDividerDragUpdate: (dividerIndex) {
+              final flexValues = _verticalController.areas
+                  .map((area) => area.flex ?? 1.0)
+                  .toList();
+              ref
+                  .read(splitViewProvider.notifier)
+                  .updateVerticalFlex(flexValues);
+            },
             builder: (context, verticalArea) {
               final verticalIndex = verticalArea.data as int;
               return MultiSplitView(
+                key: ValueKey('horizontal_split_$verticalIndex'),
                 controller: _horizontalControllers[verticalIndex],
                 resizable: true,
                 antiAliasingWorkaround: true,
@@ -241,7 +242,7 @@ class _MyTypeState extends ConsumerState<MyType> {
                       .updateHorizontalFlex(verticalIndex, flexValues);
                 },
                 builder: (context, horizontalArea) {
-                  return GridTextItem(
+                  return GridItemWidget(
                     key: ValueKey('${verticalIndex}_${horizontalArea.index}'),
                     verticalIndex: verticalIndex,
                     horizontalIndex: horizontalArea.index,

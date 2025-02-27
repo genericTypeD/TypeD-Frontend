@@ -45,13 +45,10 @@ class _MyRecordLayoutState extends State<MyRecordLayout> {
         padding: EdgeInsets.zero,
         minimumSize: Size.zero,
       ),
-      child: const Text(
+      child: Text(
         '뒤로 가기',
         textAlign: TextAlign.left,
-        style: TextStyle(
-          fontSize: 14,
-          color: Colors.black,
-        ),
+        style: AppTheme.title3,
       ),
     );
   }
@@ -59,11 +56,9 @@ class _MyRecordLayoutState extends State<MyRecordLayout> {
   Widget _renderBottomRightWidget() {
     return TextButton(
       onPressed: widget.onBottomRightWidgetPressed,
-      child: const Text(
+      child: Text(
         '기록하기',
-        style: TextStyle(
-          fontSize: 14,
-          color: Colors.black,
+        style: AppTheme.title3.copyWith(
           height: 1,
         ),
       ),

@@ -7,7 +7,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:typed/common/const/app_bar_style.dart';
 import 'package:typed/common/const/app_themes.dart';
 import 'package:typed/common/index.dart';
-import 'package:typed/type/component/grid_text_item.dart';
+import 'package:typed/type/component/grid_item_widget.dart';
 
 class MyImageRecordScreen extends ConsumerStatefulWidget {
   final XFile? initialImage;
@@ -196,13 +196,10 @@ class _MyMovieScreenState extends ConsumerState<MyImageRecordScreen> {
             padding: EdgeInsets.zero,
             minimumSize: Size.zero,
           ),
-          child: const Text(
+          child: Text(
             '뒤로 가기',
             textAlign: TextAlign.left,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.black,
-            ),
+            style: AppTheme.title3,
           ),
         ),
         bottomRightWidget: TextButton(
@@ -214,11 +211,9 @@ class _MyMovieScreenState extends ConsumerState<MyImageRecordScreen> {
                   Navigator.pop(context, result);
                 }
               : null,
-          child: const Text(
+          child: Text(
             '기록하기',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.black,
+            style: AppTheme.title3.copyWith(
               height: 1,
             ),
           ),

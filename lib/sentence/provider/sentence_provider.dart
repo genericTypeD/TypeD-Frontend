@@ -19,8 +19,10 @@ class SentenceListNotifier extends StateNotifier<List<Map<String, dynamic>>> {
 
   SentenceListNotifier(this._repository) : super([]);
 
-  // 문장 목록 불러오기
+  // 문장 목록 불러오기 (중복 요청 방지)
   Future<void> fetchSentences() async {
+    if (state.isNotEmpty) return; // 데이터가 이미 있으면 API 요청 안 함
+
     final sentences = await _repository.fetchSentences();
     if (sentences != null) {
       state = List<Map<String, dynamic>>.from(sentences);
