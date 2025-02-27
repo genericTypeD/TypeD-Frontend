@@ -2,24 +2,11 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:typed/common/const/index.dart';
 import 'package:typed/type/models/grid_item.dart';
+import 'package:typed/type/models/grid_item_type.dart';
+import 'package:typed/type/models/grid_state.dart';
 import 'package:typed/type/views/component/add_record_dialog.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-
-class GridState {
-  final List<List<GridItem>> items;
-
-  GridState({required this.items});
-
-  factory GridState.initial() {
-    return GridState(
-      items: List.generate(
-        3,
-        (_) => List.generate(2, (_) => GridItem()),
-      ),
-    );
-  }
-}
 
 final gridProvider = StateNotifierProvider<GridNotifier, GridState>((ref) {
   return GridNotifier();
