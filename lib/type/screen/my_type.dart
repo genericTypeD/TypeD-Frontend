@@ -182,7 +182,7 @@ class _MyTypeState extends ConsumerState<MyType> {
                   value: dropDownValue,
                   child: Text(
                     dropDownValue,
-                    style: const TextStyle(fontSize: 14),
+                    style: AppTheme.title3,
                   ),
                 ),
               )
