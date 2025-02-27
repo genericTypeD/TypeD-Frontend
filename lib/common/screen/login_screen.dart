@@ -6,7 +6,7 @@ import 'package:typed/common/const/app_themes.dart';
 import 'package:typed/common/layout/default_layout.dart';
 import 'package:typed/common/repository/auth_repository.dart';
 import 'package:typed/common/screen/sign_up_screen.dart';
-import 'package:typed/type/screen/my_type.dart';
+import 'package:typed/type/screens/my_type.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
