@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:typed/common/index.dart';
 import 'package:typed/common/const/index.dart';
 import 'package:typed/type/models/period_type.dart';
-import 'package:typed/type/screens/component/grid_item_widget.dart';
+import 'package:typed/type/views/component/grid_item_widget.dart';
 import 'package:typed/type/viewmodels/split_view_viewmodel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:multi_split_view/multi_split_view.dart';

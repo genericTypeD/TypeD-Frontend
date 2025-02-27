@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:typed/common/const/index.dart';
-import 'package:typed/type/screens/screen.dart';
+import 'package:typed/type/views/screen.dart';
 import 'package:typed/type/models/grid_item.dart';
 import 'package:image_picker/image_picker.dart';
 
