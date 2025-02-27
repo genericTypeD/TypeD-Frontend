@@ -1,5 +1,5 @@
 import 'package:go_router/go_router.dart';
-import 'package:typed/type/screens/my_type.dart';
+import 'package:typed/type/views/my_type.dart';
 
 class TypeRoutes {
   static final List<GoRoute> routes = [

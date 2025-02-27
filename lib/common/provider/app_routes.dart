@@ -12,7 +12,7 @@ import 'package:typed/sentence/provider/sentence_routes.dart';
 import 'package:typed/sentence/screen/sentence_empty.dart';
 import 'package:typed/sentence/screen/sentence_input.dart';
 import 'package:typed/type/routes/type_routes.dart';
-import 'package:typed/type/screens/my_type.dart';
+import 'package:typed/type/views/my_type.dart';
 
 class AppRoutes {
   static final GoRouter router = GoRouter(
