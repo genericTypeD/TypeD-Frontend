@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:typed/common/index.dart';
 import 'package:typed/common/const/index.dart';
 import 'package:typed/type/component/component.dart';
+import 'package:typed/type/model/period_type.dart';
 
 class SplitViewState {
   final List<List<double>> horizontalFlexValues;
@@ -108,18 +109,12 @@ class _MyTypeState extends ConsumerState<MyType> {
   late final List<MultiSplitViewController> _horizontalControllers;
   late final MultiSplitViewController _verticalController;
 
-  List<String> dropDownList = [
-    '이주의 나',
-    '이달의 나',
-    '올해의 나',
-  ];
-  late String currentDropDown;
+  late PeriodType _selectedPeriod;
 
   @override
   void initState() {
     super.initState();
-
-    currentDropDown = dropDownList.first;
+    _selectedPeriod = PeriodType.weekly;
 
     final splitViewState = ref.read(splitViewProvider);
 
@@ -173,14 +168,14 @@ class _MyTypeState extends ConsumerState<MyType> {
           elevation: 0,
           icon: Container(),
           underline: Container(),
-          value: currentDropDown,
+          value: _selectedPeriod,
           padding: EdgeInsets.zero,
-          items: dropDownList
+          items: PeriodType.allCases
               .map(
                 (dropDownValue) => DropdownMenuItem(
                   value: dropDownValue,
                   child: Text(
-                    dropDownValue,
+                    dropDownValue.engName,
                     style: AppTheme.title3,
                   ),
                 ),
@@ -190,7 +185,7 @@ class _MyTypeState extends ConsumerState<MyType> {
             setState(
               () {
                 if (value != null) {
-                  currentDropDown = value;
+                  _selectedPeriod = value;
                 }
               },
             );
