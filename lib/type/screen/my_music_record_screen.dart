@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:typed/common/const/app_bar_style.dart';
-import 'package:typed/type/component/grid_item_widget.dart';
+import 'package:typed/type/presentation/models/index.dart';
 import 'package:typed/common/const/app_themes.dart';
 import 'package:typed/config/env.dart';
 import 'package:typed/common/index.dart';

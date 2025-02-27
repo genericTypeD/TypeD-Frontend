@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -7,7 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:typed/common/const/app_bar_style.dart';
 import 'package:typed/common/const/app_themes.dart';
 import 'package:typed/common/index.dart';
-import 'package:typed/type/component/grid_item_widget.dart';
+import 'package:typed/type/presentation/models/index.dart';
 
 class MyImageRecordScreen extends ConsumerStatefulWidget {
   final XFile? initialImage;
