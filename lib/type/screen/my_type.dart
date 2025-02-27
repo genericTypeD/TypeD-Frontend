@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:multi_split_view/multi_split_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:typed/common/index.dart';
+import 'package:typed/common/const/index.dart';
 import 'package:typed/type/component/component.dart';
 
 class SplitViewState {
@@ -163,14 +164,11 @@ class _MyTypeState extends ConsumerState<MyType> {
     ref.watch(splitViewProvider);
 
     return DefaultLayout(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.backgroundSecondary,
       appBar: CustomAppBar(
         bottomLeftWidget: DropdownButton(
           alignment: Alignment.centerLeft,
-          style: const TextStyle(
-            fontSize: 14,
-            color: Colors.black,
-          ),
+          style: AppTheme.title3,
           dropdownColor: Colors.white,
           elevation: 0,
           icon: Container(),
@@ -183,7 +181,7 @@ class _MyTypeState extends ConsumerState<MyType> {
                   value: dropDownValue,
                   child: Text(
                     dropDownValue,
-                    style: const TextStyle(fontSize: 14),
+                    style: AppTheme.title3,
                   ),
                 ),
               )
@@ -244,7 +242,7 @@ class _MyTypeState extends ConsumerState<MyType> {
                       .updateHorizontalFlex(verticalIndex, flexValues);
                 },
                 builder: (context, horizontalArea) {
-                  return GridTextItem(
+                  return GridItemWidget(
                     key: ValueKey('${verticalIndex}_${horizontalArea.index}'),
                     verticalIndex: verticalIndex,
                     horizontalIndex: horizontalArea.index,

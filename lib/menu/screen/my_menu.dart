@@ -16,7 +16,7 @@ class _MyMenuState extends State<MyMenu> {
   Widget build(BuildContext context) {
     return DefaultLayout(
       backgroundColor: AppColors.backgroundSecondary,
-      //appBar: CustomAppBar(),
+      appBar: CustomAppBar.myPage(),
       child: Column(
         children: [
           SizedBox(
