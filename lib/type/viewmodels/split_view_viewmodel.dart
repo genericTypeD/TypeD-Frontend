@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:typed/type/model/split_view_state.dart';
+import 'package:typed/type/models/split_view_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final splitViewProvider =
-    StateNotifierProvider<SplitViewNotifier, SplitViewState>((ref) {
-  return SplitViewNotifier();
+    StateNotifierProvider<SplitViewViewModel, SplitViewState>((ref) {
+  return SplitViewViewModel();
 });
 
-class SplitViewNotifier extends StateNotifier<SplitViewState> {
-  SplitViewNotifier() : super(SplitViewState.initial()) {
+class SplitViewViewModel extends StateNotifier<SplitViewState> {
+  SplitViewViewModel() : super(SplitViewState.initial()) {
     _loadFlex();
   }
 

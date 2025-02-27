@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:typed/common/const/app_bar_style.dart';
-import 'package:typed/type/presentation/models/index.dart';
-import 'package:typed/common/const/app_themes.dart';
-import 'package:typed/config/env.dart';
+import 'dart:io';
+import 'package:typed/common/const/index.dart';
 import 'package:typed/common/index.dart';
+import 'package:typed/config/env.dart';
+import 'package:typed/type/models/grid_item.dart';
+import 'package:spotify/spotify.dart' hide Image;
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:spotify/spotify.dart' hide Image;
-import 'dart:io';
 
 class MyMusicRecordScreen extends StatefulWidget {
   const MyMusicRecordScreen({super.key});

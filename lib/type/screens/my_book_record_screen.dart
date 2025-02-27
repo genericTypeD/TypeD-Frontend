@@ -1,15 +1,15 @@
+import 'package:flutter/material.dart';
 import 'dart:io';
 import 'dart:convert';
-import 'package:flutter/material.dart';
+import 'package:typed/type/models/book_model.dart';
+import 'package:typed/common/const/index.dart';
+import 'package:typed/type/models/grid_item.dart';
+import 'package:typed/type/screens/layout/my_record_layout.dart';
+import 'package:typed/type/screens/component/search_text_button.dart';
+import 'package:typed/config/env.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:typed/type/model/book_model.dart';
-import 'package:typed/common/const/index.dart';
-import 'package:typed/type/presentation/models/index.dart';
-import 'package:typed/type/layout/my_record_layout.dart';
-import 'package:typed/type/component/search_text_button.dart';
-import 'package:typed/config/env.dart';
 
 class MyBookRecordScreen extends StatefulWidget {
   const MyBookRecordScreen({super.key});

@@ -1,11 +1,10 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
+import 'dart:io';
+import 'package:typed/common/const/index.dart';
+import 'package:typed/type/models/grid_item.dart';
+import 'package:typed/type/screens/component/add_record_dialog.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:typed/common/const/app_colors.dart';
-import 'package:typed/common/const/app_themes.dart';
-import 'package:typed/type/component/add_record_dialog.dart';
-import 'package:typed/type/presentation/models/index.dart';
 
 class GridState {
   final List<List<GridItem>> items;
