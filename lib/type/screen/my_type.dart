@@ -5,23 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:typed/common/index.dart';
 import 'package:typed/common/const/index.dart';
 import 'package:typed/type/component/component.dart';
+import 'package:typed/type/model/split_view_state.dart';
 import 'package:typed/type/model/period_type.dart';
-
-class SplitViewState {
-  final List<List<double>> horizontalFlexValues;
-  final List<double> verticalFlexValues;
-  SplitViewState({
-    required this.horizontalFlexValues,
-    required this.verticalFlexValues,
-  });
-
-  factory SplitViewState.initial() {
-    return SplitViewState(
-      horizontalFlexValues: List.generate(3, (_) => [1.0, 1.0]),
-      verticalFlexValues: List.generate(3, (_) => 1.0),
-    );
-  }
-}
 
 class SplitViewNotifier extends StateNotifier<SplitViewState> {
   SplitViewNotifier() : super(SplitViewState.initial()) {
