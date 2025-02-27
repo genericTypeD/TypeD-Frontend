@@ -6,12 +6,12 @@ import 'package:typed/common/const/app_colors.dart';
 import 'package:typed/common/const/app_themes.dart';
 import 'package:typed/type/component/add_record_dialog.dart';
 
-class GridItemData {
+class GridItem {
   final String? content;
   final XFile? imageFile;
   final bool isEmpty;
 
-  GridItemData({
+  GridItem({
     this.content,
     this.imageFile,
     String? id,
@@ -19,7 +19,7 @@ class GridItemData {
 }
 
 class GridState {
-  final List<List<GridItemData>> items;
+  final List<List<GridItem>> items;
 
   GridState({required this.items});
 
@@ -27,7 +27,7 @@ class GridState {
     return GridState(
       items: List.generate(
         3,
-        (_) => List.generate(2, (_) => GridItemData()),
+        (_) => List.generate(2, (_) => GridItem()),
       ),
     );
   }
@@ -40,9 +40,8 @@ final gridProvider = StateNotifierProvider<GridNotifier, GridState>((ref) {
 class GridNotifier extends StateNotifier<GridState> {
   GridNotifier() : super(GridState.initial());
 
-  void updateGridItem(
-      int verticalIndex, int horizontalIndex, GridItemData data) {
-    final newItems = List<List<GridItemData>>.from(state.items);
+  void updateGridItem(int verticalIndex, int horizontalIndex, GridItem data) {
+    final newItems = List<List<GridItem>>.from(state.items);
     newItems[verticalIndex][horizontalIndex] = data;
     state = GridState(items: newItems);
   }
@@ -126,7 +125,7 @@ class GridItemWidget extends ConsumerWidget {
     WidgetRef ref,
     XFile? initialImage,
   ) async {
-    final result = await showDialog<GridItemData>(
+    final result = await showDialog<GridItem>(
       context: context,
       builder: (context) => AddRecordDialog(initialImage: initialImage),
     );

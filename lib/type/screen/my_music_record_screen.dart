@@ -295,7 +295,7 @@ class _MyMusicRecordScreenState extends State<MyMusicRecordScreen> {
 
                     await file.writeAsBytes(response.bodyBytes);
 
-                    final result = GridItemData(
+                    final result = GridItem(
                       imageFile: XFile(file.path),
                     );
 

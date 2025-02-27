@@ -337,7 +337,7 @@ class _MyBookRecordScreenState extends State<MyBookRecordScreen> {
       final tempDir = await getTemporaryDirectory();
       final file = File('${tempDir.path}/$uniqueFileName');
       await file.writeAsBytes(response.bodyBytes);
-      final result = GridItemData(
+      final result = GridItem(
         imageFile: XFile(file.path),
       );
       Navigator.pop(context, result);

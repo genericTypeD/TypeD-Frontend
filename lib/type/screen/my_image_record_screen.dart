@@ -205,7 +205,7 @@ class _MyMovieScreenState extends ConsumerState<MyImageRecordScreen> {
         bottomRightWidget: TextButton(
           onPressed: _selectedImageFile != null
               ? () {
-                  final result = GridItemData(
+                  final result = GridItem(
                     imageFile: _selectedImageFile,
                   );
                   Navigator.pop(context, result);
