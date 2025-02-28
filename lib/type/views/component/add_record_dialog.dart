@@ -101,6 +101,11 @@ class AddRecordDialog extends StatelessWidget {
                               return MyImageRecordScreen(
                                 item: item,
                               );
+                            } else if (nextScreen.runtimeType ==
+                                MyBookRecordScreen) {
+                              return MyBookRecordScreen(
+                                item: item,
+                              );
                             } else {
                               return nextScreen;
                             }
