@@ -40,13 +40,7 @@ class _MyBookRecordScreenState extends State<MyBookRecordScreen> {
     super.initState();
 
     if (widget.item != null && widget.item!.isValid && widget.item!.isBook) {
-      // FIXME: - Null Safety 확실하게
       // TODO: - 타입을 다 만들어야 하나?
-      // final bookTitle = widget.item!.bookTitle;
-      // final bookAuthors = widget.item!.bookAuthors;
-      // final bookImagePath = widget.item!.bookImagePath;
-      // selectedBook = Book(authors: authors, contents: contents, datetime: datetime, isbn: isbn, price: price, publisher: publisher, salePrice: salePrice, status: status, thumbnail: thumbnail, title: title, translators: translators, url: url);
-      // _currentImageFiles.add(imageFile);
       final book = widget.item!.book!;
       selectedBook = book;
       currentBooks.add(book);
