@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:typed/type/models/book_model.dart';
 import 'package:typed/type/models/grid_item.dart';
 import 'package:typed/type/models/grid_item_type.dart';
 import 'package:typed/type/models/grid_state.dart';
@@ -29,14 +30,11 @@ class GridViewModel extends StateNotifier<GridState> {
   }
 
   /// 책 타입으로 변경 및 데이터 설정
-  void setBook(int verticalIndex, int horizontalIndex, String title,
-      {String? authors, String? imagePath}) {
+  void setBook(int verticalIndex, int horizontalIndex, Book book) {
     final currentItem = state.items[verticalIndex][horizontalIndex];
     final updatedItem = currentItem.copyWith(
       type: GridItemType.book,
-      bookTitle: title,
-      bookAuthors: authors,
-      bookImagePath: imagePath,
+      book: book,
     );
     updateGridItem(verticalIndex, horizontalIndex, updatedItem);
   }
