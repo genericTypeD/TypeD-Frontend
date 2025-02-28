@@ -5,7 +5,7 @@ import 'package:typed/type/models/grid_item.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddRecordDialog extends StatelessWidget {
-  final XFile? initialImage;
+  final GridItem? item;
 
   final categories = [
     {
@@ -23,7 +23,7 @@ class AddRecordDialog extends StatelessWidget {
   ];
 
   AddRecordDialog({
-    this.initialImage,
+    this.item,
     super.key,
   });
 
@@ -109,6 +109,8 @@ class AddRecordDialog extends StatelessWidget {
 
                       if (result != null) {
                         Navigator.pop(context, result);
+                        // Don't use 'BuildContext's across async gaps.
+                        // Try rewriting the code to not use the 'BuildContext', or guard the use with a 'mounted' check.
                       }
                     },
                   ),
