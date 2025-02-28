@@ -41,6 +41,85 @@ class GridItemWidget extends ConsumerWidget {
           ),
         ),
         margin: const EdgeInsets.all(8),
+        child: _buildContent(item, context),
+      ),
+    );
+  }
+
+  Widget _buildContent(GridItem item, BuildContext context) {
+    if (item.isEmpty) {
+      return _buildPlaceholder(context);
+    }
+
+    switch (item.type) {
+      /// 빈 GridItem
+      case GridItemType.empty:
+        return _buildPlaceholder(context);
+
+      /// 이미지
+      case GridItemType.image:
+        if (item.imageFile != null) {
+          return Image.file(
+            File(item.imageFile!.path),
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) {
+              debugPrint('[Image Loading Error] $error');
+              return _buildPlaceholder(context);
+            },
+          );
+        }
+        return _buildPlaceholder(context);
+
+      /// 음악
+      case GridItemType.music:
+        if (item.trackImagePath != null && item.trackImagePath!.isNotEmpty) {
+          return Image.asset(
+            item.trackImagePath!,
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) {
+              debugPrint('[Music Cover Loading Error] $error');
+              return _buildPlaceholder(context);
+            },
+          );
+        }
+        return _buildPlaceholder(context);
+
+      // 책
+      case GridItemType.book:
+        // TODO: - if 분기문에 item 메소드로 정리
+        if (item.book != null && item.book!.thumbnail.isNotEmpty) {
+          debugPrint('item.book!: ${item.book!}');
+          debugPrint('item.book!.title: ${item.book!.title}');
+
+          return Image.file(
+            File(item.book!.thumbnail),
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) {
+              debugPrint('[Book Cover Loading Error] $error');
+              return _buildPlaceholder(context);
+            },
+          );
+        }
+        return _buildPlaceholder(context);
+
+      // 문장
+      case GridItemType.sentence:
+        if (item.sentenceContent != null) {
+          return Padding(
+            padding: const EdgeInsets.all(12),
+            child: Text(
+              item.sentenceContent ?? '',
+              style: AppTheme.body3.copyWith(color: Colors.black),
+              overflow: TextOverflow.clip,
+              softWrap: true,
+              textAlign: TextAlign.start,
+            ),
+          );
+        }
+        return _buildPlaceholder(context);
+    }
+  }
+
   Widget _buildPlaceholder(BuildContext context) {
     return Center(
       child: Image.asset(
