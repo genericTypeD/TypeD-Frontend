@@ -85,4 +85,28 @@ abstract class GridItem with _$GridItem {
       type: newType,
     );
   }
+
+  /// 타입별 유효성 확인
+  bool get isSentence => type == GridItemType.sentence;
+  bool get isBook => type == GridItemType.book;
+  bool get isMusic => type == GridItemType.music;
+  bool get isImage => type == GridItemType.image;
+
+  /// 타입별 필요한 데이터가 있는지 확인
+  bool get isValid {
+    switch (type) {
+      case GridItemType.empty:
+        return true;
+      case GridItemType.sentence:
+        return (sentenceContent != null && sentenceContent!.isNotEmpty);
+      case GridItemType.book:
+        return (book != null);
+      case GridItemType.music:
+        return (trackTitle != null && trackTitle!.isNotEmpty) &&
+            (trackArtists != null && trackArtists!.isNotEmpty) &&
+            (trackImagePath != null && trackImagePath!.isNotEmpty);
+      case GridItemType.image:
+        return (imageFile != null);
+    }
+  }
 }
