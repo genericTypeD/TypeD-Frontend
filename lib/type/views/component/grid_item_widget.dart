@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:typed/common/const/index.dart';
 import 'package:typed/type/models/grid_item.dart';
 import 'package:typed/type/models/grid_item_type.dart';
-import 'package:typed/type/viewmodels/grid_notifier.dart';
+import 'package:typed/type/viewmodels/grid_viewmodel.dart';
 import 'package:typed/type/views/component/add_record_dialog.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -29,7 +29,7 @@ class GridItemWidget extends ConsumerWidget {
       onTap: () => _showAddDialog(
         context,
         ref,
-        item.imageFile,
+        item,
       ),
       child: Container(
         clipBehavior: Clip.hardEdge,
@@ -133,11 +133,13 @@ class GridItemWidget extends ConsumerWidget {
   void _showAddDialog(
     BuildContext context,
     WidgetRef ref,
-    XFile? initialImage,
+    GridItem item,
   ) async {
     final result = await showDialog<GridItem>(
       context: context,
-      builder: (context) => AddRecordDialog(initialImage: initialImage),
+      builder: (context) => AddRecordDialog(
+        item: item,
+      ),
     );
 
     if (result != null) {
