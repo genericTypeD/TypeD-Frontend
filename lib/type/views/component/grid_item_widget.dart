@@ -41,42 +41,12 @@ class GridItemWidget extends ConsumerWidget {
           ),
         ),
         margin: const EdgeInsets.all(8),
-        child: item.isEmpty
-            ? Center(
-                child: Image.asset(
-                  'assets/images/grid_item_placeholder.png',
-                  width: MediaQuery.of(context).size.width * 0.06,
-                  height: MediaQuery.of(context).size.width * 0.06,
-                ),
-              )
-            : Padding(
-                padding: EdgeInsets.zero,
-                child: item.imageFile != null
-                    // TODO: - 이미지 확대/축소 기능
-                    ? Image.file(
-                        File(item.imageFile!.path),
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          debugPrint('[Loading Image Error] $error');
-                          return Center(
-                            child: Image.asset(
-                              'assets/images/grid_item_placeholder.png',
-                              width: MediaQuery.of(context).size.width * 0.06,
-                              height: MediaQuery.of(context).size.width * 0.06,
-                            ),
-                          );
-                        },
-                      )
-                    : Text(
-                        item.content ?? '',
-                        style: AppTheme.body3.copyWith(
-                          color: Colors.black,
-                        ),
-                        overflow: TextOverflow.clip,
-                        softWrap: true,
-                        textAlign: TextAlign.start,
-                      ),
-              ),
+  Widget _buildPlaceholder(BuildContext context) {
+    return Center(
+      child: Image.asset(
+        'assets/images/grid_item_placeholder.png',
+        width: MediaQuery.of(context).size.width * 0.06,
+        height: MediaQuery.of(context).size.width * 0.06,
       ),
     );
   }
