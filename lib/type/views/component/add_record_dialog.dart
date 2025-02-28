@@ -99,7 +99,8 @@ class AddRecordDialog extends StatelessWidget {
                             final nextScreen = category['route'] as Widget;
                             if (nextScreen.runtimeType == MyImageRecordScreen) {
                               return MyImageRecordScreen(
-                                  initialImage: initialImage);
+                                item: item,
+                              );
                             } else {
                               return nextScreen;
                             }
