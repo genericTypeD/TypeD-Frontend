@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:typed/type/models/book_model.dart';
 import 'package:typed/type/models/grid_item_type.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -10,9 +11,7 @@ abstract class GridItem with _$GridItem {
     required String id,
     required GridItemType type,
     String? sentenceContent,
-    String? bookTitle,
-    String? bookAuthors,
-    String? bookImagePath,
+    Book? book,
     String? trackTitle,
     String? trackArtists,
     String? trackImagePath,
@@ -43,16 +42,12 @@ abstract class GridItem with _$GridItem {
   /// 책 그리드 아이템 팩토리 생성자
   factory GridItem.book({
     required String id,
-    required String title,
-    String? authors,
-    String? imagePath,
+    required Book book,
   }) =>
       GridItem(
         id: id,
         type: GridItemType.book,
-        bookTitle: title,
-        bookAuthors: authors,
-        bookImagePath: imagePath,
+        book: book,
       );
 
   /// 음악 그리드 아이템 팩토리 생성자
