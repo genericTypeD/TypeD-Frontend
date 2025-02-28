@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:typed/common/const/index.dart';
 import 'package:typed/type/views/screen.dart';
 import 'package:typed/type/models/grid_item.dart';
-import 'package:image_picker/image_picker.dart';
 
 class AddRecordDialog extends StatelessWidget {
   final GridItem? item;
@@ -104,6 +103,11 @@ class AddRecordDialog extends StatelessWidget {
                             } else if (nextScreen.runtimeType ==
                                 MyBookRecordScreen) {
                               return MyBookRecordScreen(
+                                item: item,
+                              );
+                            } else if (nextScreen.runtimeType ==
+                                MyMusicRecordScreen) {
+                              return MyMusicRecordScreen(
                                 item: item,
                               );
                             } else {
