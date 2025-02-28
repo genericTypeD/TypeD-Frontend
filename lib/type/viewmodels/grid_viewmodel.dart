@@ -4,12 +4,12 @@ import 'package:typed/type/models/grid_item.dart';
 import 'package:typed/type/models/grid_item_type.dart';
 import 'package:typed/type/models/grid_state.dart';
 
-final gridProvider = StateNotifierProvider<GridNotifier, GridState>((ref) {
-  return GridNotifier();
+final gridProvider = StateNotifierProvider<GridViewModel, GridState>((ref) {
+  return GridViewModel();
 });
 
-class GridNotifier extends StateNotifier<GridState> {
-  GridNotifier() : super(GridState.initial());
+class GridViewModel extends StateNotifier<GridState> {
+  GridViewModel() : super(GridState.initial());
 
   /// 그리드 아이템 업데이트
   void updateGridItem(int verticalIndex, int horizontalIndex, GridItem data) {
