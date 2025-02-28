@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:spotify/spotify.dart';
 import 'package:typed/type/models/book_model.dart';
 import 'package:typed/type/models/grid_item_type.dart';
 import 'package:image_picker/image_picker.dart';
@@ -12,9 +13,7 @@ abstract class GridItem with _$GridItem {
     required GridItemType type,
     String? sentenceContent,
     Book? book,
-    String? trackTitle,
-    String? trackArtists,
-    String? trackImagePath,
+    Track? track,
     XFile? imageFile,
   }) = _GridItem;
 
@@ -53,16 +52,12 @@ abstract class GridItem with _$GridItem {
   /// 음악 그리드 아이템 팩토리 생성자
   factory GridItem.music({
     required String id,
-    required String title,
-    String? artists,
-    String? imagePath,
+    required Track track,
   }) =>
       GridItem(
         id: id,
         type: GridItemType.music,
-        trackTitle: title,
-        trackArtists: artists,
-        trackImagePath: imagePath,
+        track: track,
       );
 
   /// 이미지 그리드 아이템 팩토리 생성자
@@ -102,9 +97,7 @@ abstract class GridItem with _$GridItem {
       case GridItemType.book:
         return (book != null);
       case GridItemType.music:
-        return (trackTitle != null && trackTitle!.isNotEmpty) &&
-            (trackArtists != null && trackArtists!.isNotEmpty) &&
-            (trackImagePath != null && trackImagePath!.isNotEmpty);
+        return (track != null);
       case GridItemType.image:
         return (imageFile != null);
     }

@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:spotify/spotify.dart';
 import 'package:typed/type/models/book_model.dart';
 import 'package:typed/type/models/grid_item.dart';
 import 'package:typed/type/models/grid_item_type.dart';
@@ -40,14 +41,11 @@ class GridViewModel extends StateNotifier<GridState> {
   }
 
   /// 음악 타입으로 변경 및 데이터 설정
-  void setMusic(int verticalIndex, int horizontalIndex, String title,
-      {String? artists, String? imagePath}) {
+  void setMusic(int verticalIndex, int horizontalIndex, Track track) {
     final currentItem = state.items[verticalIndex][horizontalIndex];
     final updatedItem = currentItem.copyWith(
       type: GridItemType.music,
-      trackTitle: title,
-      trackArtists: artists,
-      trackImagePath: imagePath,
+      track: track,
     );
     updateGridItem(verticalIndex, horizontalIndex, updatedItem);
   }
