@@ -6,7 +6,6 @@ import 'package:typed/type/models/grid_item_type.dart';
 import 'package:typed/type/viewmodels/grid_viewmodel.dart';
 import 'package:typed/type/views/component/add_record_dialog.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_picker/image_picker.dart';
 
 class GridItemWidget extends ConsumerWidget {
   final int verticalIndex;
@@ -72,9 +71,15 @@ class GridItemWidget extends ConsumerWidget {
 
       /// 음악
       case GridItemType.music:
-        if (item.trackImagePath != null && item.trackImagePath!.isNotEmpty) {
-          return Image.asset(
-            item.trackImagePath!,
+        if (item.track != null &&
+            item.isValid &&
+            item.isMusic &&
+            item.track!.album != null &&
+            item.track!.album!.images != null &&
+            item.track!.album!.images!.isNotEmpty &&
+            item.track!.album!.images!.first.url != null) {
+          return Image.network(
+            item.track!.album!.images!.first.url!,
             fit: BoxFit.cover,
             errorBuilder: (context, error, stackTrace) {
               debugPrint('[Music Cover Loading Error] $error');
