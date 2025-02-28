@@ -80,4 +80,14 @@ abstract class GridItem with _$GridItem {
         type: GridItemType.image,
         imageFile: imageFile,
       );
+
+  /// 새로운 타입의 아이템으로 변환
+  GridItem changeType(GridItemType newType) {
+    if (type == newType) return this;
+
+    return GridItem(
+      id: id,
+      type: newType,
+    );
+  }
 }
