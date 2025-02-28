@@ -8,6 +8,7 @@ import 'package:spotify/spotify.dart' hide Image;
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:uuid/uuid.dart';
 
 class MyMusicRecordScreen extends StatefulWidget {
   const MyMusicRecordScreen({super.key});
@@ -294,8 +295,13 @@ class _MyMusicRecordScreenState extends State<MyMusicRecordScreen> {
 
                     await file.writeAsBytes(response.bodyBytes);
 
-                    final result = GridItem(
-                      imageFile: XFile(file.path),
+                    // final result = GridItem(
+                    //   imageFile: XFile(file.path),
+                    // );
+                    final result = GridItem.music(
+                      id: Uuid().v4(),
+                      title: selectedTrack!.name!,
+                      imagePath: file.path,
                     );
 
                     Navigator.pop(context, result);
