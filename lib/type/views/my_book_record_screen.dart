@@ -10,9 +10,15 @@ import 'package:typed/config/env.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:uuid/uuid.dart';
 
 class MyBookRecordScreen extends StatefulWidget {
-  const MyBookRecordScreen({super.key});
+  final GridItem? item;
+
+  const MyBookRecordScreen({
+    this.item,
+    super.key,
+  });
 
   @override
   State<MyBookRecordScreen> createState() => _MyBookRecordScreenState();
@@ -21,6 +27,7 @@ class MyBookRecordScreen extends StatefulWidget {
 class _MyBookRecordScreenState extends State<MyBookRecordScreen> {
   static const String _apiKey = Env.kakaoRestApiKey;
 
+  // TODO: - private
   List<Book> searchResults = [];
   bool isLoading = false;
   final searchController = TextEditingController();
@@ -31,6 +38,19 @@ class _MyBookRecordScreenState extends State<MyBookRecordScreen> {
   @override
   void initState() {
     super.initState();
+
+    if (widget.item != null && widget.item!.isValid && widget.item!.isBook) {
+      // FIXME: - Null Safety 확실하게
+      // TODO: - 타입을 다 만들어야 하나?
+      // final bookTitle = widget.item!.bookTitle;
+      // final bookAuthors = widget.item!.bookAuthors;
+      // final bookImagePath = widget.item!.bookImagePath;
+      // selectedBook = Book(authors: authors, contents: contents, datetime: datetime, isbn: isbn, price: price, publisher: publisher, salePrice: salePrice, status: status, thumbnail: thumbnail, title: title, translators: translators, url: url);
+      // _currentImageFiles.add(imageFile);
+      final book = widget.item!.book!;
+      selectedBook = book;
+      currentBooks.add(book);
+    }
   }
 
   @override
@@ -331,16 +351,27 @@ class _MyBookRecordScreenState extends State<MyBookRecordScreen> {
 
   void pushMyTypeScreen() async {
     try {
-      final response = await http.get(Uri.parse(selectedBook!.thumbnail));
-      final uniqueFileName =
-          'album_image_${selectedBook!.isbn}_${DateTime.now().millisecondsSinceEpoch}.jpg';
-      final tempDir = await getTemporaryDirectory();
-      final file = File('${tempDir.path}/$uniqueFileName');
-      await file.writeAsBytes(response.bodyBytes);
-      final result = GridItem(
-        imageFile: XFile(file.path),
-      );
-      Navigator.pop(context, result);
+      // final response = await http.get(Uri.parse(selectedBook!.thumbnail));
+      // final uniqueFileName =
+      //     'album_image_${selectedBook!.isbn}_${DateTime.now().millisecondsSinceEpoch}.jpg';
+      // final tempDir = await getTemporaryDirectory();
+      // final file = File('${tempDir.path}/$uniqueFileName');
+
+      // await file.writeAsBytes(response.bodyBytes);
+
+      // final result = GridItem(
+      //   imageFile: XFile(file.path),
+      // );
+      // final result = GridItem.book(
+      //   id: Uuid().v4(),
+      //   title: selectedBook!.title,
+      //   imagePath: file.path,
+      // );
+
+      if (selectedBook != null) {
+        final result = GridItem.book(id: Uuid().v4(), book: selectedBook!);
+        Navigator.pop(context, result);
+      }
       // Don't use 'BuildContext's across async gaps. Try rewriting the code to not use the 'BuildContext', or guard the use with a 'mounted' check.
     } catch (e) {
       debugPrint('[Saving Image Error] $e');
