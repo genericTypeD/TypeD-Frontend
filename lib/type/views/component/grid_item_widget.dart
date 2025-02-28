@@ -88,11 +88,8 @@ class GridItemWidget extends ConsumerWidget {
       case GridItemType.book:
         // TODO: - if 분기문에 item 메소드로 정리
         if (item.book != null && item.book!.thumbnail.isNotEmpty) {
-          debugPrint('item.book!: ${item.book!}');
-          debugPrint('item.book!.title: ${item.book!.title}');
-
-          return Image.file(
-            File(item.book!.thumbnail),
+          return Image.network(
+            item.book!.thumbnail,
             fit: BoxFit.cover,
             errorBuilder: (context, error, stackTrace) {
               debugPrint('[Book Cover Loading Error] $error');
