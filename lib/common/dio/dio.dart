@@ -2,8 +2,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
-import '../const/data.dart';
+import 'package:typed/common/const/data.dart';
 
 class CustomDio {
   static final dio = Dio();
