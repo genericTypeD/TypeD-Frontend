@@ -11,8 +11,8 @@ import 'package:typed/review/screen/review_empty.dart';
 import 'package:typed/sentence/provider/sentence_routes.dart';
 import 'package:typed/sentence/screen/sentence_empty.dart';
 import 'package:typed/sentence/screen/sentence_input.dart';
-import 'package:typed/type/provider/type_routes.dart';
-import 'package:typed/type/screen/my_type.dart';
+import 'package:typed/type/routes/type_routes.dart';
+import 'package:typed/type/views/my_type.dart';
 
 class AppRoutes {
   static final GoRouter router = GoRouter(

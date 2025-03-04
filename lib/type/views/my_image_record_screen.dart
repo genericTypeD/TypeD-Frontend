@@ -1,27 +1,26 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'dart:io';
+import 'package:typed/common/const/index.dart';
+import 'package:typed/common/index.dart';
+import 'package:typed/type/models/grid_item.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:typed/common/const/app_bar_style.dart';
-import 'package:typed/common/const/app_themes.dart';
-import 'package:typed/common/index.dart';
-import 'package:typed/type/component/grid_item_widget.dart';
+import 'package:uuid/uuid.dart';
 
 class MyImageRecordScreen extends ConsumerStatefulWidget {
-  final XFile? initialImage;
+  final GridItem? item;
 
   const MyImageRecordScreen({
-    this.initialImage,
+    this.item,
     super.key,
   });
 
   @override
-  ConsumerState<MyImageRecordScreen> createState() => _MyMovieScreenState();
+  ConsumerState<MyImageRecordScreen> createState() => _MyImageScreenState();
 }
 
-class _MyMovieScreenState extends ConsumerState<MyImageRecordScreen> {
+class _MyImageScreenState extends ConsumerState<MyImageRecordScreen> {
   final ImagePicker _picker = ImagePicker();
 
   XFile? _selectedImageFile;
@@ -176,9 +175,11 @@ class _MyMovieScreenState extends ConsumerState<MyImageRecordScreen> {
   void initState() {
     super.initState();
 
-    if (widget.initialImage != null) {
-      _selectedImageFile = widget.initialImage!;
-      _currentImageFiles.add(widget.initialImage!);
+    if (widget.item != null && widget.item!.isValid && widget.item!.isImage) {
+      // FIXME: - Null Safety 확실하게
+      final imageFile = widget.item!.imageFile ?? XFile('');
+      _selectedImageFile = imageFile;
+      _currentImageFiles.add(imageFile);
     }
   }
 
@@ -187,7 +188,6 @@ class _MyMovieScreenState extends ConsumerState<MyImageRecordScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return DefaultLayout(
-      // backgroundColor: Colors.white,
       backgroundColor: const Color(0xffF3F3F2),
       appBar: CustomAppBar(
         bottomLeftWidget: TextButton(
@@ -205,8 +205,9 @@ class _MyMovieScreenState extends ConsumerState<MyImageRecordScreen> {
         bottomRightWidget: TextButton(
           onPressed: _selectedImageFile != null
               ? () {
-                  final result = GridItemData(
-                    imageFile: _selectedImageFile,
+                  final result = GridItem.image(
+                    id: Uuid().v4(),
+                    imageFile: _selectedImageFile!,
                   );
                   Navigator.pop(context, result);
                 }

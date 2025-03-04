@@ -1,101 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:multi_split_view/multi_split_view.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:typed/common/index.dart';
 import 'package:typed/common/const/index.dart';
-import 'package:typed/type/component/component.dart';
-
-class SplitViewState {
-  final List<List<double>> horizontalFlexValues;
-  final List<double> verticalFlexValues;
-  SplitViewState({
-    required this.horizontalFlexValues,
-    required this.verticalFlexValues,
-  });
-
-  factory SplitViewState.initial() {
-    return SplitViewState(
-      horizontalFlexValues: List.generate(3, (_) => [1.0, 1.0]),
-      verticalFlexValues: List.generate(3, (_) => 1.0),
-    );
-  }
-}
-
-class SplitViewNotifier extends StateNotifier<SplitViewState> {
-  SplitViewNotifier() : super(SplitViewState.initial()) {
-    _loadFlex();
-  }
-
-  Future<void> _loadFlex() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-
-      final savedVerticalFlex = prefs.getStringList('vertical_flex');
-      final List<List<double>> horizontalFlex = [];
-      for (var i = 0; i < 3; i++) {
-        final savedHorizontalFlex = prefs.getStringList('horizontal_flex_$i');
-        if (savedHorizontalFlex != null) {
-          horizontalFlex
-              .add(savedHorizontalFlex.map((s) => double.parse(s)).toList());
-        }
-      }
-
-      if (savedVerticalFlex != null && horizontalFlex.length == 3) {
-        state = SplitViewState(
-          verticalFlexValues:
-              savedVerticalFlex.map((s) => double.parse(s)).toList(),
-          horizontalFlexValues: horizontalFlex,
-        );
-      }
-    } catch (e) {
-      debugPrint('[Loading Flex Error] $e');
-    }
-  }
-
-  Future<void> updateVerticalFlex(List<double> flexValues) async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setStringList(
-        'vertical_flex',
-        flexValues.map((f) => f.toString()).toList(),
-      );
-
-      state = SplitViewState(
-        horizontalFlexValues: state.horizontalFlexValues,
-        verticalFlexValues: flexValues,
-      );
-    } catch (e) {
-      debugPrint('[Updating Vertical Flex Error] $e');
-    }
-  }
-
-  Future<void> updateHorizontalFlex(int index, List<double> flexValues) async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setStringList(
-        'horizontal_flex_$index',
-        flexValues.map((f) => f.toString()).toList(),
-      );
-
-      final newHorizontalFlex =
-          List<List<double>>.from(state.horizontalFlexValues);
-      newHorizontalFlex[index] = flexValues;
-
-      state = SplitViewState(
-        horizontalFlexValues: newHorizontalFlex,
-        verticalFlexValues: state.verticalFlexValues,
-      );
-    } catch (e) {
-      debugPrint('[Saving Horizontal Flex Error] $e');
-    }
-  }
-}
-
-final splitViewProvider =
-    StateNotifierProvider<SplitViewNotifier, SplitViewState>((ref) {
-  return SplitViewNotifier();
-});
+import 'package:typed/type/models/period_type.dart';
+import 'package:typed/type/views/component/grid_item_widget.dart';
+import 'package:typed/type/viewmodels/split_view_viewmodel.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:multi_split_view/multi_split_view.dart';
 
 class MyType extends ConsumerStatefulWidget {
   const MyType({super.key});
@@ -108,18 +18,12 @@ class _MyTypeState extends ConsumerState<MyType> {
   late final List<MultiSplitViewController> _horizontalControllers;
   late final MultiSplitViewController _verticalController;
 
-  List<String> dropDownList = [
-    '이주의 나',
-    '이달의 나',
-    '올해의 나',
-  ];
-  late String currentDropDown;
+  late PeriodType _selectedPeriod;
 
   @override
   void initState() {
     super.initState();
-
-    currentDropDown = dropDownList.first;
+    _selectedPeriod = PeriodType.weekly;
 
     final splitViewState = ref.read(splitViewProvider);
 
@@ -173,14 +77,14 @@ class _MyTypeState extends ConsumerState<MyType> {
           elevation: 0,
           icon: Container(),
           underline: Container(),
-          value: currentDropDown,
+          value: _selectedPeriod,
           padding: EdgeInsets.zero,
-          items: dropDownList
+          items: PeriodType.allCases
               .map(
                 (dropDownValue) => DropdownMenuItem(
                   value: dropDownValue,
                   child: Text(
-                    dropDownValue,
+                    dropDownValue.engName,
                     style: AppTheme.title3,
                   ),
                 ),
@@ -190,7 +94,7 @@ class _MyTypeState extends ConsumerState<MyType> {
             setState(
               () {
                 if (value != null) {
-                  currentDropDown = value;
+                  _selectedPeriod = value;
                 }
               },
             );

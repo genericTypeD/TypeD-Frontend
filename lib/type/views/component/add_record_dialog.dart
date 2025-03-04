@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:typed/common/const/app_themes.dart';
-import 'package:typed/type/component/grid_item_widget.dart';
-import 'package:typed/type/screen/screen.dart';
+import 'package:typed/common/const/index.dart';
+import 'package:typed/type/views/screen.dart';
+import 'package:typed/type/models/grid_item.dart';
 
 class AddRecordDialog extends StatelessWidget {
-  final XFile? initialImage;
+  final GridItem? item;
 
   final categories = [
     {
@@ -23,7 +22,7 @@ class AddRecordDialog extends StatelessWidget {
   ];
 
   AddRecordDialog({
-    this.initialImage,
+    this.item,
     super.key,
   });
 
@@ -92,14 +91,25 @@ class AddRecordDialog extends StatelessWidget {
                       visualDensity: VisualDensity.compact,
                     ),
                     onPressed: () async {
-                      final result = await Navigator.push<GridItemData>(
+                      final result = await Navigator.push<GridItem>(
                         context,
                         MaterialPageRoute(
                           builder: (BuildContext context) {
                             final nextScreen = category['route'] as Widget;
                             if (nextScreen.runtimeType == MyImageRecordScreen) {
                               return MyImageRecordScreen(
-                                  initialImage: initialImage);
+                                item: item,
+                              );
+                            } else if (nextScreen.runtimeType ==
+                                MyBookRecordScreen) {
+                              return MyBookRecordScreen(
+                                item: item,
+                              );
+                            } else if (nextScreen.runtimeType ==
+                                MyMusicRecordScreen) {
+                              return MyMusicRecordScreen(
+                                item: item,
+                              );
                             } else {
                               return nextScreen;
                             }
@@ -109,6 +119,8 @@ class AddRecordDialog extends StatelessWidget {
 
                       if (result != null) {
                         Navigator.pop(context, result);
+                        // Don't use 'BuildContext's across async gaps.
+                        // Try rewriting the code to not use the 'BuildContext', or guard the use with a 'mounted' check.
                       }
                     },
                   ),
