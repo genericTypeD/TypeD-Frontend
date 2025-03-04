@@ -52,13 +52,13 @@ dependencies:
   logger: ^2.0.2
   flutter_secure_storage: ^9.0.0
   freezed_annotation: ^3.0.0
+  envied_generator: ^1.1.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
   build_runner: ^2.4.15
-  envied_generator: ^1.1.1
   json_serializable: ^6.7.1
   freezed: ^3.0.2
 
