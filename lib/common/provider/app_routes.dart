@@ -6,13 +6,13 @@ import 'package:typed/feed/provider/feed_routes.dart';
 import 'package:typed/feed/screen/feed_public.dart';
 import 'package:typed/menu/provider/menu_routes.dart';
 import 'package:typed/menu/screen/my_menu.dart';
+import 'package:typed/review/book_search_screen.dart';
 import 'package:typed/review/provider/review_routes.dart';
-import 'package:typed/review/screen/review_empty.dart';
 import 'package:typed/sentence/provider/sentence_routes.dart';
 import 'package:typed/sentence/screen/sentence_empty.dart';
 import 'package:typed/sentence/screen/sentence_input.dart';
-import 'package:typed/type/provider/type_routes.dart';
-import 'package:typed/type/screen/my_type.dart';
+import 'package:typed/type/routes/type_routes.dart';
+import 'package:typed/type/views/my_type.dart';
 
 class AppRoutes {
   static final GoRouter router = GoRouter(
@@ -38,7 +38,7 @@ class AppRoutes {
           StatefulShellBranch(routes: [
             GoRoute(
               path: '/home/review',
-              builder: (context, state) => const ReviewEmpty(),
+              builder: (context, state) => const BookSearchScreen(),
             ),
           ]),
           StatefulShellBranch(routes: [

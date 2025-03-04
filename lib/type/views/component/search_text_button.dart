@@ -133,11 +133,9 @@ class _SearchTextButtonState extends State<SearchTextButton> {
           },
         );
       },
-      child: const Text(
+      child: Text(
         '검색하기',
-        style: TextStyle(
-          fontSize: 14,
-          color: Colors.black,
+        style: AppTheme.title3.copyWith(
           height: 1,
         ),
       ),

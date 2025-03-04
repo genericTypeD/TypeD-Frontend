@@ -12,4 +12,7 @@ abstract class Env {
 
   @EnviedField(varName: 'KAKAO_REST_API_KEY')
   static const String kakaoRestApiKey = _Env.kakaoRestApiKey;
+
+  @EnviedField(varName: 'API_URL')
+  static const String apiUrl = _Env.apiUrl;
 }

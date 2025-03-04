@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:typed/common/const/app_bar_style.dart';
-import 'package:typed/type/component/grid_text_item.dart';
-import 'package:typed/common/const/app_themes.dart';
-import 'package:typed/config/env.dart';
-import 'package:typed/common/index.dart';
-import 'package:http/http.dart' as http;
-import 'package:path_provider/path_provider.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:spotify/spotify.dart' hide Image;
 import 'dart:io';
+import 'package:typed/common/const/index.dart';
+import 'package:typed/common/index.dart';
+import 'package:typed/config/env.dart';
+import 'package:typed/type/models/grid_item.dart';
+import 'package:spotify/spotify.dart' hide Image;
+// import 'package:http/http.dart' as http;
+// import 'package:path_provider/path_provider.dart';
+// import 'package:image_picker/image_picker.dart';
+import 'package:uuid/uuid.dart';
 
 class MyMusicRecordScreen extends StatefulWidget {
-  const MyMusicRecordScreen({super.key});
+  final GridItem? item;
+
+  const MyMusicRecordScreen({
+    this.item,
+    super.key,
+  });
 
   @override
   State<MyMusicRecordScreen> createState() => _MyMusicRecordScreenState();
@@ -34,6 +39,12 @@ class _MyMusicRecordScreenState extends State<MyMusicRecordScreen> {
   @override
   void initState() {
     super.initState();
+
+    if (widget.item != null && widget.item!.isValid && widget.item!.isMusic) {
+      final track = widget.item!.track!;
+      selectedTrack = track;
+      currentTracks.add(track);
+    }
   }
 
   Future<void> searchMusic(String query) async {
@@ -145,12 +156,11 @@ class _MyMusicRecordScreenState extends State<MyMusicRecordScreen> {
             padding: EdgeInsets.zero,
             minimumSize: Size.zero,
           ),
-          child: const Text(
+          child: Text(
             '뒤로 가기',
             textAlign: TextAlign.left,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.black,
+            style: AppTheme.title3.copyWith(
+              height: 1,
             ),
           ),
         ),
@@ -275,11 +285,9 @@ class _MyMusicRecordScreenState extends State<MyMusicRecordScreen> {
               },
             );
           },
-          child: const Text(
+          child: Text(
             '검색하기',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.black,
+            style: AppTheme.title3.copyWith(
               height: 1,
             ),
           ),
@@ -288,32 +296,41 @@ class _MyMusicRecordScreenState extends State<MyMusicRecordScreen> {
           onPressed: selectedTrack != null
               ? () async {
                   try {
-                    final response = await http.get(
-                        Uri.parse(selectedTrack!.album!.images!.first.url!));
+                    // final response = await http.get(
+                    //     Uri.parse(selectedTrack!.album!.images!.first.url!));
 
-                    final uniqueFileName =
-                        'album_image_${selectedTrack!.id}_${DateTime.now().millisecondsSinceEpoch}.jpg';
-                    final tempDir = await getTemporaryDirectory();
-                    final file = File('${tempDir.path}/$uniqueFileName');
+                    // final uniqueFileName =
+                    //     'album_image_${selectedTrack!.id}_${DateTime.now().millisecondsSinceEpoch}.jpg';
+                    // final tempDir = await getTemporaryDirectory();
+                    // final file = File('${tempDir.path}/$uniqueFileName');
 
-                    await file.writeAsBytes(response.bodyBytes);
+                    // await file.writeAsBytes(response.bodyBytes);
 
-                    final result = GridItemData(
-                      imageFile: XFile(file.path),
-                    );
+                    // final result = GridItem(
+                    //   imageFile: XFile(file.path),
+                    // );
+                    // final result = GridItem.music(
+                    //   id: Uuid().v4(),
+                    //   title: selectedTrack!.name!,
+                    //   imagePath: file.path,
+                    // );
 
-                    Navigator.pop(context, result);
+                    if (selectedTrack != null) {
+                      final result = GridItem.music(
+                        id: Uuid().v4(),
+                        track: selectedTrack!,
+                      );
+                      Navigator.pop(context, result);
+                    }
                   } catch (e) {
                     debugPrint('[Saving Image Error] $e');
                     // TODO: - 에러 처리 UI 구현
                   }
                 }
               : null,
-          child: const Text(
+          child: Text(
             '기록하기',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.black,
+            style: AppTheme.title3.copyWith(
               height: 1,
             ),
           ),
@@ -411,19 +428,24 @@ class _MyMusicRecordScreenState extends State<MyMusicRecordScreen> {
                                     ),
                                   ),
                                 ),
-                                child:
-                                    selectedTrack?.album?.images?.isNotEmpty ??
-                                            false
-                                        ? Image.network(
-                                            selectedTrack!
-                                                .album!.images!.first.url!,
-                                            fit: BoxFit.cover,
-                                            errorBuilder:
-                                                (context, error, stackTrace) =>
-                                                    const Icon(Icons.music_note,
-                                                        size: 50),
-                                          )
-                                        : Container(),
+                                child: (selectedTrack != null &&
+                                        selectedTrack!.album != null &&
+                                        selectedTrack!.album!.images != null &&
+                                        selectedTrack!
+                                            .album!.images!.isNotEmpty &&
+                                        selectedTrack!
+                                                .album!.images!.first.url !=
+                                            null)
+                                    ? Image.network(
+                                        selectedTrack!
+                                            .album!.images!.first.url!,
+                                        fit: BoxFit.cover,
+                                        errorBuilder:
+                                            (context, error, stackTrace) =>
+                                                const Icon(Icons.music_note,
+                                                    size: 50),
+                                      )
+                                    : Container(),
                               ),
                             ],
                           ),
@@ -482,12 +504,35 @@ class _MyMusicRecordScreenState extends State<MyMusicRecordScreen> {
                                                   ),
                                                 ),
                                               ),
-                                              child: Image.network(
-                                                currentTrack.album!.images!
-                                                        .first.url ??
-                                                    '',
-                                                width: screenWidth * 0.22,
-                                              ),
+                                              // child: Image.network(
+                                              //   currentTrack.album!.images!
+                                              //           .first.url ??
+                                              //       '',
+                                              //   width: screenWidth * 0.22,
+                                              // ),
+                                              child: (currentTrack.album !=
+                                                          null &&
+                                                      currentTrack
+                                                              .album!.images !=
+                                                          null &&
+                                                      currentTrack.album!
+                                                          .images!.isNotEmpty &&
+                                                      currentTrack
+                                                              .album!
+                                                              .images!
+                                                              .first
+                                                              .url !=
+                                                          null)
+                                                  ? Image.network(
+                                                      currentTrack
+                                                              .album!
+                                                              .images!
+                                                              .first
+                                                              .url ??
+                                                          '',
+                                                      width: screenWidth * 0.22,
+                                                    )
+                                                  : Container(),
                                             ),
                                             Expanded(
                                               child: Padding(

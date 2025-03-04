@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:typed/type/layout/my_type_layout.dart';
+import 'package:typed/type/views/layout/my_type_layout.dart';
 
 class MySentenceRecordScreen extends StatefulWidget {
   const MySentenceRecordScreen({super.key});
