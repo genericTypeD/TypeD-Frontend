@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:spotify/spotify.dart';
+import 'package:typed/review/model/review_model.dart';
 import 'package:typed/type/models/book_model.dart';
 import 'package:typed/type/models/grid_item_type.dart';
 import 'package:image_picker/image_picker.dart';
@@ -12,7 +13,8 @@ abstract class GridItem with _$GridItem {
     required String id,
     required GridItemType type,
     String? sentenceContent,
-    Book? book,
+    // Book? book,
+    Review? bookReview,
     Track? track,
     XFile? imageFile,
   }) = _GridItem;
@@ -39,14 +41,16 @@ abstract class GridItem with _$GridItem {
       );
 
   /// 책 그리드 아이템 팩토리 생성자
-  factory GridItem.book({
+  factory GridItem.bookReview({
     required String id,
-    required Book book,
+    // required Book book,
+    required Review bookReview,
   }) =>
       GridItem(
         id: id,
-        type: GridItemType.book,
-        book: book,
+        type: GridItemType.bookReview,
+        // book: book,
+        bookReview: bookReview,
       );
 
   /// 음악 그리드 아이템 팩토리 생성자
@@ -83,7 +87,7 @@ abstract class GridItem with _$GridItem {
 
   /// 타입별 유효성 확인
   bool get isSentence => type == GridItemType.sentence;
-  bool get isBook => type == GridItemType.book;
+  bool get isBook => type == GridItemType.bookReview;
   bool get isMusic => type == GridItemType.music;
   bool get isImage => type == GridItemType.image;
 
@@ -94,8 +98,8 @@ abstract class GridItem with _$GridItem {
         return true;
       case GridItemType.sentence:
         return (sentenceContent != null && sentenceContent!.isNotEmpty);
-      case GridItemType.book:
-        return (book != null);
+      case GridItemType.bookReview:
+        return (bookReview != null);
       case GridItemType.music:
         return (track != null);
       case GridItemType.image:
