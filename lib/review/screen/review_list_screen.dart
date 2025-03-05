@@ -6,7 +6,7 @@ import 'package:typed/common/layout/default_layout.dart';
 import 'package:typed/common/widgets/app_bar/custom_app_bar.dart';
 import 'package:typed/review/models/lock_enum.dart';
 import 'package:typed/review/models/review_model.dart';
-import 'package:typed/review/viewmodels/review_provider.dart';
+import 'package:typed/review/viewmodels/review/review_providers.dart';
 
 final dummyReviewsProvider = Provider<List<Review>>((ref) {
   return [
