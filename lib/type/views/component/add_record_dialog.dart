@@ -91,6 +91,8 @@ class AddRecordDialog extends StatelessWidget {
                       visualDensity: VisualDensity.compact,
                     ),
                     onPressed: () async {
+                      Navigator.of(context).pop();
+
                       final result = await Navigator.push<GridItem>(
                         context,
                         MaterialPageRoute(
