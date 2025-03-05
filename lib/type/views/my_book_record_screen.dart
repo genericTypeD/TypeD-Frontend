@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:typed/common/const/index.dart';
-import 'package:typed/review/model/review_model.dart';
+import 'package:typed/review/models/review_model.dart';
 import 'package:typed/type/models/dummies/dummy_bookreviews.dart';
 import 'package:typed/type/models/grid_item.dart';
 import 'package:typed/type/views/layout/my_record_layout.dart';

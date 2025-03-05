@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:spotify/spotify.dart';
-import 'package:typed/review/model/review_model.dart';
+import 'package:typed/review/models/review_model.dart';
 import 'package:typed/sentence/model/sentence_model.dart';
 import 'package:typed/type/models/grid_item_type.dart';
 import 'package:image_picker/image_picker.dart';

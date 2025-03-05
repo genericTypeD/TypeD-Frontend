@@ -1,4 +1,4 @@
-import 'package:typed/review/model/review_model.dart';
+import 'package:typed/review/models/review_model.dart';
 
 final dummyBookReviews = [
   Review(

@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:spotify/spotify.dart';
-import 'package:typed/review/model/review_model.dart';
+import 'package:typed/review/models/review_model.dart';
 import 'package:typed/sentence/model/sentence_model.dart';
 import 'package:typed/type/models/grid_item.dart';
 import 'package:typed/type/models/grid_item_type.dart';
