@@ -1,29 +1,11 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:http/io_client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:typed/config/env.dart';
 import 'package:uuid/uuid.dart';
 import 'package:typed/review/model/review_model.dart';
-
-http.Client createUnsecureClient() {
-  HttpClient client = HttpClient() // 네트워크 요청을 처리하는 기본 클라이언트 객체
-    ..badCertificateCallback = (X509Certificate cert, String host, int port) =>
-        true; // 모든 SSL 인증서를 유효하다고 간주하여 인증서 검증 우회
-  // IOClient로 래핑해서 http.Client 인터페이스 제공
-  return IOClient(client); // 인증서 검증 우회 객체를 http.Client로 래핑하여 리턴
-}
-
-http.Client getClient(bool isDebugMode) {
-  if (isDebugMode) {
-    return createUnsecureClient(); // 개발 및 테스트 환경에서만
-  } else {
-    return http.Client(); // 프로덕션 환경에서는 정상 검증
-  }
-}
 
 class ReviewRepository {
   final Dio _dio;
