@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:typed/common/const/index.dart';
-import 'package:typed/review/model/lock_enum.dart';
-import 'package:typed/review/review_provider.dart';
-import '../common/index.dart';
+import 'package:typed/review/models/lock_enum.dart';
+import 'package:typed/review/viewmodels/review_provider.dart';
+import '../../common/index.dart';
 
 class ReviewEditScreen extends ConsumerStatefulWidget {
   final int reviewId;

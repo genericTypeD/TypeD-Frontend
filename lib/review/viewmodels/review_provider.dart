@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:typed/review/model/review_model.dart';
-import 'package:typed/review/review_repository.dart';
+import 'package:typed/review/models/review_model.dart';
+import 'package:typed/review/repositories/review_repository.dart';
 
 /// 서평 Repository Provider
 final reviewRepositoryProvider = Provider<ReviewRepository>((ref) {
