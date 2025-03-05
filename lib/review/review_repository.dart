@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:typed/config/env.dart';
 import 'package:uuid/uuid.dart';
 import 'package:typed/review/model/review_model.dart';
 
@@ -26,11 +27,15 @@ http.Client getClient(bool isDebugMode) {
 
 class ReviewRepository {
   static const String _baseUrl = Env.apiUrl;
-  static const String _deviceIdKey = 'device_id';
-  static const String _reviewEndpoint = '/reviews';
-  static const String _contentType = 'Content-Type';
-  static const String _applicationJson = 'application/json';
-  static const String _deviceIdHeader = 'X-Device-Id';
+  /// HTTP 헤더 생성
+  Future<Map<String, String>> _createHeaders() async {
+    final deviceId = await _getDeviceId();
+
+    return {
+      "X-Device-Id": deviceId,
+      "Content-Type": "application/json",
+    };
+  }
 
   /// 디바이스 ID 가져오기
   Future<String> _getDeviceId() async {
