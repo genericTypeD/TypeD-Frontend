@@ -1,16 +1,8 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
-import 'dart:convert';
-import 'package:typed/type/models/book_model.dart';
 import 'package:typed/common/const/index.dart';
 import 'package:typed/review/model/review_model.dart';
 import 'package:typed/type/models/grid_item.dart';
 import 'package:typed/type/views/layout/my_record_layout.dart';
-import 'package:typed/type/views/component/search_text_button.dart';
-import 'package:typed/config/env.dart';
-import 'package:http/http.dart' as http;
-import 'package:path_provider/path_provider.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
 final dummyReviews = [
@@ -312,25 +304,23 @@ class MyBookRecordScreen extends StatefulWidget {
 }
 
 class _MyBookRecordScreenState extends State<MyBookRecordScreen> {
-  static const String _apiKey = Env.kakaoRestApiKey;
-
-  // TODO: - private
-  List<Book> searchResults = [];
-  bool isLoading = false;
-  final searchController = TextEditingController();
-
-  Book? selectedBook;
-  List<Book> currentBooks = [];
+  // TODO: - 야매로 인덱스로 선택 여부 확인하는 방식 당연히 바꿔야.....
+  late int selectedBookIndex;
 
   @override
   void initState() {
     super.initState();
 
-    if (widget.item != null && widget.item!.isValid && widget.item!.isBook) {
-      // TODO: - 타입을 다 만들어야 하나?
-      final book = widget.item!.book!;
-      selectedBook = book;
-      currentBooks.add(book);
+    if (widget.item != null && widget.item!.isBook && widget.item!.isValid) {
+      selectedBookIndex = dummyReviews.indexWhere((review) {
+        if (review.bookIsbn == widget.item!.bookReview!.bookIsbn) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+    } else {
+      selectedBookIndex = -1;
     }
   }
 
@@ -338,10 +328,50 @@ class _MyBookRecordScreenState extends State<MyBookRecordScreen> {
   Widget build(BuildContext context) {
     return MyRecordLayout(
       onBottomLeftWidgetPressed: () => Navigator.pop(context),
-      onBottomRightWidgetPressed: () =>
-          selectedBook != null ? pushMyTypeScreen() : null,
-      bottomCenterWidget: _renderBottomCenterWidget(),
+      onBottomRightWidgetPressed: () async {
+        if (selectedBookIndex != -1) {
+          final result = GridItem.bookReview(
+            id: Uuid().v4(),
+            bookReview: dummyReviews[selectedBookIndex],
+          );
+          Navigator.pop(context, result);
+        }
+      },
       body: [
+        Expanded(
+          child: GridView.builder(
+            padding: const EdgeInsets.all(16.0),
+            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
+              childAspectRatio: 0.75,
+              crossAxisSpacing: 8,
+              mainAxisSpacing: 8,
+            ),
+            itemCount: dummyReviews.length,
+            itemBuilder: (BuildContext context, int index) {
+              final item = dummyReviews[index];
+
+              return BookReviewWidget(
+                item: item,
+                onTap: () {
+                  setState(() {
+                    if (selectedBookIndex == -1) {
+                      selectedBookIndex = index;
+                    } else {
+                      selectedBookIndex = -1;
+                    }
+                  });
+                },
+                isSelected: selectedBookIndex == index,
+                placeholder: _buildPlaceholder(),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
   // TODO: - common으로 빼기
   Widget _buildPlaceholder() {
     return Center(
@@ -353,6 +383,7 @@ class _MyBookRecordScreenState extends State<MyBookRecordScreen> {
       ),
     );
   }
+}
 
 class BookReviewWidget extends StatelessWidget {
   final Review item;
