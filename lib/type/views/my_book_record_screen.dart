@@ -342,9 +342,15 @@ class _MyBookRecordScreenState extends State<MyBookRecordScreen> {
           selectedBook != null ? pushMyTypeScreen() : null,
       bottomCenterWidget: _renderBottomCenterWidget(),
       body: [
-        _renderSelectedBookSection(context),
-        _renderCurrentBooksSection(context),
-      ],
+  // TODO: - common으로 빼기
+  Widget _buildPlaceholder() {
+    return Center(
+      child: Image.asset(
+        'assets/images/grid_item_placeholder.png',
+        width: MediaQuery.of(context).size.width * 0.1,
+        height: MediaQuery.of(context).size.width * 0.1,
+        fit: BoxFit.contain,
+      ),
     );
   }
 
