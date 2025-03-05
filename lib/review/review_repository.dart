@@ -107,7 +107,7 @@ class ReviewRepository {
   Future<bool> updateReview(int reviewId, String content, bool isPublic) async {
     final String deviceId = await _getDeviceId();
     final response = await http.put(
-      Uri.parse('$_baseUrl$_reviewEndpoint$reviewId'),
+      Uri.parse('$_baseUrl/$_reviewEndpoint/$reviewId'),
       headers: {_contentType: _applicationJson, _deviceIdHeader: deviceId},
       body: jsonEncode({
         'content': content,
@@ -127,7 +127,7 @@ class ReviewRepository {
   Future<bool> deleteReview(int reviewId) async {
     final String deviceId = await _getDeviceId();
     final response = await http.delete(
-      Uri.parse('$_baseUrl$_reviewEndpoint/$reviewId'),
+      Uri.parse('$_baseUrl/$_reviewEndpoint/$reviewId'),
       headers: {_contentType: _applicationJson, _deviceIdHeader: deviceId},
     );
 
