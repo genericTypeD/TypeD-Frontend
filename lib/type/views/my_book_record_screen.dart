@@ -50,6 +50,7 @@ class _MyBookRecordScreenState extends State<MyBookRecordScreen> {
   @override
   Widget build(BuildContext context) {
     return MyRecordLayout(
+      onBottomLeftWidgetPressed: () => Navigator.pop(context),
       onBottomRightWidgetPressed: () =>
           selectedBook != null ? pushMyTypeScreen() : null,
       bottomCenterWidget: _renderBottomCenterWidget(),

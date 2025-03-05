@@ -3,12 +3,14 @@ import 'package:typed/common/const/index.dart';
 import 'package:typed/common/index.dart';
 
 class MyRecordLayout extends StatefulWidget {
+  final VoidCallback? onBottomLeftWidgetPressed;
   final VoidCallback? onBottomRightWidgetPressed;
   final Widget? bottomCenterWidget;
   final List<Widget> body;
   final bool useDefaultBackground;
 
   const MyRecordLayout({
+    this.onBottomLeftWidgetPressed,
     this.onBottomRightWidgetPressed,
     this.bottomCenterWidget,
     required this.body,
@@ -17,6 +19,7 @@ class MyRecordLayout extends StatefulWidget {
   });
 
   const MyRecordLayout.secondary({
+    this.onBottomLeftWidgetPressed,
     this.onBottomRightWidgetPressed,
     this.bottomCenterWidget,
     required this.body,
@@ -50,8 +53,7 @@ class _MyRecordLayoutState extends State<MyRecordLayout> {
 
   Widget _renderBottomLeftWidget() {
     return TextButton(
-      // TODO: - 변수로 빼기
-      onPressed: () => Navigator.pop(context),
+      onPressed: widget.onBottomLeftWidgetPressed,
       style: TextButton.styleFrom(
         padding: EdgeInsets.zero,
         minimumSize: Size.zero,
