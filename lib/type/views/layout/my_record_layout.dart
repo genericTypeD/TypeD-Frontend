@@ -6,7 +6,8 @@ class MyRecordLayout extends StatefulWidget {
   final VoidCallback? onBottomLeftWidgetPressed;
   final VoidCallback? onBottomRightWidgetPressed;
   final Widget? bottomCenterWidget;
-  final List<Widget> body;
+  // final List<Widget> body;
+  final Widget body;
   final bool useDefaultBackground;
 
   const MyRecordLayout({
@@ -136,9 +137,10 @@ class _MyRecordLayoutState extends State<MyRecordLayout> {
                   : AppColors.backgroundSecondary,
               border: Border(bottom: AppBarStyle.borderStyle),
             ),
-            child: Column(
-              children: widget.body,
-            ),
+            // child: Column(
+            //   children: widget.body,
+            // ),
+            child: widget.body,
           ),
         ),
       ),

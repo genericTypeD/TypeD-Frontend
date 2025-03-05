@@ -337,38 +337,42 @@ class _MyBookRecordScreenState extends State<MyBookRecordScreen> {
           Navigator.pop(context, result);
         }
       },
-      body: [
-        Expanded(
-          child: GridView.builder(
-            padding: const EdgeInsets.all(16.0),
-            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
-              childAspectRatio: 0.75,
-              crossAxisSpacing: 8,
-              mainAxisSpacing: 8,
-            ),
-            itemCount: dummyReviews.length,
-            itemBuilder: (BuildContext context, int index) {
-              final item = dummyReviews[index];
-
-              return BookReviewWidget(
-                item: item,
-                onTap: () {
-                  setState(() {
-                    if (selectedBookIndex == -1) {
-                      selectedBookIndex = index;
-                    } else {
-                      selectedBookIndex = -1;
-                    }
-                  });
-                },
-                isSelected: selectedBookIndex == index,
-                placeholder: _buildPlaceholder(),
-              );
-            },
+      // body: [
+      //   Expanded(
+      //     child: ,
+      //   ),
+      // ],
+      body: Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: GridView.builder(
+          padding: const EdgeInsets.all(16.0),
+          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
+            childAspectRatio: 0.75,
+            crossAxisSpacing: 8,
+            mainAxisSpacing: 8,
           ),
+          itemCount: dummyReviews.length,
+          itemBuilder: (BuildContext context, int index) {
+            final item = dummyReviews[index];
+
+            return BookReviewWidget(
+              item: item,
+              onTap: () {
+                setState(() {
+                  if (selectedBookIndex == -1) {
+                    selectedBookIndex = index;
+                  } else {
+                    selectedBookIndex = -1;
+                  }
+                });
+              },
+              isSelected: selectedBookIndex == index,
+              placeholder: _buildPlaceholder(),
+            );
+          },
         ),
-      ],
+      ),
     );
   }
 
@@ -407,8 +411,6 @@ class BookReviewWidget extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(
             color: AppColors.borderBlack,
-            // width: 0.3,
-            // width: selectedBookIndex == index ? 0.6 : 0.3,
             width: isSelected ? 0.6 : 0.3,
           ),
           color: AppColors.backgroundTertiary,
