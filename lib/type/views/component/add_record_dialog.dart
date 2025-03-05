@@ -110,6 +110,9 @@ class AddRecordDialog extends StatelessWidget {
                               return MyMusicRecordScreen(
                                 item: item,
                               );
+                            } else if (nextScreen.runtimeType ==
+                                MySentenceRecordScreen) {
+                              return MySentenceRecordScreen(item: item);
                             } else {
                               return nextScreen;
                             }

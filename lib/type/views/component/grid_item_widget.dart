@@ -108,11 +108,12 @@ class GridItemWidget extends ConsumerWidget {
 
       // 문장
       case GridItemType.sentence:
-        if (item.sentenceContent != null) {
+        // if (item.sentenceContent != null) {
+        if (item.isSentence && item.isValid) {
           return Padding(
             padding: const EdgeInsets.all(12),
             child: Text(
-              item.sentenceContent ?? '',
+              item.sentence!.content,
               style: AppTheme.body3.copyWith(color: Colors.black),
               overflow: TextOverflow.clip,
               softWrap: true,
