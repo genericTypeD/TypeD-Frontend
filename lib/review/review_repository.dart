@@ -26,6 +26,10 @@ http.Client getClient(bool isDebugMode) {
 }
 
 class ReviewRepository {
+  final Dio _dio;
+
+  ReviewRepository(this._dio);
+
   static const String _baseUrl = Env.apiUrl;
   static const String _reviewEndpoint = '/reviews';
   static const String _deviceIdKey = 'device_id';
@@ -47,7 +51,6 @@ class ReviewRepository {
   Future<String> _getDeviceId() async {
     final prefs = await SharedPreferences.getInstance();
     String? deviceId = prefs.getString(_deviceIdKey);
-
     if (deviceId == null) {
       deviceId = Uuid().v4();
       await prefs.setString(_deviceIdKey, deviceId);
@@ -60,24 +63,58 @@ class ReviewRepository {
   /// 서평 저장 (POST)
   Future<Review?> saveReview(String bookIsbn, String bookTitle, String content,
       bool isPublic, String? thumbnail) async {
-    final String deviceId = await _getDeviceId();
-    final response = await http.post(
-      Uri.parse('$_baseUrl$_reviewEndpoint'),
-      headers: {_contentType: _applicationJson, _deviceIdHeader: deviceId},
-      body: jsonEncode({
-        'bookIsbn': bookIsbn,
-        'bookTitle': bookTitle,
-        'content': content,
-        'isPublic': isPublic,
-        'thumbnail': thumbnail,
-      }),
-    );
+    // final String deviceId = await _getDeviceId();
+    // final uri = Uri.parse('$_baseUrl/$_reviewEndpoint');
+    // debugPrint('요청 URL: ${uri.toString()}');
 
-    if (response.statusCode == 201) {
-      return Review.fromJson(jsonDecode(response.body));
-    } else {
-      debugPrint('[서평 저장 실패] ${response.body}');
+    // final headers = await _createHeaders();
+    // debugPrint('요청 Headers: ${headers}');
+
+    // final body = jsonEncode({
+    //   'bookIsbn': bookIsbn,
+    //   'bookTitle': bookTitle,
+    //   'content': content,
+    //   'isPublic': isPublic,
+    //   'thumbnail': thumbnail,
+    // });
+    // debugPrint('요청 Body: ${body}');
+
+    try {
+      final headers = await _createHeaders();
+      debugPrint('Headers: $headers');
+
+      final response = await _dio.post(
+        '$_baseUrl/$_reviewEndpoint',
+        data: {
+          'bookIsbn': bookIsbn,
+          'bookTitle': bookTitle,
+          'content': content,
+          'isPublic': isPublic,
+          'thumbnail': thumbnail,
+        },
+        options: Options(
+          headers: headers,
+          // SSL 인증서 검증 비활성화
+          validateStatus: (_) => true,
+        ),
+      );
+
+      // 응답 처리
+      if (response.statusCode == 201) {
+        debugPrint('[서평 저장 성공(${response.statusCode})]');
+        // return Review.fromJson(jsonDecode(response.body));
+        return Review.fromJson(response.data);
+      } else {
+        // debugPrint('[서평 저장 실패(${response.statusCode})] ${response.body}');
+        debugPrint('[서평 저장 실패(${response.statusCode})] ${response.data}');
+        return null;
+      }
+    } catch (e) {
+      debugPrint('[서평 저장 예외 발생] $e');
       return null;
+      // } finally {
+      //   client.close();
+      // }
     }
   }
 
