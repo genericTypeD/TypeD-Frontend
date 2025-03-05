@@ -3,7 +3,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:spotify/spotify.dart';
 import 'package:typed/review/model/review_model.dart';
 import 'package:typed/sentence/model/sentence_model.dart';
-import 'package:typed/type/models/book_model.dart';
 import 'package:typed/type/models/grid_item.dart';
 import 'package:typed/type/models/grid_item_type.dart';
 import 'package:typed/type/models/grid_state.dart';
