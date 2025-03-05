@@ -27,6 +27,12 @@ http.Client getClient(bool isDebugMode) {
 
 class ReviewRepository {
   static const String _baseUrl = Env.apiUrl;
+  static const String _reviewEndpoint = '/reviews';
+  static const String _deviceIdKey = 'device_id';
+  static const String _contentType = 'Content-Type';
+  static const String _applicationJson = 'application/json';
+  static const String _deviceIdHeader = 'X-Device-Id';
+
   /// HTTP 헤더 생성
   Future<Map<String, String>> _createHeaders() async {
     final deviceId = await _getDeviceId();
@@ -78,8 +84,13 @@ class ReviewRepository {
   /// 서평 목록 조회 (GET)
   Future<List<Review>> fetchReviews() async {
     final String deviceId = await _getDeviceId();
+    final uri = Uri.parse('$_baseUrl/$_reviewEndpoint');
+
+    debugPrint('요청 URL: ${uri.toString()}');
+
     final response = await http.get(
-      Uri.parse('$_baseUrl$_reviewEndpoint'),
+      // Uri.parse('$_baseUrl/$_reviewEndpoint'),
+      uri,
       headers: {_contentType: _applicationJson, _deviceIdHeader: deviceId},
     );
 
@@ -87,7 +98,7 @@ class ReviewRepository {
       final List<dynamic> data = jsonDecode(response.body);
       return data.map((item) => Review.fromJson(item)).toList();
     } else {
-      debugPrint('[서평 목록 조회 실패] ${response.body}');
+      debugPrint('[서평 목록 조회 실패(${response.statusCode})] ${response.body}');
       return [];
     }
   }
