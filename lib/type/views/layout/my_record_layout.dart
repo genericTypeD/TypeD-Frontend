@@ -6,11 +6,21 @@ class MyRecordLayout extends StatefulWidget {
   final VoidCallback? onBottomRightWidgetPressed;
   final Widget? bottomCenterWidget;
   final List<Widget> body;
+  final bool useDefaultBackground;
 
   const MyRecordLayout({
     this.onBottomRightWidgetPressed,
     this.bottomCenterWidget,
     required this.body,
+    this.useDefaultBackground = true,
+    super.key,
+  });
+
+  const MyRecordLayout.secondary({
+    this.onBottomRightWidgetPressed,
+    this.bottomCenterWidget,
+    required this.body,
+    this.useDefaultBackground = false,
     super.key,
   });
 
@@ -117,8 +127,10 @@ class _MyRecordLayoutState extends State<MyRecordLayout> {
         color: const Color(0xffF3F3F2),
         child: SafeArea(
           child: Container(
-            decoration: const BoxDecoration(
-              color: Colors.white,
+            decoration: BoxDecoration(
+              color: widget.useDefaultBackground
+                  ? Colors.white
+                  : AppColors.backgroundSecondary,
               border: Border(bottom: AppBarStyle.borderStyle),
             ),
             child: Column(
