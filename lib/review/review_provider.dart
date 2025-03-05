@@ -40,7 +40,10 @@ Dio createDioWithoutCertVerification() {
 
 /// 서평 Repository Provider
 final reviewRepositoryProvider = Provider<ReviewRepository>((ref) {
-  return ReviewRepository();
+  // return ReviewRepository();
+
+  final dio = createDioWithoutCertVerification(); // Dio 인스턴스 생성 (인증서 검증 우회 포함)
+  return ReviewRepository(dio);
 });
 
 /// 서평 목록 상태 관리 Provider
