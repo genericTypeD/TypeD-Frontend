@@ -32,7 +32,7 @@ class _MyRecordLayoutState extends State<MyRecordLayout> {
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
-      backgroundColor: const Color(0xffF3F3F2),
+      backgroundColor: AppColors.backgroundSecondary,
       appBar: CustomAppBar(
         bottomLeftWidget: _renderBottomLeftWidget(),
         bottomCenterWidget: widget.bottomCenterWidget,
@@ -50,6 +50,7 @@ class _MyRecordLayoutState extends State<MyRecordLayout> {
 
   Widget _renderBottomLeftWidget() {
     return TextButton(
+      // TODO: - 변수로 빼기
       onPressed: () => Navigator.pop(context),
       style: TextButton.styleFrom(
         padding: EdgeInsets.zero,
@@ -79,7 +80,7 @@ class _MyRecordLayoutState extends State<MyRecordLayout> {
     return Container(
       width: AppBarStyle.borderContainerWidth,
       decoration: const BoxDecoration(
-        color: Color(0xffF3F3F2),
+        color: AppColors.backgroundSecondary,
         border: Border(right: AppBarStyle.borderStyle),
       ),
       child: Column(
@@ -102,7 +103,7 @@ class _MyRecordLayoutState extends State<MyRecordLayout> {
     return Container(
       width: AppBarStyle.borderContainerWidth,
       decoration: const BoxDecoration(
-        color: Color(0xffF3F3F2),
+        color: AppColors.backgroundSecondary,
         border: Border(left: AppBarStyle.borderStyle),
       ),
       child: Column(
@@ -124,7 +125,7 @@ class _MyRecordLayoutState extends State<MyRecordLayout> {
   Widget _renderBody() {
     return Expanded(
       child: Container(
-        color: const Color(0xffF3F3F2),
+        color: AppColors.backgroundSecondary,
         child: SafeArea(
           child: Container(
             decoration: BoxDecoration(
