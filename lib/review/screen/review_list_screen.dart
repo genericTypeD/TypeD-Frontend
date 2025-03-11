@@ -253,7 +253,13 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     visualDensity: VisualDensity.compact,
                   ),
-                  onPressed: () => Navigator.pop(context, false),
+                  onPressed: () {
+                    if (context.canPop()) {
+                      context.pop(false);
+                    } else {
+                      Navigator.of(context, rootNavigator: true).pop(false);
+                    }
+                  },
                   child: Text(
                     '취소',
                     style: AppTheme.body2,
@@ -269,7 +275,13 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     visualDensity: VisualDensity.compact,
                   ),
-                  onPressed: () => Navigator.pop(context, true),
+                  onPressed: () {
+                    if (context.canPop()) {
+                      context.pop(true);
+                    } else {
+                      Navigator.of(context, rootNavigator: true).pop(true);
+                    }
+                  },
                   child: Text(
                     '삭제',
                     style: AppTheme.body2,
