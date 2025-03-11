@@ -62,9 +62,11 @@ class _ReviewEditScreenState extends ConsumerState<ReviewEditScreen> {
           onPressed: () async {
             final content = _controller.text.trim();
             if (content.isNotEmpty) {
-              await ref
-                  .read(reviewListProvider.notifier)
-                  .updateReview(widget.reviewId, content, !_isPrivate);
+              await ref.read(reviewListProvider.notifier).updateReview(
+                    widget.reviewId,
+                    content,
+                    widget.isPublic,
+                  );
               if (context.mounted) {
                 context.go('/home/review');
               }
