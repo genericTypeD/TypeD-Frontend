@@ -12,7 +12,7 @@ class DateFormatter {
 
       // 2. 주간 모드: 월 + 몇째주 표시 (ex. 3월 첫째주)
       case PeriodType.weekly:
-        final firstDayOfWeek = _getFirstDayOfWeek(dateTime);
+        final firstDayOfWeek = getFirstDayOfWeek(dateTime);
         final weekOfMonth = (firstDayOfWeek.day / 7).ceil();
         final weekNames = ['첫째', '둘째', '셋째', '넷째', '다섯째'];
         final weekName = weekOfMonth <= weekNames.length
@@ -32,7 +32,7 @@ class DateFormatter {
   }
 
   /// 한 주의 월요일을 구하는 헬퍼 메소드
-  static DateTime _getFirstDayOfWeek(DateTime date) {
+  static DateTime getFirstDayOfWeek(DateTime date) {
     final difference =
         date.weekday - DateTime.monday; // 현재 요일에서 월요일(1)까지의 차이 계산
     return date.subtract(Duration(days: difference)); // 차이만큼 날짜 빼서 월요일 날짜 계산
