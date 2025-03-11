@@ -66,7 +66,7 @@ class _ReviewEditScreenState extends ConsumerState<ReviewEditScreen> {
                   .read(reviewListProvider.notifier)
                   .updateReview(widget.reviewId, content, !_isPrivate);
               if (context.mounted) {
-                context.go('/review_list');
+                context.go('/home/review');
               }
             }
           },
