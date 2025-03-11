@@ -38,10 +38,8 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
 
     return reviewsState.when(
       data: (reviews) {
-        // final privateReviews = ref.watch(privateReviewsProvider);
-        // final publicReviews = ref.watch(publicReviewsProvider);
-        final privateReviews = ref.watch(dummyPrivateReviewsProvider);
-        final publicReviews = ref.watch(dummyPublicReviewsProvider);
+        final privateReviews = ref.watch(privateReviewsProvider);
+        final publicReviews = ref.watch(publicReviewsProvider);
 
         final displayReviews = _currentLockState == LockStatus.closed
             ? privateReviews
