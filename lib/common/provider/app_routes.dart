@@ -62,43 +62,20 @@ class AppRoutes {
           ]),
         ],
       ),
-          StatefulShellBranch(routes: [
-            GoRoute(
-              path: '/home/menu',
-              builder: (context, state) => const MyMenu(),
-            ),
-          ]),
-        ],
-      ),
-      // AppRoutes.dart 내부
-      // AppRoutes.dart
       GoRoute(
-        path: '/sentence_input',
-        pageBuilder: (context, state) {
-          return CustomTransitionPage(
-            key: state.pageKey,
-            child: const SentenceInput(),
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) {
-              return SlideTransition(
-                position: Tween<Offset>(
-                  begin: const Offset(0, 1),
-                  end: Offset.zero, // 현재 위치
-                ).animate(animation),
-                child: child,
-              );
-            },
-            transitionDuration: const Duration(milliseconds: 300),
-            reverseTransitionDuration: const Duration(milliseconds: 300),
-          );
-        },
+        path: '/book_search',
+        name: 'direct_book_search_screen',
+        builder: (context, state) => const BookSearchScreen(),
       ),
-      // 각 도메인별 경로 포함
+      GoRoute(
+        path: '/review_input',
+        name: 'direct_review_input_screen',
+        builder: (context, state) => const ReviewInputScreen(),
+      ),
       ...TypeRoutes.routes,
       ...ReviewRoutes.routes,
       ...SentenceRoutes.routes,
       ...FeedRoutes.routes,
-      ...MenuRoutes.routes,
     ],
   );
 }
