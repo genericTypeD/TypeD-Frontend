@@ -21,8 +21,8 @@ class HomeTab extends StatelessWidget {
           backgroundColor: AppColors.backgroundSecondary,
           selectedFontSize: 10,
           unselectedFontSize: 10,
-          selectedItemColor: Colors.black,
-          unselectedItemColor: Colors.grey,
+          selectedItemColor: AppColors.textPrimary,
+          unselectedItemColor: AppColors.textTertiary,
           currentIndex: navigationShell.currentIndex,
           onTap: (int index) {
             navigationShell.goBranch(index); // 바텀 네비게이션 클릭 시 이동
