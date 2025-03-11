@@ -27,14 +27,8 @@ class _SentenceListState extends ConsumerState<SentenceList>
     _currentLockState = LockStatus.closed;
 
     Future.microtask(() {
-      ref.read(sentenceListProvider.notifier).fetchSentences();
+      ref.read(sentenceListProvider.notifier);
     });
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
   }
 
   @override
