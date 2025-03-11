@@ -53,7 +53,7 @@ class _SentenceInputState extends ConsumerState<SentenceInput>
             if (context.canPop()) {
               context.pop();
             } else {
-              context.go('/home/sentence');
+              context.go('/home/sentence_list');
             }
           },
           icon: const Icon(
@@ -74,7 +74,7 @@ class _SentenceInputState extends ConsumerState<SentenceInput>
                 await ref
                     .read(sentenceListProvider.notifier)
                     .addSentence(content, !_isPrivate);
-                context.go('/sentence_list'); // 문장 목록으로 이동
+                context.go('/home/sentence_list');
               }
             },
             style: TextButton.styleFrom(
