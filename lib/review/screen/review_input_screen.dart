@@ -108,22 +108,29 @@ class _ReviewInputScreenState extends ConsumerState<ReviewInputScreen> {
           onPressed: () async {
             final content = _controller.text.trim();
 
-            // 내용이 있을 때만 저장 처리
             if (content.isNotEmpty) {
-              final isPublic = !_isPrivate; // _isPrivate 값의 반대가 isPublic 값이므로
+              final isPublic = !_isPrivate;
 
-              // 서평 저장
-              await ref.read(reviewListProvider.notifier).addReview(
-                    selectedBook.isbn,
-                    selectedBook.title,
-                    content,
-                    isPublic,
-                    selectedBook.thumbnail,
+              try {
+                await ref.read(reviewListProvider.notifier).addReview(
+                      selectedBook.isbn,
+                      selectedBook.title,
+                      content,
+                      isPublic,
+                      selectedBook.thumbnail,
+                    );
+
+                if (context.mounted) {
+                  context.go('/home/review');
+                }
+              } catch (error) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('실패! (오류: $error)'),
+                    ),
                   );
-
-              // 저장 후 목록 화면으로 이동
-              if (context.mounted) {
-                context.go('/review_list');
+                }
               }
             }
           },
