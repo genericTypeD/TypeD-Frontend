@@ -191,7 +191,7 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
                       onPressed: () async {
                         final confirmed = await showDialog<bool>(
                           context: context,
-                          builder: (context) => _buildAlertDialog(),
+                          builder: (context) => _buildAlertDialog(review),
                         );
 
                         if (confirmed == true) {
@@ -211,7 +211,7 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
     );
   }
 
-  Widget _buildAlertDialog() {
+  Widget _buildAlertDialog(Review review) {
     return AlertDialog(
       titlePadding: EdgeInsets.zero,
       contentPadding: EdgeInsets.zero,
