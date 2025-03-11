@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:typed/common/const/app_colors.dart';
 import 'package:typed/common/const/app_themes.dart';
+import 'package:typed/common/index.dart';
 import 'package:typed/common/layout/default_layout.dart';
 import 'package:typed/sentence/provider/sentence_provider.dart';
 
@@ -63,7 +64,7 @@ class _SentenceInputState extends ConsumerState<SentenceInput>
           ),
         ),
         title: Text(
-          "문장 수집",
+          '문장 수집',
           style: AppTheme.title2,
         ),
         actions: [
@@ -81,7 +82,7 @@ class _SentenceInputState extends ConsumerState<SentenceInput>
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
             ),
             child: Text(
-              "완료",
+              '완료',
               style: AppTheme.title3,
             ),
           ),
@@ -137,21 +138,21 @@ class _SentenceInputState extends ConsumerState<SentenceInput>
                             color: AppColors.textSecondary,
                           ),
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
+                            borderRadius: BorderRadius.zero,
                             borderSide: const BorderSide(
                               color: AppColors.borderBlack,
                               width: 0.3,
                             ),
                           ),
                           enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
+                            borderRadius: BorderRadius.zero,
                             borderSide: const BorderSide(
                               color: AppColors.borderBlack,
                               width: 0.3,
                             ),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
+                            borderRadius: BorderRadius.zero,
                             borderSide: const BorderSide(
                               color: AppColors.borderBlack,
                               width: 0.3,
@@ -165,6 +166,14 @@ class _SentenceInputState extends ConsumerState<SentenceInput>
                     Align(
                       alignment: Alignment.centerRight,
                       child: TextButton.icon(
+                        style: TextButton.styleFrom(
+                          overlayColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                          backgroundColor: Colors.transparent,
+                          foregroundColor: Colors.transparent,
+                          surfaceTintColor: Colors.transparent,
+                          elevation: 0,
+                        ),
                         onPressed: () {
                           setState(() {
                             _isPrivate = !_isPrivate;
