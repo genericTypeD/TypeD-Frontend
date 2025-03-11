@@ -1,221 +1,297 @@
-// Sentence 클래스의 더미 데이터 생성
 import 'package:typed/sentence/model/sentence_model.dart';
 
 final List<Sentence> dummySentences = [
-  // 한국어 문장 - 다양한 길이
   Sentence(
+    id: 1,
     content: '오늘은 날씨가 좋다.',
     isPublic: true,
-    createdAt: DateTime(2023, 1, 15, 9, 30),
+    createdAt: '2025-03-01T09:30:00.000',
+    updatedAt: '2025-03-03T14:15:00.000',
   ),
   Sentence(
+    id: 2,
     content: '플러터 개발은 재미있다.',
     isPublic: false,
-    createdAt: DateTime(2023, 2, 20, 14, 45),
+    createdAt: '2025-02-20T14:45:00.000',
+    updatedAt: '2025-03-01T10:30:00.000',
   ),
   Sentence(
+    id: 3,
     content: '매우 짧은 글.',
     isPublic: true,
-    createdAt: DateTime(2023, 3, 5, 18, 10),
+    createdAt: '2025-02-05T18:10:00.000',
+    updatedAt: '2025-02-06T09:25:00.000',
   ),
   Sentence(
+    id: 4,
     content:
         '이것은 한국어로 작성된 매우 긴 문장입니다. 문장의 길이가 극단적으로 길게 작성되어 있으며, 이런 경우 UI 렌더링이나 텍스트 줄바꿈 처리 등을 테스트할 수 있습니다. 실제 앱에서는 이렇게 긴 텍스트가 어떻게 보여지는지, 스크롤은 어떻게 동작하는지 등을 확인하는 데 유용할 수 있습니다. 특히 모바일 기기에서는 화면 크기가 제한적이기 때문에 긴 텍스트의 표시 방법이 중요한 UX 요소 중 하나입니다.',
     isPublic: false,
-    createdAt: DateTime(2023, 4, 10, 11, 25),
+    createdAt: '2025-01-10T11:25:00.000',
+    updatedAt: '2025-01-15T16:40:00.000',
   ),
   Sentence(
+    id: 5,
     content: '내일 회의가 있다.',
     isPublic: true,
-    createdAt: DateTime(2023, 5, 22, 16, 30),
+    createdAt: '2025-02-22T16:30:00.000',
+    updatedAt: '2025-02-22T18:45:00.000',
   ),
 
-  // 영어 문장 - 다양한 길이
   Sentence(
+    id: 6,
     content: 'Hello, world!',
     isPublic: false,
-    createdAt: DateTime(2023, 6, 3, 8, 15),
+    createdAt: '2025-01-03T08:15:00.000',
+    updatedAt: '2025-01-03T10:20:00.000',
   ),
   Sentence(
+    id: 7,
     content: 'Flutter is a cross-platform framework.',
     isPublic: true,
-    createdAt: DateTime(2023, 7, 14, 19, 50),
+    createdAt: '2025-01-14T19:50:00.000',
+    updatedAt: '2025-01-20T11:05:00.000',
   ),
   Sentence(
-    content: 'A', // 극단적으로 짧은 문장
+    id: 8,
+    content: 'A',
     isPublic: false,
-    createdAt: DateTime(2023, 8, 18, 7, 40),
+    createdAt: '2025-02-18T07:40:00.000',
+    updatedAt: '2025-02-18T07:41:00.000',
   ),
   Sentence(
+    id: 9,
     content:
         'This is an extremely long sentence written in English. It is designed to test how the application handles very long text content in different screen sizes and orientations. When developing mobile applications, it is important to consider how text wrapping, scrolling, and overall layout behave with content of varying lengths. This dummy text can help identify potential UI issues before they affect real users. Text rendering performance can also be a concern with very long strings, especially on lower-end devices or when combined with complex animations and other resource-intensive operations.',
     isPublic: true,
-    createdAt: DateTime(2023, 9, 29, 13, 5),
+    createdAt: '2025-01-29T13:05:00.000',
+    updatedAt: '2025-02-05T09:30:00.000',
   ),
   Sentence(
+    id: 10,
     content: 'The meeting is scheduled for tomorrow.',
     isPublic: false,
-    createdAt: DateTime(2023, 10, 7, 15, 35),
+    createdAt: '2025-03-02T15:35:00.000',
+    updatedAt: '2025-03-03T11:20:00.000',
   ),
 
-  // 일본어 문장 - 다양한 길이
   Sentence(
+    id: 11,
     content: 'こんにちは。',
     isPublic: true,
-    createdAt: DateTime(2023, 11, 12, 10, 20),
+    createdAt: '2025-02-12T10:20:00.000',
+    updatedAt: '2025-02-12T14:30:00.000',
   ),
   Sentence(
+    id: 12,
     content: '東京は大きい都市です。',
     isPublic: false,
-    createdAt: DateTime(2023, 12, 25, 23, 59),
+    createdAt: '2025-01-25T23:59:00.000',
+    updatedAt: '2025-01-26T08:15:00.000',
   ),
   Sentence(
-    content: 'あ', // 극단적으로 짧은 문장
+    id: 13,
+    content: 'あ',
     isPublic: true,
-    createdAt: DateTime(2024, 1, 1, 0, 0),
+    createdAt: '2025-03-01T00:00:00.000',
+    updatedAt: '2025-03-01T00:01:00.000',
   ),
   Sentence(
+    id: 14,
     content:
         'これは日本語で書かれた非常に長い文章です。文章の長さが極端に長く書かれており、このような場合、UIレンダリングやテキストの折り返し処理などをテストすることができます。実際のアプリでは、このように長いテキストがどのように表示されるか、スクロールはどのように動作するかなどを確認するのに役立ちます。特にモバイル機器では画面サイズが限られているため、長いテキストの表示方法は重要なUX要素の一つです。さまざまな言語をサポートすることは国際的なアプリケーションにとって不可欠であり、特に日本語のような非ラテン文字は特有のレイアウトの課題をもたらすことがあります。',
     isPublic: false,
-    createdAt: DateTime(2024, 2, 14, 12, 30),
+    createdAt: '2025-02-14T12:30:00.000',
+    updatedAt: '2025-02-20T16:45:00.000',
   ),
   Sentence(
+    id: 15,
     content: '明日は雨が降るでしょう。',
     isPublic: true,
-    createdAt: DateTime(2024, 3, 20, 6, 45),
+    createdAt: '2025-03-04T06:45:00.000',
+    updatedAt: '2025-03-04T15:20:00.000',
   ),
 
-  // 혼합된 언어와 특수 문자
   Sentence(
+    id: 16,
     content: 'Hello 안녕 こんにちは 123!',
     isPublic: false,
-    createdAt: DateTime(2024, 4, 5, 17, 22),
+    createdAt: '2025-02-05T17:22:00.000',
+    updatedAt: '2025-02-07T09:10:00.000',
   ),
   Sentence(
+    id: 17,
     content: '特殊記号: !@#\$%^&*()_+{}[]|\\:;"\'<>,.?/~`',
     isPublic: true,
-    createdAt: DateTime(2024, 5, 16, 21, 15),
+    createdAt: '2025-02-16T21:15:00.000',
+    updatedAt: '2025-02-16T22:30:00.000',
   ),
   Sentence(
+    id: 18,
     content: 'Flutter & Dart programming 프로그래밍 プログラミング',
     isPublic: false,
-    createdAt: DateTime(2024, 6, 30, 4, 50),
+    createdAt: '2025-01-30T04:50:00.000',
+    updatedAt: '2025-02-02T13:25:00.000',
   ),
   Sentence(
+    id: 19,
     content: 'Emojis: 😀🚀💻🎉🔥👍👎🎯🌍💡',
     isPublic: true,
-    createdAt: DateTime(2022, 7, 9, 9, 0), // 과거 날짜
+    createdAt: '2025-01-09T09:00:00.000',
+    updatedAt: '2025-01-10T14:15:00.000',
   ),
   Sentence(
+    id: 20,
     content: 'URL: https://flutter.dev and email: example@flutter.io',
     isPublic: false,
-    createdAt: DateTime(2022, 8, 17, 13, 40), // 과거 날짜
+    createdAt: '2025-01-17T13:40:00.000',
+    updatedAt: '2025-01-18T10:30:00.000',
   ),
 
-  // 최신 및 미래 날짜
   Sentence(
+    id: 21,
     content: '이것은 가장 최근에 작성된 문장입니다.',
     isPublic: true,
-    createdAt: DateTime.now(),
+    createdAt: '2025-03-06T10:00:00.000',
+    updatedAt: '2025-03-06T10:05:00.000',
   ),
   Sentence(
+    id: 22,
     content: 'This is scheduled for the future.',
     isPublic: false,
-    createdAt: DateTime.now().add(Duration(days: 30)), // 미래 날짜
+    createdAt: '2025-03-05T15:20:00.000',
+    updatedAt: '2025-03-05T16:45:00.000',
   ),
 
-  // 공백과 특수 케이스
   Sentence(
+    id: 23,
     content: '   앞에 공백이 있는 문장   ',
     isPublic: true,
-    createdAt: DateTime(2023, 9, 3, 15, 10),
+    createdAt: '2025-02-03T15:10:00.000',
+    updatedAt: '2025-02-03T17:25:00.000',
   ),
   Sentence(
+    id: 24,
     content: '\n줄바꿈이\n포함된\n문장\n',
     isPublic: false,
-    createdAt: DateTime(2023, 10, 22, 8, 5),
+    createdAt: '2025-01-22T08:05:00.000',
+    updatedAt: '2025-01-22T10:40:00.000',
   ),
   Sentence(
-    content: '', // 빈 문자열
+    id: 25,
+    content: '',
     isPublic: true,
-    createdAt: DateTime(2023, 11, 30, 19, 25),
+    createdAt: '2025-02-25T19:25:00.000',
+    updatedAt: '2025-02-25T19:26:00.000',
   ),
 
-  // 다양한 시간대의 데이터
   Sentence(
+    id: 26,
     content: '심야에 작성된 문장',
     isPublic: false,
-    createdAt: DateTime(2024, 1, 15, 3, 21), // 새벽 3시
+    createdAt: '2025-03-03T03:21:00.000',
+    updatedAt: '2025-03-03T07:45:00.000',
   ),
   Sentence(
+    id: 27,
     content: 'Sentence created at noon',
     isPublic: true,
-    createdAt: DateTime(2024, 2, 28, 12, 0), // 정오
+    createdAt: '2025-02-28T12:00:00.000',
+    updatedAt: '2025-02-28T14:30:00.000',
   ),
 
-  // 더 다양한 경우
   Sentence(
+    id: 28,
     content: '숫자만: 12345678900987654321',
     isPublic: false,
-    createdAt: DateTime(2022, 3, 8, 14, 30), // 더 오래된 날짜
+    createdAt: '2025-01-08T14:30:00.000',
+    updatedAt: '2025-01-08T16:15:00.000',
   ),
   Sentence(
+    id: 29,
     content: 'HTML태그: <h1>제목</h1><p>내용</p>',
     isPublic: true,
-    createdAt: DateTime(2022, 4, 18, 11, 11), // 더 오래된 날짜
+    createdAt: '2025-01-18T11:11:00.000',
+    updatedAt: '2025-01-19T09:20:00.000',
   ),
   Sentence(
+    id: 30,
     content: 'JSON형식: {"name":"Flutter","version":"3.0"}',
     isPublic: false,
-    createdAt: DateTime(2022, 5, 24, 16, 50), // 더 오래된 날짜
+    createdAt: '2025-02-04T16:50:00.000',
+    updatedAt: '2025-02-05T11:30:00.000',
   ),
   Sentence(
+    id: 31,
     content:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     isPublic: true,
-    createdAt: DateTime(2022, 6, 12, 20, 40), // 더 오래된 날짜
+    createdAt: '2025-01-12T20:40:00.000',
+    updatedAt: '2025-01-13T08:55:00.000',
   ),
 
   // 추가 데이터로 총 40개 맞추기
   Sentence(
+    id: 32,
     content: '실전 Flutter 개발에서는 상태 관리가 매우 중요하다.',
     isPublic: false,
-    createdAt: DateTime(2023, 11, 5, 17, 30),
+    createdAt: '2025-03-05T17:30:00.000',
+    updatedAt: '2025-03-05T19:45:00.000',
   ),
   Sentence(
+    id: 33,
     content: 'Developer experience matters.',
     isPublic: true,
-    createdAt: DateTime(2024, 2, 10, 9, 45),
+    createdAt: '2025-02-10T09:45:00.000',
+    updatedAt: '2025-02-10T13:20:00.000',
   ),
   Sentence(
+    id: 34,
     content: 'アプリ開発は楽しいです。',
     isPublic: false,
-    createdAt: DateTime(2024, 1, 7, 14, 20),
+    createdAt: '2025-01-07T14:20:00.000',
+    updatedAt: '2025-01-08T10:15:00.000',
   ),
   Sentence(
+    id: 35,
     content: '오늘의 할 일: 1. 코딩 2. 테스트 3. 배포',
     isPublic: true,
-    createdAt: DateTime(2023, 8, 30, 8, 0),
+    createdAt: '2025-02-28T08:00:00.000',
+    updatedAt: '2025-02-28T09:30:00.000',
   ),
   Sentence(
+    id: 36,
     content: 'The quick brown fox jumps over the lazy dog.',
     isPublic: false,
-    createdAt: DateTime(2023, 6, 19, 19, 15),
+    createdAt: '2025-01-19T19:15:00.000',
+    updatedAt: '2025-01-20T11:10:00.000',
   ),
   Sentence(
+    id: 37,
     content: '百聞は一見に如かず。',
     isPublic: true,
-    createdAt: DateTime(2023, 4, 3, 12, 50),
+    createdAt: '2025-02-03T12:50:00.000',
+    updatedAt: '2025-02-03T15:35:00.000',
   ),
   Sentence(
+    id: 38,
     content: '이 문장은 정확히 40자로 이루어진 한국어 문장입니다......',
     isPublic: false,
-    createdAt: DateTime(2023, 2, 8, 15, 25),
+    createdAt: '2025-01-08T15:25:00.000',
+    updatedAt: '2025-01-09T09:40:00.000',
   ),
   Sentence(
+    id: 39,
     content: 'This is exactly a forty-character sentence..',
     isPublic: true,
-    createdAt: DateTime(2022, 12, 4, 11, 35),
+    createdAt: '2025-02-04T11:35:00.000',
+    updatedAt: '2025-02-04T14:20:00.000',
+  ),
+  Sentence(
+    id: 40,
+    content: '이것은 3월 6일에 작성된 마지막 문장입니다.',
+    isPublic: true,
+    createdAt: '2025-03-06T08:30:00.000',
+    updatedAt: '2025-03-06T09:15:00.000',
   ),
 ];
