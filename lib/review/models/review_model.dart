@@ -1,15 +1,29 @@
+import 'package:hive_flutter/hive_flutter.dart';
+
+part 'review_model.g.dart';
+
+@HiveType(typeId: 2)
 class Review {
-  final int? id; // 서버에서 할당받기 전에는 null일 수 있음
+  @HiveField(0)
+  final int id;
+
+  @HiveField(2)
   final String bookIsbn;
+  @HiveField(3)
   final String bookTitle;
+  @HiveField(4)
   final String content;
+  @HiveField(5)
   final bool isPublic;
+  @HiveField(6)
   final String createdAt;
+  @HiveField(7)
   final String updatedAt;
+  @HiveField(8)
   final String? thumbnail;
 
   Review({
-    this.id,
+    required this.id,
     required this.bookIsbn,
     required this.bookTitle,
     required this.content,
@@ -20,7 +34,6 @@ class Review {
   })  : createdAt = createdAt ?? DateTime.now().toIso8601String(),
         updatedAt = updatedAt ?? DateTime.now().toIso8601String();
 
-  // 서버 응답에서 Review 객체 생성
   factory Review.fromJson(Map<String, dynamic> json) {
     return Review(
       id: json['id'],
@@ -43,5 +56,46 @@ class Review {
       'isPublic': isPublic,
       'thumbnail': thumbnail,
     };
+  }
+
+  @override
+  String toString() {
+    final bookTitleText = 'bookTitle: $bookTitle';
+    final bookIsbnText = 'bookIsbn: $bookIsbn';
+    final contentText = 'content: $content';
+    final isPublicText = 'isPublic: $isPublic';
+    final createdAtText = 'createdAt: $createdAt';
+    final thumbnailText = 'thumbnail: $thumbnail';
+
+    final bookInfoList = [
+      bookTitleText,
+      bookIsbnText,
+      contentText,
+      isPublicText,
+      createdAtText,
+      thumbnailText,
+    ].join(', ');
+
+    return 'Review($bookInfoList)';
+  }
+
+  Review copyWith({
+    int? bookId,
+    String? bookIsbn,
+    String? bookTitle,
+    String? content,
+    bool? isPublic,
+    String? thumbnail,
+    String? updatedAt,
+  }) {
+    return Review(
+      id: bookId ?? id,
+      bookIsbn: bookIsbn ?? this.bookIsbn,
+      bookTitle: bookTitle ?? this.bookTitle,
+      content: content ?? this.content,
+      isPublic: isPublic ?? this.isPublic,
+      thumbnail: thumbnail ?? this.thumbnail,
+      updatedAt: updatedAt ?? DateTime.now().toIso8601String(),
+    );
   }
 }
