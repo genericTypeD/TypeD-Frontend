@@ -36,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void navigateToEmptyPage() {
     if (mounted) {
-      context.go('/home/sentence'); // GoRouter를 사용하여 페이지 이동
+      context.go('/home/type');
     }
   }
 
