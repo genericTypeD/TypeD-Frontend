@@ -5,6 +5,8 @@ class ReviewRepository {
   final Box<Review> _box = Hive.box<Review>('review');
 
   /// 서평 저장 (POST)
+  // TODO: - 새로 추가된 서평을 반환하는 것으로 에러 처리 개선
+  // TODO: - catch문 내 로깅 함수 추가
   Future<String> addReview(Review review) async {
     final key = await _box.add(review);
     return key.toString();
@@ -14,6 +16,9 @@ class ReviewRepository {
   Future<List<Review>> fetchAllReviews() async {
     return _box.values.toList();
   }
+
+  // TODO: - 검색 키워드가 포함된 bookTitle 혹은 content가 있는 서평 목록 조회(키워드 검색 기능)
+  // TODO: - 정렬된 상태로 목록 조회
 
   /// ISBN으로 특정 책의 서평 목록 조회 (GET)
   Future<List<Review>> fetchReviewsByIsbn(String isbn) async {
