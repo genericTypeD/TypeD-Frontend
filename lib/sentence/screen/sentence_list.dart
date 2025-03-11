@@ -169,4 +169,64 @@ class _SentenceListState extends ConsumerState<SentenceList>
       },
     );
   }
+  PreferredSizeWidget _buildLoadingErrorAppbar() {
+    return CustomAppBar(
+      bottomLeftWidget: Text(
+        _sentenceListScreenTitle,
+        style: AppTheme.title3,
+        textAlign: TextAlign.left,
+      ),
+    );
+  }
+
+  PreferredSizeWidget _buildAppbar() {
+    return CustomAppBar(
+      bottomLeftWidget: Text(
+        _sentenceListScreenTitle,
+        style: AppTheme.title3,
+        textAlign: TextAlign.left,
+      ),
+      bottomRightWidget: Padding(
+        padding: const EdgeInsets.only(right: 16),
+        child: DropdownButton<LockStatus>(
+          value: _currentLockState,
+          alignment: Alignment.centerRight,
+          style: AppTheme.title3,
+          dropdownColor: Colors.white,
+          elevation: 0,
+          icon: Container(),
+          underline: Container(),
+          items: [
+            DropdownMenuItem<LockStatus>(
+              value: LockStatus.closed,
+              child: Row(
+                children: [
+                  const Icon(Icons.lock_outline, size: 14),
+                  const SizedBox(width: 6),
+                  Text(LockStatus.closed.korName),
+                ],
+              ),
+            ),
+            DropdownMenuItem<LockStatus>(
+              value: LockStatus.open,
+              child: Row(
+                children: [
+                  const Icon(Icons.lock_open, size: 14),
+                  const SizedBox(width: 6),
+                  Text(LockStatus.open.korName),
+                ],
+              ),
+            ),
+          ],
+          onChanged: (value) {
+            if (value != null) {
+              setState(() {
+                _currentLockState = value;
+              });
+            }
+          },
+        ),
+      ),
+    );
+  }
 }
