@@ -194,10 +194,34 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
                           builder: (context) => _buildAlertDialog(review),
                         );
 
-                        if (confirmed == true) {
-                          await ref
-                              .read(reviewListProvider.notifier)
-                              .deleteReview(review.id!);
+                        if (confirmed == true && context.mounted) {
+                          try {
+                            await ref
+                                .read(reviewListProvider.notifier)
+                                .deleteReview(review);
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('서평이 성공적으로 삭제되었습니다.'),
+                                ),
+                                snackBarAnimationStyle: AnimationStyle(
+                                  duration: Duration(seconds: 1),
+                                ),
+                              );
+                            }
+                          } catch (error) {
+                            if (context.mounted) {
+                              debugPrint('$error');
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('오류로 인해 서평이 삭제되지 않았습니다.'),
+                                ),
+                                snackBarAnimationStyle: AnimationStyle(
+                                  duration: Duration(seconds: 1),
+                                ),
+                              );
+                            }
+                          }
                         }
                       },
                     ),
