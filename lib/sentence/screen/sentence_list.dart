@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:typed/common/const/app_colors.dart';
-import 'package:typed/common/const/app_themes.dart';
+import 'package:typed/common/const/index.dart';
 import 'package:typed/common/index.dart';
+import 'package:typed/review/models/lock_enum.dart';
+import 'package:typed/sentence/model/sentence_model.dart';
 import 'package:typed/sentence/provider/sentence_provider.dart';
 
 class SentenceList extends ConsumerStatefulWidget {
@@ -15,12 +16,16 @@ class SentenceList extends ConsumerStatefulWidget {
 
 class _SentenceListState extends ConsumerState<SentenceList>
     with SingleTickerProviderStateMixin {
-  late TabController _tabController;
+  static const _sentenceListScreenTitle = '문장 목록';
+  static const _sentenceEmptyListText = '저장된 문장이 없습니다';
+
+  late LockStatus _currentLockState;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _currentLockState = LockStatus.closed;
+
     Future.microtask(() {
       ref.read(sentenceListProvider.notifier).fetchSentences();
     });
