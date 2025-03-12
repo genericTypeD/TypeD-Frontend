@@ -18,8 +18,8 @@ class MyType extends ConsumerStatefulWidget {
 }
 
 class _MyTypeState extends ConsumerState<MyType> {
-  late final List<MultiSplitViewController> _horizontalControllers;
-  late final MultiSplitViewController _verticalController;
+  late List<MultiSplitViewController> _horizontalControllers;
+  late MultiSplitViewController _verticalController;
 
   late PeriodType _selectedPeriod;
   late DateTime _selectedDateTime;
@@ -119,9 +119,13 @@ class _MyTypeState extends ConsumerState<MyType> {
 
   @override
   void dispose() {
-    _verticalController.dispose();
-    for (var controller in _horizontalControllers) {
-      controller.dispose();
+    try {
+      _verticalController.dispose();
+      for (var controller in _horizontalControllers) {
+        controller.dispose();
+      }
+    } catch (error) {
+      debugPrint('[컨트롤러 해제 중 오류] error: $error');
     }
     super.dispose();
   }
