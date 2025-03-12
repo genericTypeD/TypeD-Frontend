@@ -34,8 +34,8 @@ class SplitViewViewModel extends StateNotifier<SplitViewState> {
           horizontalFlexValues: horizontalFlex,
         );
       }
-    } catch (e) {
-      debugPrint('[Loading Flex Error] $e');
+    } catch (error) {
+      debugPrint('[Flex 로딩 실패] $error');
     }
   }
 
@@ -51,8 +51,8 @@ class SplitViewViewModel extends StateNotifier<SplitViewState> {
         horizontalFlexValues: state.horizontalFlexValues,
         verticalFlexValues: flexValues,
       );
-    } catch (e) {
-      debugPrint('[Updating Vertical Flex Error] $e');
+    } catch (error) {
+      debugPrint('[Vertical Flex 업데이트 실패] $error');
     }
   }
 
@@ -72,8 +72,8 @@ class SplitViewViewModel extends StateNotifier<SplitViewState> {
         horizontalFlexValues: newHorizontalFlex,
         verticalFlexValues: state.verticalFlexValues,
       );
-    } catch (e) {
-      debugPrint('[Saving Horizontal Flex Error] $e');
+    } catch (error) {
+      debugPrint('[Horizontal Flex 저장 실패] $error');
     }
   }
 }
