@@ -134,7 +134,15 @@ class _MyTypeState extends ConsumerState<MyType> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
 
-    ref.watch(splitViewProvider);
+    // 현재 선택된 기간/날짜 상태 변경 감지
+    ref.listen(periodDateProvider, (previous, next) {
+      if (previous?.periodType != next.periodType ||
+          previous?.dateTime.day != next.dateTime.day ||
+          previous?.dateTime.month != next.dateTime.month ||
+          previous?.dateTime.year != next.dateTime.year) {
+        _loadSplitViewData();
+      }
+    });
 
     return DefaultLayout(
       backgroundColor: AppColors.backgroundSecondary,
