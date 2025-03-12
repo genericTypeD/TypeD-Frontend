@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:typed/config/env.dart';
 import 'package:uuid/uuid.dart';
-import 'package:typed/review/model/review_model.dart';
+import 'package:typed/review/models/review_model.dart';
 
 class ReviewRepository {
   final Dio _dio;

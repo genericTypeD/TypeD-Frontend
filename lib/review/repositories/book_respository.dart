@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:typed/review/model/book_model.dart';
+import 'package:typed/review/models/book_model.dart';
 
 /// 책 정보를 가져오는 Repository 클래스
 class BookRepository {

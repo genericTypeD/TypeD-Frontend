@@ -6,7 +6,7 @@ import 'package:typed/feed/provider/feed_routes.dart';
 import 'package:typed/feed/screen/feed_public.dart';
 import 'package:typed/menu/provider/menu_routes.dart';
 import 'package:typed/menu/screen/my_menu.dart';
-import 'package:typed/review/book_search_screen.dart';
+import 'package:typed/review/screen/book_search_screen.dart';
 import 'package:typed/review/provider/review_routes.dart';
 import 'package:typed/sentence/provider/sentence_routes.dart';
 import 'package:typed/sentence/screen/sentence_empty.dart';

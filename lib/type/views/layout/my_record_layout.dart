@@ -3,14 +3,28 @@ import 'package:typed/common/const/index.dart';
 import 'package:typed/common/index.dart';
 
 class MyRecordLayout extends StatefulWidget {
+  final VoidCallback? onBottomLeftWidgetPressed;
   final VoidCallback? onBottomRightWidgetPressed;
   final Widget? bottomCenterWidget;
-  final List<Widget> body;
+  // final List<Widget> body;
+  final Widget body;
+  final bool useDefaultBackground;
 
   const MyRecordLayout({
+    this.onBottomLeftWidgetPressed,
     this.onBottomRightWidgetPressed,
     this.bottomCenterWidget,
     required this.body,
+    this.useDefaultBackground = true,
+    super.key,
+  });
+
+  const MyRecordLayout.secondary({
+    this.onBottomLeftWidgetPressed,
+    this.onBottomRightWidgetPressed,
+    this.bottomCenterWidget,
+    required this.body,
+    this.useDefaultBackground = false,
     super.key,
   });
 
@@ -22,7 +36,7 @@ class _MyRecordLayoutState extends State<MyRecordLayout> {
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
-      backgroundColor: const Color(0xffF3F3F2),
+      backgroundColor: AppColors.backgroundSecondary,
       appBar: CustomAppBar(
         bottomLeftWidget: _renderBottomLeftWidget(),
         bottomCenterWidget: widget.bottomCenterWidget,
@@ -40,7 +54,7 @@ class _MyRecordLayoutState extends State<MyRecordLayout> {
 
   Widget _renderBottomLeftWidget() {
     return TextButton(
-      onPressed: () => Navigator.pop(context),
+      onPressed: widget.onBottomLeftWidgetPressed,
       style: TextButton.styleFrom(
         padding: EdgeInsets.zero,
         minimumSize: Size.zero,
@@ -69,7 +83,7 @@ class _MyRecordLayoutState extends State<MyRecordLayout> {
     return Container(
       width: AppBarStyle.borderContainerWidth,
       decoration: const BoxDecoration(
-        color: Color(0xffF3F3F2),
+        color: AppColors.backgroundSecondary,
         border: Border(right: AppBarStyle.borderStyle),
       ),
       child: Column(
@@ -92,7 +106,7 @@ class _MyRecordLayoutState extends State<MyRecordLayout> {
     return Container(
       width: AppBarStyle.borderContainerWidth,
       decoration: const BoxDecoration(
-        color: Color(0xffF3F3F2),
+        color: AppColors.backgroundSecondary,
         border: Border(left: AppBarStyle.borderStyle),
       ),
       child: Column(
@@ -114,16 +128,19 @@ class _MyRecordLayoutState extends State<MyRecordLayout> {
   Widget _renderBody() {
     return Expanded(
       child: Container(
-        color: const Color(0xffF3F3F2),
+        color: AppColors.backgroundSecondary,
         child: SafeArea(
           child: Container(
-            decoration: const BoxDecoration(
-              color: Colors.white,
+            decoration: BoxDecoration(
+              color: widget.useDefaultBackground
+                  ? Colors.white
+                  : AppColors.backgroundSecondary,
               border: Border(bottom: AppBarStyle.borderStyle),
             ),
-            child: Column(
-              children: widget.body,
-            ),
+            // child: Column(
+            //   children: widget.body,
+            // ),
+            child: widget.body,
           ),
         ),
       ),

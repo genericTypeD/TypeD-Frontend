@@ -4,11 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:typed/common/const/index.dart';
 import 'package:typed/common/layout/default_layout.dart';
 import 'package:typed/common/widgets/app_bar/custom_app_bar.dart';
-import 'package:typed/review/core/review_list_dummy.dart';
-import 'package:typed/review/model/lock_enum.dart';
-import 'package:typed/review/model/review_model.dart';
-import 'package:typed/review/review_provider.dart';
-import 'package:typed/type/views/layout/my_record_layout.dart';
+import 'package:typed/review/models/lock_enum.dart';
+// import 'package:typed/review/models/review_model.dart';
+import 'package:typed/review/viewmodels/dummy_reviews_provider.dart';
+import 'package:typed/review/viewmodels/review/review_providers.dart';
 
 class ReviewListScreen extends ConsumerStatefulWidget {
   const ReviewListScreen({super.key});
@@ -32,6 +31,7 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
     // Future.microtask(() {
     //   ref.read(reviewListProvider.notifier).fetchReviews();
     // });
+    // ref.read(reviewListProvider.notifier).fetchReviews();
   }
 
   @override
@@ -314,7 +314,6 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
 
   Widget _buildLoadingScreen() {
     return DefaultLayout(
-      backgroundColor: AppColors.backgroundSecondary,
       appBar: _buildLoadingErrorAppbar(),
       child: const Center(
         child: CircularProgressIndicator(),
@@ -323,27 +322,15 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
   }
 
   Widget _buildErrorScreen() {
-    // return DefaultLayout(
-    //   backgroundColor: AppColors.backgroundSecondary,
-    //   appBar: _buildLoadingErrorAppbar(),
-    //   child: Center(
-    //     child: Text(
-    //       '🙏 서평 목록을 불러오는 중 오류가 발생했습니다.',
-    //       style: AppTheme.body1,
-    //       textAlign: TextAlign.center,
-    //     ),
-    //   ),
-    // );
-    return MyRecordLayout.common(
-      body: [
-        Spacer(),
-        Text(
-          '서평 목록을 불러오는 중 오류가 발생했습니다.',
-          style: AppTheme.body2,
+    return DefaultLayout(
+      appBar: _buildLoadingErrorAppbar(),
+      child: Center(
+        child: Text(
+          '🙏 서평 목록을 불러오는 중 오류가 발생했습니다.',
+          style: AppTheme.body1,
           textAlign: TextAlign.center,
         ),
-        Spacer(),
-      ],
+      ),
     );
   }
 
