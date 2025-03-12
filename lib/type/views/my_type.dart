@@ -171,7 +171,12 @@ class _MyTypeState extends ConsumerState<MyType> {
             setState(
               () {
                 if (value != null) {
-                  _selectedPeriod = value;
+                  setState(() {
+                    _selectedPeriod = value;
+                  });
+
+                  // 기간 변경 시 데이터 로드
+                  ref.read(periodDateProvider.notifier).updatePeriodType(value);
                 }
               },
             );
