@@ -102,6 +102,20 @@ class _MyBookRecordScreenState extends State<MyBookRecordScreen> {
       ),
     );
   }
+
+  Widget _buildErrorScreen() {
+    return Center(
+      child: Column(
+        children: [
+          _buildPlaceholder(),
+          Text(
+            '오류가 발생했습니다.',
+            style: AppTheme.body1,
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class BookReviewWidget extends StatelessWidget {
