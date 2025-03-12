@@ -22,12 +22,10 @@ class GridViewModel extends StateNotifier<GridState> {
   }
 
   /// 문장 타입으로 변경 및 데이터 설정
-  // void setSentence(int verticalIndex, int horizontalIndex, String content) {
   void setSentence(int verticalIndex, int horizontalIndex, Sentence sentence) {
     final currentItem = state.items[verticalIndex][horizontalIndex];
     final updatedItem = currentItem.copyWith(
       type: GridItemType.sentence,
-      // sentenceContent: content,
       sentence: sentence,
     );
     updateGridItem(verticalIndex, horizontalIndex, updatedItem);
