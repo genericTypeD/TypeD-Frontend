@@ -34,21 +34,48 @@ class _MySentenceRecordScreenState
 
   @override
   Widget build(BuildContext context) {
-    return MyRecordLayout(
-      onBottomLeftWidgetPressed: () => Navigator.pop(context),
-      onBottomRightWidgetPressed: () async {
-        if (currentSentence != null) {
-          final result = GridItem.sentence(
-            id: Uuid().v4(),
-            sentence: currentSentence!,
-          );
-          Navigator.pop(context, result);
-        }
+    final sentencesState = ref.watch(sentenceListProvider);
+
+    return sentencesState.when(
+      data: (sentences) => MyRecordLayout(
+        onBottomLeftWidgetPressed: () => Navigator.pop(context),
+        onBottomRightWidgetPressed: () async {
+          if (currentSentence != null) {
+            final result = GridItem.sentence(
+              id: Uuid().v4(),
+              sentence: currentSentence!,
+            );
+            Navigator.pop(context, result);
+          }
+        },
+        body: ListView.builder(
+          itemCount: sentences.length,
+          itemBuilder: (BuildContext context, int index) {
+            final item = sentences[index];
+
+            return MySentenceWidget(
+              onTap: () {
+                setState(() {
+                  currentSentence = item;
+                });
+              },
+              isSelected: (currentSentence != null &&
+                  currentSentence!.content == item.content &&
+                  currentSentence!.createdAt == item.createdAt),
+              sentence: item,
+            );
+          },
+        ),
+      ),
+      error: (error, stackTrace) {
+        debugPrint('$error');
+        return _buildErrorScreen();
       },
-      body: ListView.builder(
-        itemCount: dummySentences.length,
-        itemBuilder: (BuildContext context, int index) {
-          final item = dummySentences[index];
+      loading: () => Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
 
   // TODO: - common으로 빼기
   Widget _buildPlaceholder() {
