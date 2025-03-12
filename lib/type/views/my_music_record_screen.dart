@@ -71,9 +71,10 @@ class _MyMusicRecordScreenState extends State<MyMusicRecordScreen> {
       );
     } catch (e) {
       debugPrint('$e');
-      setState(
-        () => isLoading = false,
-      );
+      setState(() {
+        isLoading = false;
+        searchResults = [];
+      });
     }
   }
 
