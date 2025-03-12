@@ -33,8 +33,10 @@ class _MyTypeState extends ConsumerState<MyType> {
     _selectedPeriod = periodDateState.periodType;
     _selectedDateTime = periodDateState.dateTime;
 
+    // 초기 SplitView 설정
     final splitViewState = ref.read(splitViewProvider);
 
+    // SplitView 컨트롤러 초기화
     _verticalController = MultiSplitViewController(
       areas: List.generate(
         3,
@@ -314,6 +316,7 @@ class _MyTypeState extends ConsumerState<MyType> {
             resizable: true,
             antiAliasingWorkaround: true,
             onDividerDragUpdate: (dividerIndex) {
+              // 분할 영역 조정 시마다 Provider와 Hive에 저장
               final flexValues = _verticalController.areas
                   .map((area) => area.flex ?? 1.0)
                   .toList();
@@ -329,6 +332,7 @@ class _MyTypeState extends ConsumerState<MyType> {
                 resizable: true,
                 antiAliasingWorkaround: true,
                 onDividerDragUpdate: (dividerIndex) {
+                  // 분할 영역 조정 시마다 Provider와 Hive에 저장
                   final flexValues = _horizontalControllers[verticalIndex]
                       .areas
                       .map((area) => area.flex ?? 1.0)
