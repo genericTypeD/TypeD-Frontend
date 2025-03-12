@@ -10,6 +10,9 @@ void main() async {
   // .env 파일 로드
   await dotenv.load(fileName: ".env");
 
+  // 한국어 로컬 포맷팅 초기화
+  await initializeDateFormatting('ko', null);
+
   runApp(
     ProviderScope(
       child: const MyApp(),
