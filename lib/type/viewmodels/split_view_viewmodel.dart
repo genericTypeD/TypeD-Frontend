@@ -35,7 +35,8 @@ class SplitViewViewModel extends StateNotifier<SplitViewState> {
 
       final key = SplitViewData.createKey(
           _currentPeriodType, _currentDateTime); // 로드할 키 생성
-      debugPrint('로드 키 생성: $_currentPeriodType / $_currentDateTime => $key');
+      debugPrint(
+          '[생성된 로드 키] _currentPeriodType: $_currentPeriodType, _currentDateTime: $_currentDateTime, key: $key');
 
       final data = box.get(key); // 박스에서 데이터 로드 후,
 
@@ -49,7 +50,7 @@ class SplitViewViewModel extends StateNotifier<SplitViewState> {
       } else {
         // 해당 기간/날짜의 데이터가 없으면 기본값 사용
         state = SplitViewState.initial();
-        debugPrint('[SplitView 기본 데이터 사용해서 로드 완료]: $key');
+        debugPrint('[SplitView 기본 데이터 사용해서 로드 완료] key: $key');
       }
     } catch (error) {
       // 오류 발생 시에도 기본값 사용
