@@ -20,7 +20,7 @@ class MyBookRecordScreen extends ConsumerStatefulWidget {
 
 class _MyBookRecordScreenState extends ConsumerState<MyBookRecordScreen> {
   // TODO: - 야매로 인덱스로 선택 여부 확인하는 방식 당연히 바꿔야.....
-  late int selectedBookIndex;
+  int selectedBookIndex = -1;
 
   @override
   void initState() {
