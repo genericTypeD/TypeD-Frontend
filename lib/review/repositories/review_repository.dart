@@ -31,6 +31,9 @@ class ReviewRepository {
       return _box.values.firstWhere((review) => review.id == id);
     } catch (e) {
       return null;
+      // } finally {
+      //   client.close();
+      // }
     }
   }
 
