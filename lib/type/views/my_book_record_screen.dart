@@ -26,16 +26,28 @@ class _MyBookRecordScreenState extends ConsumerState<MyBookRecordScreen> {
   void initState() {
     super.initState();
 
+    Future.microtask(() {
+      ref.read(reviewListProvider.notifier);
+    });
+  }
+
+  // TODO: - 트러블슈팅
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
     if (widget.item != null && widget.item!.isBook && widget.item!.isValid) {
-      selectedBookIndex = dummyBookReviews.indexWhere((review) {
-        if (review.bookIsbn == widget.item!.bookReview!.bookIsbn) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-    } else {
-      selectedBookIndex = -1;
+      final reviewsState = ref.read(reviewListProvider);
+
+      reviewsState.whenOrNull(
+        data: (reviews) {
+          setState(() {
+            selectedBookIndex = reviews.indexWhere((review) {
+              return review.bookIsbn == widget.item!.bookReview!.bookIsbn;
+            });
+          });
+        },
+      );
     }
   }
 
