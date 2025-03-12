@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:typed/common/const/index.dart';
 import 'package:typed/review/models/review_model.dart';
 import 'package:typed/review/viewmodels/review/review_providers.dart';
@@ -53,52 +54,60 @@ class _MyBookRecordScreenState extends ConsumerState<MyBookRecordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MyRecordLayout(
-      onBottomLeftWidgetPressed: () => Navigator.pop(context),
-      onBottomRightWidgetPressed: () async {
-        if (selectedBookIndex != -1) {
-          final result = GridItem.bookReview(
-            id: Uuid().v4(),
-            bookReview: dummyBookReviews[selectedBookIndex],
-          );
-          Navigator.pop(context, result);
-        }
-      },
-      // body: [
-      //   Expanded(
-      //     child: ,
-      //   ),
-      // ],
-      body: Padding(
-        padding: const EdgeInsets.only(bottom: 8.0),
-        child: GridView.builder(
-          padding: const EdgeInsets.all(16.0),
-          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
-            childAspectRatio: 0.75,
-            crossAxisSpacing: 8,
-            mainAxisSpacing: 8,
-          ),
-          itemCount: dummyBookReviews.length,
-          itemBuilder: (BuildContext context, int index) {
-            final item = dummyBookReviews[index];
+    final reviewsState = ref.watch(reviewListProvider);
 
-            return BookReviewWidget(
-              item: item,
-              onTap: () {
-                setState(() {
-                  if (selectedBookIndex == -1) {
-                    selectedBookIndex = index;
-                  } else {
-                    selectedBookIndex = -1;
-                  }
-                });
-              },
-              isSelected: selectedBookIndex == index,
-              placeholder: _buildPlaceholder(),
-            );
+    return reviewsState.when(
+      data: (reviews) {
+        return MyRecordLayout(
+          onBottomLeftWidgetPressed: () => Navigator.pop(context),
+          onBottomRightWidgetPressed: () async {
+            if (selectedBookIndex != -1) {
+              final result = GridItem.bookReview(
+                id: Uuid().v4(),
+                bookReview: reviews[selectedBookIndex],
+              );
+              Navigator.pop(context, result);
+            }
           },
-        ),
+          body: Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: GridView.builder(
+              padding: const EdgeInsets.all(16.0),
+              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
+                childAspectRatio: 0.75,
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 8,
+              ),
+              itemCount: reviews.length,
+              itemBuilder: (BuildContext context, int index) {
+                final item = reviews[index];
+
+                return BookReviewWidget(
+                  item: item,
+                  onTap: () {
+                    setState(() {
+                      if (selectedBookIndex == -1) {
+                        selectedBookIndex = index;
+                      } else {
+                        selectedBookIndex = -1;
+                      }
+                    });
+                  },
+                  isSelected: selectedBookIndex == index,
+                  placeholder: _buildPlaceholder(),
+                );
+              },
+            ),
+          ),
+        );
+      },
+      error: (error, stackTrace) {
+        debugPrint('$error');
+        return _buildErrorScreen();
+      },
+      loading: () => Center(
+        child: CircularProgressIndicator(),
       ),
     );
   }
@@ -163,7 +172,6 @@ class BookReviewWidget extends StatelessWidget {
                 filterQuality: FilterQuality.high,
                 loadingBuilder: (context, child, loadingProgress) {
                   if (loadingProgress == null) {
-                    // if (selectedBookIndex == index) {
                     if (isSelected) {
                       // TODO: - 썸네일 없는 경우
                       return Stack(
