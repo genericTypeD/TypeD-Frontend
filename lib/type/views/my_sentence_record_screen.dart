@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:typed/type/models/dummies/dummy_sentences.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:typed/common/const/index.dart';
+import 'package:typed/sentence/provider/sentence_provider.dart';
 import 'package:typed/type/models/grid_item.dart';
 import 'package:typed/type/views/component/my_sentence_widget.dart';
 import 'package:typed/type/views/layout/my_record_layout.dart';
 import 'package:typed/sentence/model/sentence_model.dart';
 import 'package:uuid/uuid.dart';
 
-class MySentenceRecordScreen extends StatefulWidget {
+class MySentenceRecordScreen extends ConsumerStatefulWidget {
   final GridItem? item;
 
   const MySentenceRecordScreen({this.item, super.key});
 
   @override
-  State<MySentenceRecordScreen> createState() => _MySentenceRecordScreenState();
+  ConsumerState<MySentenceRecordScreen> createState() =>
+      _MySentenceRecordScreenState();
 }
 
-class _MySentenceRecordScreenState extends State<MySentenceRecordScreen> {
+class _MySentenceRecordScreenState
+    extends ConsumerState<MySentenceRecordScreen> {
   // TODO: - 선택된 문장 맨 앞으로
   Sentence? currentSentence;
 
