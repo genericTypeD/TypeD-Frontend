@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:typed/common/index.dart';
 import 'package:typed/common/const/index.dart';
 import 'package:typed/type/models/period_type.dart';
+import 'package:typed/type/utils/date_formatter.dart';
+import 'package:typed/type/viewmodels/grid_viewmodel.dart';
+import 'package:typed/type/viewmodels/period_datetime_viewmodel.dart';
 import 'package:typed/type/views/component/grid_item_widget.dart';
 import 'package:typed/type/viewmodels/split_view_viewmodel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,11 +22,16 @@ class _MyTypeState extends ConsumerState<MyType> {
   late final MultiSplitViewController _verticalController;
 
   late PeriodType _selectedPeriod;
+  late DateTime _selectedDateTime;
 
   @override
   void initState() {
     super.initState();
-    _selectedPeriod = PeriodType.weekly;
+
+    // Provider의 초기값을 선택된 기간과 날짜 변수에 동기화
+    final periodDateState = ref.read(periodDateProvider);
+    _selectedPeriod = periodDateState.periodType;
+    _selectedDateTime = periodDateState.dateTime;
 
     final splitViewState = ref.read(splitViewProvider);
 
