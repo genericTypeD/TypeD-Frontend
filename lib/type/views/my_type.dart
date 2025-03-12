@@ -58,6 +58,63 @@ class _MyTypeState extends ConsumerState<MyType> {
         ),
       ),
     );
+
+    // 선택된 기간과 날짜에 해당하는 데이터 로드 요청
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadSplitViewData();
+    });
+  }
+
+  /// 현재 기간과 날짜에 맞는 데이터 로드
+  Future<void> _loadSplitViewData() async {
+    final periodDateState = ref.read(periodDateProvider);
+
+    // SplitView 데이터 로드
+    await ref.read(splitViewProvider.notifier).loadForPeriodAndDate(
+        periodDateState.periodType, periodDateState.dateTime);
+
+    // Grid 데이터 로드
+    await ref.read(gridProvider.notifier).loadForPeriodAndDate(
+        periodDateState.periodType, periodDateState.dateTime);
+
+    // 로드된 데이터로 컨트롤러 업데이트
+    _updateControllersFromState();
+  }
+
+  /// 로드된 데이터로 컨트롤러 업데이트
+  void _updateControllersFromState() {
+    final splitViewState = ref.read(splitViewProvider);
+
+    // 기존 컨트롤러 해제
+    _verticalController.dispose();
+    // 새로운 vertical 컨트롤러 생성
+    _verticalController = MultiSplitViewController(
+      areas: List.generate(
+        3,
+        (index) => Area(
+          data: index,
+          min: 0.6,
+          flex: splitViewState.verticalFlexValues[index],
+        ),
+      ),
+    );
+
+    // horizontal 컨트롤러도 동일한 방식으로 해제 후 새로 생성
+    for (int i = 0; i < _horizontalControllers.length; i++) {
+      _horizontalControllers[i].dispose();
+      _horizontalControllers[i] = MultiSplitViewController(
+        areas: List.generate(
+          2,
+          (j) => Area(
+            min: 0.6,
+            flex: splitViewState.horizontalFlexValues[i][j],
+          ),
+        ),
+      );
+    }
+
+    // 화면 갱신
+    if (mounted) setState(() {});
   }
 
   @override
