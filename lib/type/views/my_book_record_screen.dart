@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:typed/common/const/index.dart';
 import 'package:typed/review/models/review_model.dart';
-import 'package:typed/type/models/dummies/dummy_bookreviews.dart';
+import 'package:typed/review/viewmodels/review/review_providers.dart';
 import 'package:typed/type/models/grid_item.dart';
 import 'package:typed/type/views/layout/my_record_layout.dart';
 import 'package:uuid/uuid.dart';
 
-class MyBookRecordScreen extends StatefulWidget {
+class MyBookRecordScreen extends ConsumerStatefulWidget {
   final GridItem? item;
 
   const MyBookRecordScreen({
@@ -15,10 +15,10 @@ class MyBookRecordScreen extends StatefulWidget {
   });
 
   @override
-  State<MyBookRecordScreen> createState() => _MyBookRecordScreenState();
+  ConsumerState<MyBookRecordScreen> createState() => _MyBookRecordScreenState();
 }
 
-class _MyBookRecordScreenState extends State<MyBookRecordScreen> {
+class _MyBookRecordScreenState extends ConsumerState<MyBookRecordScreen> {
   // TODO: - 야매로 인덱스로 선택 여부 확인하는 방식 당연히 바꿔야.....
   late int selectedBookIndex;
 
