@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
 import 'package:typed/common/const/index.dart';
 import 'package:typed/common/index.dart';
 import 'package:typed/config/env.dart';
 import 'package:typed/type/models/grid_item.dart';
 import 'package:spotify/spotify.dart' hide Image;
-// import 'package:http/http.dart' as http;
-// import 'package:path_provider/path_provider.dart';
-// import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
 class MyMusicRecordScreen extends StatefulWidget {
@@ -75,9 +71,10 @@ class _MyMusicRecordScreenState extends State<MyMusicRecordScreen> {
       );
     } catch (e) {
       debugPrint('$e');
-      setState(
-        () => isLoading = false,
-      );
+      setState(() {
+        isLoading = false;
+        searchResults = [];
+      });
     }
   }
 
@@ -296,25 +293,6 @@ class _MyMusicRecordScreenState extends State<MyMusicRecordScreen> {
           onPressed: selectedTrack != null
               ? () async {
                   try {
-                    // final response = await http.get(
-                    //     Uri.parse(selectedTrack!.album!.images!.first.url!));
-
-                    // final uniqueFileName =
-                    //     'album_image_${selectedTrack!.id}_${DateTime.now().millisecondsSinceEpoch}.jpg';
-                    // final tempDir = await getTemporaryDirectory();
-                    // final file = File('${tempDir.path}/$uniqueFileName');
-
-                    // await file.writeAsBytes(response.bodyBytes);
-
-                    // final result = GridItem(
-                    //   imageFile: XFile(file.path),
-                    // );
-                    // final result = GridItem.music(
-                    //   id: Uuid().v4(),
-                    //   title: selectedTrack!.name!,
-                    //   imagePath: file.path,
-                    // );
-
                     if (selectedTrack != null) {
                       final result = GridItem.music(
                         id: Uuid().v4(),

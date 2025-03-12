@@ -25,6 +25,10 @@ class _BookSearchScreenState extends ConsumerState<BookSearchScreen> {
   @override
   void initState() {
     super.initState();
+
+    Future.microtask(() {
+      ref.read(searchQueryProvider.notifier).state = '';
+    });
   }
 
   @override

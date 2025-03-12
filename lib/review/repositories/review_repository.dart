@@ -1,98 +1,35 @@
-import 'dart:convert';
-import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:typed/config/env.dart';
-import 'package:uuid/uuid.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:typed/review/models/review_model.dart';
 
 class ReviewRepository {
-  final Dio _dio;
-
-  ReviewRepository(this._dio);
-
-  static const String _baseUrl = Env.apiUrl;
-  static const String _reviewEndpoint = '/reviews';
-  static const String _deviceIdKey = 'device_id';
-  static const String _contentType = 'Content-Type';
-  static const String _applicationJson = 'application/json';
-  static const String _deviceIdHeader = 'X-Device-Id';
-
-  /// HTTP 헤더 생성
-  Future<Map<String, String>> _createHeaders() async {
-    final deviceId = await _getDeviceId();
-
-    return {
-      "X-Device-Id": deviceId,
-      "Content-Type": "application/json",
-    };
-  }
-
-  /// 디바이스 ID 가져오기
-  Future<String> _getDeviceId() async {
-    final prefs = await SharedPreferences.getInstance();
-    String? deviceId = prefs.getString(_deviceIdKey);
-    if (deviceId == null) {
-      deviceId = Uuid().v4();
-      await prefs.setString(_deviceIdKey, deviceId);
-    }
-
-    debugPrint('사용 중인 디바이스 ID: $deviceId');
-    return deviceId;
-  }
+  final Box<Review> _box = Hive.box<Review>('review');
 
   /// 서평 저장 (POST)
-  Future<Review?> saveReview(String bookIsbn, String bookTitle, String content,
-      bool isPublic, String? thumbnail) async {
-    // final String deviceId = await _getDeviceId();
-    // final uri = Uri.parse('$_baseUrl/$_reviewEndpoint');
-    // debugPrint('요청 URL: ${uri.toString()}');
+  // TODO: - 새로 추가된 서평을 반환하는 것으로 에러 처리 개선
+  // TODO: - catch문 내 로깅 함수 추가
+  Future<String> addReview(Review review) async {
+    final key = await _box.add(review);
+    return key.toString();
+  }
 
-    // final headers = await _createHeaders();
-    // debugPrint('요청 Headers: ${headers}');
+  /// 서평 전체 목록 조회 (GET)
+  Future<List<Review>> fetchAllReviews() async {
+    return _box.values.toList();
+  }
 
-    // final body = jsonEncode({
-    //   'bookIsbn': bookIsbn,
-    //   'bookTitle': bookTitle,
-    //   'content': content,
-    //   'isPublic': isPublic,
-    //   'thumbnail': thumbnail,
-    // });
-    // debugPrint('요청 Body: ${body}');
+  // TODO: - 검색 키워드가 포함된 bookTitle 혹은 content가 있는 서평 목록 조회(키워드 검색 기능)
+  // TODO: - 정렬된 상태로 목록 조회
 
+  /// ISBN으로 특정 책의 서평 목록 조회 (GET)
+  Future<List<Review>> fetchReviewsByIsbn(String isbn) async {
+    return _box.values.where((review) => review.bookIsbn == isbn).toList();
+  }
+
+  /// ID로 특정 서평 조회 (GET)
+  Review? getReviewById(int id) {
     try {
-      final headers = await _createHeaders();
-      debugPrint('Headers: $headers');
-
-      final response = await _dio.post(
-        '$_baseUrl/$_reviewEndpoint',
-        data: {
-          'bookIsbn': bookIsbn,
-          'bookTitle': bookTitle,
-          'content': content,
-          'isPublic': isPublic,
-          'thumbnail': thumbnail,
-        },
-        options: Options(
-          headers: headers,
-          // SSL 인증서 검증 비활성화
-          validateStatus: (_) => true,
-        ),
-      );
-
-      // 응답 처리
-      if (response.statusCode == 201) {
-        debugPrint('[서평 저장 성공(${response.statusCode})]');
-        // return Review.fromJson(jsonDecode(response.body));
-        return Review.fromJson(response.data);
-      } else {
-        // debugPrint('[서평 저장 실패(${response.statusCode})] ${response.body}');
-        debugPrint('[서평 저장 실패(${response.statusCode})] ${response.data}');
-        return null;
-      }
+      return _box.values.firstWhere((review) => review.id == id);
     } catch (e) {
-      debugPrint('[서평 저장 예외 발생] $e');
       return null;
       // } finally {
       //   client.close();
@@ -100,61 +37,49 @@ class ReviewRepository {
     }
   }
 
-  /// 서평 목록 조회 (GET)
-  Future<List<Review>> fetchReviews() async {
-    final String deviceId = await _getDeviceId();
-    final uri = Uri.parse('$_baseUrl/$_reviewEndpoint');
-
-    debugPrint('요청 URL: ${uri.toString()}');
-
-    final response = await http.get(
-      // Uri.parse('$_baseUrl/$_reviewEndpoint'),
-      uri,
-      headers: {_contentType: _applicationJson, _deviceIdHeader: deviceId},
-    );
-
-    if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body);
-      return data.map((item) => Review.fromJson(item)).toList();
-    } else {
-      debugPrint('[서평 목록 조회 실패(${response.statusCode})] ${response.body}');
-      return [];
-    }
+  /// ID로 특정 서평의 index 조회 (GET)
+  int getReviewIndex(Review reviewToSearch) {
+    final index = _box.values.toList().indexWhere(
+          (review) => review.id == reviewToSearch.id,
+        );
+    return index;
   }
 
   /// 서평 수정 (PUT)
-  Future<bool> updateReview(int reviewId, String content, bool isPublic) async {
-    final String deviceId = await _getDeviceId();
-    final response = await http.put(
-      Uri.parse('$_baseUrl/$_reviewEndpoint/$reviewId'),
-      headers: {_contentType: _applicationJson, _deviceIdHeader: deviceId},
-      body: jsonEncode({
-        'content': content,
-        'isPublic': isPublic,
-      }),
-    );
+  Future<void> updateReview(Review reviewToUpdate) async {
+    final index = getReviewIndex(reviewToUpdate); // 해당 ID의 서평을 찾아 인덱스 확인
 
-    if (response.statusCode == 200) {
-      return true;
+    if (index != -1) {
+      await _box.putAt(index, reviewToUpdate); // 해당 인덱스의 서평 업데이트
     } else {
-      debugPrint('[서평 수정 실패] ${response.body}');
-      return false;
+      throw Exception('서평을 찾을 수 없습니다. ID: ${reviewToUpdate.id}');
     }
   }
 
   /// 서평 삭제 (DELETE)
-  Future<bool> deleteReview(int reviewId) async {
-    final String deviceId = await _getDeviceId();
-    final response = await http.delete(
-      Uri.parse('$_baseUrl/$_reviewEndpoint/$reviewId'),
-      headers: {_contentType: _applicationJson, _deviceIdHeader: deviceId},
-    );
+  Future<void> deleteReview(Review reviewIdToDelete) async {
+    final index = getReviewIndex(reviewIdToDelete); // 해당 ID의 서평을 찾아 인덱스 확인
 
-    if (response.statusCode == 200) {
-      return true;
+    if (index != -1) {
+      await _box.deleteAt(index); // 해당 인덱스의 서평 삭제
     } else {
-      debugPrint('[서평 삭제 실패] ${response.body}');
-      return false;
+      throw Exception('서평을 찾을 수 없습니다. ID: $reviewIdToDelete.id');
     }
+  }
+
+  /// ID AutoIncrement용 메소드
+  Future<int> getNextReviewId() async {
+    if (_box.isEmpty) {
+      return 1;
+    }
+
+    int maxId = 0;
+    for (var review in _box.values) {
+      if (review.id > maxId) {
+        maxId = review.id;
+      }
+    }
+
+    return maxId + 1;
   }
 }

@@ -12,9 +12,7 @@ abstract class GridItem with _$GridItem {
   const factory GridItem({
     required String id,
     required GridItemType type,
-    // String? sentenceContent,
     Sentence? sentence,
-    // Book? book,
     Review? bookReview,
     Track? track,
     XFile? imageFile,
@@ -33,26 +31,22 @@ abstract class GridItem with _$GridItem {
   /// 문장 그리드 아이템 팩토리 생성자
   factory GridItem.sentence({
     required String id,
-    // required String content,
     required Sentence sentence,
   }) =>
       GridItem(
         id: id,
         type: GridItemType.sentence,
-        // sentenceContent: content,
         sentence: sentence,
       );
 
   /// 책 그리드 아이템 팩토리 생성자
   factory GridItem.bookReview({
     required String id,
-    // required Book book,
     required Review bookReview,
   }) =>
       GridItem(
         id: id,
         type: GridItemType.bookReview,
-        // book: book,
         bookReview: bookReview,
       );
 

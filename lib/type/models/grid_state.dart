@@ -18,4 +18,12 @@ class GridState {
       ),
     );
   }
+
+  GridState copyWith({
+    List<List<GridItem>>? items,
+  }) {
+    return GridState(
+      items: items ?? this.items,
+    );
+  }
 }

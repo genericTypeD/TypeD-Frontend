@@ -5,8 +5,7 @@ import 'package:typed/common/const/index.dart';
 import 'package:typed/common/layout/default_layout.dart';
 import 'package:typed/common/widgets/app_bar/custom_app_bar.dart';
 import 'package:typed/review/models/lock_enum.dart';
-// import 'package:typed/review/models/review_model.dart';
-import 'package:typed/review/viewmodels/dummy_reviews_provider.dart';
+import 'package:typed/review/models/review_model.dart';
 import 'package:typed/review/viewmodels/review/review_providers.dart';
 
 class ReviewListScreen extends ConsumerStatefulWidget {
@@ -28,10 +27,9 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
     super.initState();
     _currentLockState = LockStatus.closed;
 
-    // Future.microtask(() {
-    //   ref.read(reviewListProvider.notifier).fetchReviews();
-    // });
-    // ref.read(reviewListProvider.notifier).fetchReviews();
+    Future.microtask(() {
+      ref.read(reviewListProvider.notifier);
+    });
   }
 
   @override
@@ -40,10 +38,8 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
 
     return reviewsState.when(
       data: (reviews) {
-        // final privateReviews = ref.watch(privateReviewsProvider);
-        // final publicReviews = ref.watch(publicReviewsProvider);
-        final privateReviews = ref.watch(dummyPrivateReviewsProvider);
-        final publicReviews = ref.watch(dummyPublicReviewsProvider);
+        final privateReviews = ref.watch(privateReviewsProvider);
+        final publicReviews = ref.watch(publicReviewsProvider);
 
         final displayReviews = _currentLockState == LockStatus.closed
             ? privateReviews
@@ -195,13 +191,37 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
                       onPressed: () async {
                         final confirmed = await showDialog<bool>(
                           context: context,
-                          builder: (context) => _buildAlertDialog(),
+                          builder: (context) => _buildAlertDialog(review),
                         );
 
-                        if (confirmed == true) {
-                          await ref
-                              .read(reviewListProvider.notifier)
-                              .deleteReview(review.id!);
+                        if (confirmed == true && context.mounted) {
+                          try {
+                            await ref
+                                .read(reviewListProvider.notifier)
+                                .deleteReview(review);
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('서평이 성공적으로 삭제되었습니다.'),
+                                ),
+                                snackBarAnimationStyle: AnimationStyle(
+                                  duration: Duration(seconds: 1),
+                                ),
+                              );
+                            }
+                          } catch (error) {
+                            if (context.mounted) {
+                              debugPrint('$error');
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('오류로 인해 서평이 삭제되지 않았습니다.'),
+                                ),
+                                snackBarAnimationStyle: AnimationStyle(
+                                  duration: Duration(seconds: 1),
+                                ),
+                              );
+                            }
+                          }
                         }
                       },
                     ),
@@ -215,7 +235,7 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
     );
   }
 
-  Widget _buildAlertDialog() {
+  Widget _buildAlertDialog(Review review) {
     return AlertDialog(
       titlePadding: EdgeInsets.zero,
       contentPadding: EdgeInsets.zero,
@@ -257,7 +277,13 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     visualDensity: VisualDensity.compact,
                   ),
-                  onPressed: () => Navigator.pop(context, false),
+                  onPressed: () {
+                    if (context.canPop()) {
+                      context.pop(false);
+                    } else {
+                      Navigator.of(context, rootNavigator: true).pop(false);
+                    }
+                  },
                   child: Text(
                     '취소',
                     style: AppTheme.body2,
@@ -273,7 +299,13 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     visualDensity: VisualDensity.compact,
                   ),
-                  onPressed: () => Navigator.pop(context, true),
+                  onPressed: () {
+                    if (context.canPop()) {
+                      context.pop(true);
+                    } else {
+                      Navigator.of(context, rootNavigator: true).pop(true);
+                    }
+                  },
                   child: Text(
                     '삭제',
                     style: AppTheme.body2,

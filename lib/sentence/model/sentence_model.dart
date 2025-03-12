@@ -1,29 +1,79 @@
+import 'package:hive_flutter/hive_flutter.dart';
+
+part 'sentence_model.g.dart';
+
+@HiveType(typeId: 3)
 class Sentence {
-  final String content; // 문장의 내용
-  final bool isPublic; // 공개 여부
-  final DateTime createdAt; // 문장이 생성된 날짜
+  @HiveField(0)
+  final int id;
+
+  @HiveField(1)
+  final String content;
+  @HiveField(2)
+  final bool isPublic;
+  @HiveField(3)
+  final String createdAt;
+  @HiveField(4)
+  final String updatedAt;
 
   Sentence({
+    required this.id,
     required this.content,
     required this.isPublic,
     required this.createdAt,
+    required this.updatedAt,
   });
 
-  // 데이터를 JSON 형식으로 변환
+  factory Sentence.fromJson(Map<String, dynamic> json) {
+    return Sentence(
+      id: json['id'],
+      content: json['content'],
+      isPublic: json['isPublic'],
+      createdAt: json['createdAt'],
+      updatedAt: json['updatedAt'],
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'content': content,
       'isPublic': isPublic,
-      'createdAt': createdAt.toIso8601String(),
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
     };
   }
 
-  // JSON 데이터를 Sentence 객체로 변환
-  factory Sentence.fromJson(Map<String, dynamic> json) {
+  @override
+  String toString() {
+    final contentText = 'content: $content';
+    final isPublicText = 'isPublic: $isPublic';
+    final createdAtText = 'createdAt: $createdAt';
+    final updatedAtText = 'updatedAt: $updatedAt';
+
+    final sentenceInfoList = [
+      contentText,
+      isPublicText,
+      createdAtText,
+      updatedAtText,
+    ].join(', ');
+
+    return 'Sentence($sentenceInfoList)';
+  }
+
+  Sentence copyWith({
+    int? sentenceId,
+    String? sentenceContent,
+    bool? sentenceIsPublic,
+    String? sentenceCreatedAt,
+    String? sentenceUpdatedAt,
+  }) {
     return Sentence(
-      content: json['content'],
-      isPublic: json['isPublic'],
-      createdAt: DateTime.parse(json['createdAt']),
+      id: sentenceId ?? id,
+      content: sentenceContent ?? content,
+      isPublic: sentenceIsPublic ?? isPublic,
+      createdAt: sentenceCreatedAt ?? createdAt,
+      updatedAt: sentenceUpdatedAt ?? DateTime.now().toIso8601String(),
     );
   }
 }

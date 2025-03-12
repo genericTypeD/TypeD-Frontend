@@ -7,13 +7,25 @@ class BottomSection extends StatelessWidget {
   final Widget? leftWidget;
   final Widget? centerWidget;
   final Widget? rightWidget;
+  final bool isFeed;
 
   const BottomSection({
     this.leftWidget,
     this.centerWidget,
     this.rightWidget,
+    this.isFeed = false,
     super.key,
   });
+
+  factory BottomSection.feed({
+    Widget? leftWidget,
+    Widget? rightWidget,
+  }) =>
+      BottomSection(
+        leftWidget: leftWidget,
+        rightWidget: rightWidget,
+        isFeed: true,
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +42,10 @@ class BottomSection extends StatelessWidget {
           ),
           const BorderContainer(type: ContainerBorderType.left),
           const Spacer(),
-          centerWidget ?? Container(),
-          const SizedBox(width: AppBarStyle.sizedBoxWidth),
+          if (!isFeed) ...[
+            centerWidget ?? Container(),
+            const SizedBox(width: AppBarStyle.sizedBoxWidth),
+          ],
           rightWidget ?? Container(),
           const BorderContainer(type: ContainerBorderType.right),
         ],
