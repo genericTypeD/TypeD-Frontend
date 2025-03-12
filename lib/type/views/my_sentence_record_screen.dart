@@ -50,18 +50,28 @@ class _MySentenceRecordScreenState
         itemBuilder: (BuildContext context, int index) {
           final item = dummySentences[index];
 
-          return MySentenceWidget(
-            onTap: () {
-              setState(() {
-                currentSentence = item;
-              });
-            },
-            isSelected: (currentSentence != null &&
-                currentSentence!.content == item.content &&
-                currentSentence!.createdAt == item.createdAt),
-            sentence: item,
-          );
-        },
+  // TODO: - common으로 빼기
+  Widget _buildPlaceholder() {
+    return Center(
+      child: Image.asset(
+        'assets/images/grid_item_placeholder.png',
+        width: MediaQuery.of(context).size.width * 0.1,
+        height: MediaQuery.of(context).size.width * 0.1,
+        fit: BoxFit.contain,
+      ),
+    );
+  }
+
+  Widget _buildErrorScreen() {
+    return Center(
+      child: Column(
+        children: [
+          _buildPlaceholder(),
+          Text(
+            '오류가 발생했습니다.',
+            style: AppTheme.body1,
+          ),
+        ],
       ),
     );
   }
