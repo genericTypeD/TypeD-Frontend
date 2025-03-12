@@ -182,6 +182,116 @@ class _MyTypeState extends ConsumerState<MyType> {
             );
           },
         ),
+        bottomRightWidget: Padding(
+          padding: const EdgeInsets.only(right: 16),
+          child: TextButton(
+            onPressed: () async {
+              final result = await showDatePicker(
+                context: context,
+                initialDate: _selectedDateTime,
+                firstDate:
+                    DateTime.now().subtract(const Duration(days: 365 * 3)),
+                lastDate: DateTime.now(),
+                helpText: '기록에 대한 날짜를 선택하세요',
+                cancelText: '취소',
+                confirmText: '확인',
+                barrierColor: Colors.black54,
+                builder: (context, child) {
+                  return Theme(
+                    data: Theme.of(context).copyWith(
+                      colorScheme: Theme.of(context).colorScheme.copyWith(
+                            primary: AppColors.borderBlack,
+                          ),
+                      datePickerTheme: DatePickerThemeData(
+                        backgroundColor: AppColors.backgroundTertiary,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.zero,
+                          side: BorderSide(
+                            color: AppColors.borderBlack,
+                            width: 0.3,
+                          ),
+                        ),
+                        headerBackgroundColor: AppColors.backgroundTertiary,
+                        headerForegroundColor: AppColors.textPrimary,
+                        dividerColor: AppColors.dividerBlack,
+                        cancelButtonStyle: ButtonStyle(
+                          foregroundColor: WidgetStatePropertyAll(
+                            AppColors.textPrimary,
+                          ),
+                        ),
+                        confirmButtonStyle: ButtonStyle(
+                          foregroundColor: WidgetStatePropertyAll(
+                            AppColors.textPrimary,
+                          ),
+                        ),
+                        todayBackgroundColor: WidgetStateProperty.fromMap(
+                          {
+                            WidgetState.selected:
+                                AppColors.backgroundQuaternary,
+                            WidgetState.disabled: Colors.transparent,
+                          },
+                        ),
+                        dayForegroundColor: WidgetStateProperty.fromMap(
+                          {
+                            WidgetState.disabled: AppColors.textTertiary,
+                            WidgetState.selected: Colors.white,
+                          },
+                        ),
+                        dayBackgroundColor: WidgetStateProperty.fromMap(
+                          {
+                            WidgetState.selected:
+                                AppColors.backgroundQuaternary,
+                            WidgetState.disabled: Colors.transparent,
+                          },
+                        ),
+                        dayOverlayColor: WidgetStateProperty.fromMap({
+                          WidgetState.selected | WidgetState.focused:
+                              Colors.transparent,
+                        }),
+                        dayShape: WidgetStateProperty.resolveWith(
+                          (states) {
+                            return RoundedRectangleBorder(
+                              borderRadius: BorderRadius.zero,
+                              side: BorderSide(
+                                color: states.contains(WidgetState.selected)
+                                    ? AppColors.borderBlack
+                                    : Colors.transparent,
+                                width: 0.3,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                    child: child!,
+                  );
+                },
+              );
+              setState(() {
+                if (result != null) {
+                  _selectedDateTime = result;
+
+                  // 날짜 변경 시 데이터 로드
+                  ref.read(periodDateProvider.notifier).updateDateTime(result);
+                }
+              });
+            },
+            style: TextButton.styleFrom(
+              padding: EdgeInsets.zero,
+              minimumSize: Size.zero,
+              overlayColor: Colors.transparent,
+            ),
+            child: Text(
+              DateFormatter.formatByPeriodType(
+                  _selectedPeriod, _selectedDateTime),
+              textAlign: TextAlign.left,
+              style: AppTheme.title3.copyWith(
+                height: 1,
+              ),
+            ),
+          ),
+        ),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(
