@@ -27,16 +27,9 @@ class _MySentenceRecordScreenState
   void initState() {
     super.initState();
 
-    final item = widget.item;
-
-    if (item != null && item.isSentence && item.isValid) {
-      final existingSentence = Sentence(
-        content: item.sentence!.content,
-        isPublic: item.sentence!.isPublic,
-        createdAt: item.sentence!.createdAt,
-      );
-      currentSentence = existingSentence;
-    }
+    Future.microtask(() {
+      ref.read(sentenceListProvider.notifier);
+    });
   }
 
   @override
