@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:typed/common/const/app_colors.dart';
 import 'package:typed/common/index.dart';
+import 'package:typed/feed/component/feed_list.dart';
 import 'package:typed/feed/provider/feed_provider.dart';
-import 'package:typed/feed/screen/feed_list.dart';
 
 class FeedPublic extends ConsumerWidget {
   const FeedPublic({super.key});

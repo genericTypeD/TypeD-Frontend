@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:typed/common/index.dart';
+import 'package:typed/feed/component/feed_list.dart';
 import 'package:typed/feed/provider/feed_provider.dart';
-import 'package:typed/feed/screen/feed_list.dart';
 
 class FeedMyListScreen extends ConsumerWidget {
   const FeedMyListScreen({super.key});
