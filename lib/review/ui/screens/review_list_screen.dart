@@ -47,7 +47,7 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
 
         return DefaultLayout(
           backgroundColor: AppColors.backgroundSecondary,
-          appBar: _buildAppbar(),
+          appBar: _buildReviewListAppBar(),
           child: Row(
             children: [
               Container(
@@ -376,56 +376,56 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
     );
   }
 
-  PreferredSizeWidget _buildAppbar() {
+  PreferredSizeWidget _buildReviewListAppBar() {
     return CustomAppBar(
-      bottomLeftWidget: DropdownButton<LockStatus>(
-        value: _currentLockState,
-        alignment: Alignment.centerLeft,
-        style: AppTheme.title3,
-        dropdownColor: Colors.white,
-        elevation: 0,
-        icon: Container(),
-        underline: Container(),
-        items: [
-          DropdownMenuItem<LockStatus>(
-            value: LockStatus.closed,
-            child: Row(
-              children: [
-                const Icon(Icons.lock_outline, size: 14),
-                const SizedBox(width: 6),
-                Text(
-                  '${LockStatus.closed.korName} 서평',
+      bottomLeftWidget: _buildLockStatusDropdownButton(),
+      bottomRightWidget: _buildAddReviewButton(),
+    );
+  }
+
+  Widget _buildLockStatusDropdownButton() {
+    return DropdownButton<LockStatus>(
+      value: _currentLockState,
+      alignment: Alignment.centerLeft,
+      style: AppTheme.title3,
+      dropdownColor: Colors.white,
+      elevation: 0,
+      icon: Container(),
+      underline: Container(),
+      items: LockStatus.values
+          .map((status) => DropdownMenuItem<LockStatus>(
+                value: status,
+                child: Row(
+                  children: [
+                    Icon(
+                        status == LockStatus.closed
+                            ? Icons.lock_outline
+                            : Icons.lock_open,
+                        size: 14),
+                    const SizedBox(width: 6),
+                    Text('${status.korName} 서평'),
+                  ],
                 ),
-              ],
-            ),
-          ),
-          DropdownMenuItem<LockStatus>(
-            value: LockStatus.open,
-            child: Row(
-              children: [
-                const Icon(Icons.lock_open, size: 14),
-                const SizedBox(width: 6),
-                Text('${LockStatus.open.korName} 서평'),
-              ],
-            ),
-          ),
-        ],
-        onChanged: (value) {
-          if (value != null) {
-            setState(() {
-              _currentLockState = value;
-            });
-          }
-        },
-      ),
-      bottomRightWidget: Padding(
-        padding: const EdgeInsets.only(right: 16),
-        child: GestureDetector(
-          onTap: () => context.push('/book_search'),
-          child: Text(
-            '추가',
-            style: AppTheme.title3,
-          ),
+              ))
+          .toList(),
+      onChanged: (value) {
+        if (value != null) {
+          setState(() {
+            _currentLockState = value;
+          });
+        }
+      },
+    );
+  }
+
+  Widget _buildAddReviewButton() {
+    return Padding(
+      padding: const EdgeInsets.only(right: 16),
+      child: GestureDetector(
+        onTap: () => context.push('/book_search'),
+        child: Text(
+          '추가',
+          style: AppTheme.title3,
         ),
       ),
     );
