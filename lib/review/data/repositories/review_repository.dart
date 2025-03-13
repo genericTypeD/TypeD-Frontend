@@ -1,5 +1,5 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:typed/review/models/review_model.dart';
+import 'package:typed/review/data/models/review_model.dart';
 
 class ReviewRepository {
   final Box<Review> _box = Hive.box<Review>('review');
