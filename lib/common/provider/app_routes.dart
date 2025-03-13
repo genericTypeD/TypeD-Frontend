@@ -62,16 +62,6 @@ class AppRoutes {
           ]),
         ],
       ),
-      GoRoute(
-        path: '/book_search',
-        name: 'direct_book_search_screen',
-        builder: (context, state) => const BookSearchScreen(),
-      ),
-      GoRoute(
-        path: '/review_input',
-        name: 'direct_review_input_screen',
-        builder: (context, state) => const ReviewInputScreen(),
-      ),
       ...TypeRoutes.routes,
       ...ReviewRoutes.routes,
       ...SentenceRoutes.routes,
