@@ -378,50 +378,54 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
 
   PreferredSizeWidget _buildAppbar() {
     return CustomAppBar(
-      bottomLeftWidget: Text(
-        _reviewListScreenTitle,
+      bottomLeftWidget: DropdownButton<LockStatus>(
+        value: _currentLockState,
+        alignment: Alignment.centerLeft,
         style: AppTheme.title3,
-        textAlign: TextAlign.left,
+        dropdownColor: Colors.white,
+        elevation: 0,
+        icon: Container(),
+        underline: Container(),
+        items: [
+          DropdownMenuItem<LockStatus>(
+            value: LockStatus.closed,
+            child: Row(
+              children: [
+                const Icon(Icons.lock_outline, size: 14),
+                const SizedBox(width: 6),
+                Text(
+                  '${LockStatus.closed.korName} 서평',
+                ),
+              ],
+            ),
+          ),
+          DropdownMenuItem<LockStatus>(
+            value: LockStatus.open,
+            child: Row(
+              children: [
+                const Icon(Icons.lock_open, size: 14),
+                const SizedBox(width: 6),
+                Text('${LockStatus.open.korName} 서평'),
+              ],
+            ),
+          ),
+        ],
+        onChanged: (value) {
+          if (value != null) {
+            setState(() {
+              _currentLockState = value;
+            });
+          }
+        },
       ),
       bottomRightWidget: Padding(
         padding: const EdgeInsets.only(right: 16),
-        child: DropdownButton<LockStatus>(
-          value: _currentLockState,
-          alignment: Alignment.centerRight,
-          style: AppTheme.title3,
-          dropdownColor: Colors.white,
-          elevation: 0,
-          icon: Container(),
-          underline: Container(),
-          items: [
-            DropdownMenuItem<LockStatus>(
-              value: LockStatus.closed,
-              child: Row(
-                children: [
-                  const Icon(Icons.lock_outline, size: 14),
-                  const SizedBox(width: 6),
-                  Text(LockStatus.closed.korName),
-                ],
-              ),
-            ),
-            DropdownMenuItem<LockStatus>(
-              value: LockStatus.open,
-              child: Row(
-                children: [
-                  const Icon(Icons.lock_open, size: 14),
-                  const SizedBox(width: 6),
-                  Text(LockStatus.open.korName),
-                ],
-              ),
-            ),
-          ],
-          onChanged: (value) {
-            if (value != null) {
-              setState(() {
-                _currentLockState = value;
-              });
-            }
-          },
+        child: GestureDetector(
+          onTap: () => context.push('/book_search'),
+          child: Text(
+            '추가',
+            style: AppTheme.title3,
+          ),
         ),
       ),
     );
