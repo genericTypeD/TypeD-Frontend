@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:typed/common/const/index.dart';
 import 'package:typed/review/models/lock_enum.dart';
 import 'package:typed/review/viewmodels/review/review_providers.dart';
-import '../../common/index.dart';
+import '../../../common/index.dart';
 
 class ReviewEditScreen extends ConsumerStatefulWidget {
   final int reviewId;
