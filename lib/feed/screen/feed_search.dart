@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:typed/common/const/app_themes.dart';
-import 'package:typed/common/layout/default_layout.dart';
-import 'package:typed/common/widgets/app_bar/custom_app_bar.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:typed/common/index.dart';
+import 'package:typed/feed/provider/feed_search_provider.dart';
 
-class FeedSearch extends StatefulWidget {
+class FeedSearch extends ConsumerWidget {
   const FeedSearch({super.key});
 
   @override
-  State<FeedSearch> createState() => _FeedSearchState();
-}
-
-class _FeedSearchState extends State<FeedSearch> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return DefaultLayout(
       appBar: CustomAppBar(
-        bottomLeftWidget: GestureDetector(
-          onTap: () {
-            debugPrint('클릭됨!');
-          },
-          child: Text(
-            "검색",
-            style: AppTheme.title3,
-          ),
+        bottomLeftWidget: const Text(
+          "검색",
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
       ),
-      child: const Center(
-        child: Text("검색 기능 구현 예정"),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: TextField(
+          decoration: const InputDecoration(
+            prefixIcon: Icon(Icons.search),
+            hintText: "키워드 또는 해시태그 검색...",
+            border: OutlineInputBorder(),
+          ),
+          onChanged: (value) {
+            ref.read(feedSearchProvider.notifier).state = value;
+          },
+        ),
       ),
     );
   }

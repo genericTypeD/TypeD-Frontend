@@ -1,10 +1,13 @@
+// 기존
+
 import 'package:flutter/material.dart';
 import 'package:typed/common/const/app_colors.dart';
 import 'package:typed/common/const/app_themes.dart';
 import 'package:typed/common/index.dart';
+import 'package:typed/feed/model/feed_model.dart';
 
 class FeedList extends StatefulWidget {
-  const FeedList({super.key});
+  const FeedList({super.key, required List<FeedModel> feeds});
 
   @override
   State<FeedList> createState() => _FeedListState();
