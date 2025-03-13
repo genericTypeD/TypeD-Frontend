@@ -35,8 +35,6 @@ class BottomSection extends StatelessWidget {
           const BorderContainer(type: ContainerBorderType.left),
           const SizedBox(width: AppBarStyle.sizedBoxWidth),
           Container(
-            width: MediaQuery.of(context).size.width *
-                AppBarStyle.bottomLeftWidgetWidthMultiplier,
             alignment: Alignment.centerLeft,
             child: leftWidget ?? Container(),
           ),
