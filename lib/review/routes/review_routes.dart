@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:typed/common/const/index.dart';
 import 'package:typed/common/index.dart';
-import 'package:typed/review/screen/review_edit_screen.dart';
-import 'package:typed/review/screen/review_input_screen.dart';
-import 'package:typed/review/screen/book_search_screen.dart';
-import 'package:typed/review/screen/review_list_screen.dart';
+import 'package:typed/review/ui/screens/review_edit_screen.dart';
+import 'package:typed/review/ui/screens/review_input_screen.dart';
+import 'package:typed/review/ui/screens/book_search_screen.dart';
+import 'package:typed/review/ui/screens/review_list_screen.dart';
 
 class ReviewRoutes {
   static final List<GoRoute> routes = [
