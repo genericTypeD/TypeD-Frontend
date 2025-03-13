@@ -1,4 +1,5 @@
 enum PeriodType {
+  daily('daily', '오늘의 나'),
   weekly('weekly', '이주의 나'),
   monthly('monthly', '이달의 나'),
   yearly('yearly', '올해의 나');

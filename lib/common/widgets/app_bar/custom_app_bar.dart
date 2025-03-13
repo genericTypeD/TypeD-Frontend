@@ -10,6 +10,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? bottomRightWidget;
   final Widget? iconButton;
   final bool isMyPage;
+  final bool isFeed;
   final bool isShowingNotifications;
 
   @override
@@ -22,6 +23,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.bottomRightWidget,
     this.iconButton,
     this.isMyPage = false,
+    this.isFeed = false,
     this.isShowingNotifications = false,
   }) : preferredSize = const Size.fromHeight(AppBarStyle.appbarHeight);
 
@@ -37,6 +39,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         isMyPage: true,
       );
 
+  factory CustomAppBar.feed({
+    Widget? bottomLeftWidget,
+    Widget? bottomRightWidget,
+  }) =>
+      CustomAppBar(
+        bottomLeftWidget: bottomLeftWidget,
+        bottomRightWidget: bottomRightWidget,
+        isFeed: true,
+      );
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -49,7 +61,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             HeaderSection(
               titleWidget: GestureDetector(
                 onTap: () {
-                  context.push('/home/type');
+                  // TODO: - 파라미터로 빼기
+                  context.go('/home/type');
                 },
                 child: Text(
                   AppBarStyle.titleAppName,

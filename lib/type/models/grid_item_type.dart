@@ -1,6 +1,6 @@
 enum GridItemType {
   sentence,
-  book,
+  bookReview,
   music,
   image,
   empty;
@@ -8,14 +8,14 @@ enum GridItemType {
   static List<GridItemType> get allTypes => [
         empty,
         sentence,
-        book,
+        bookReview,
         music,
         image,
       ];
 
   static List<GridItemType> get contentTypes => [
         sentence,
-        book,
+        bookReview,
         music,
         image,
       ];

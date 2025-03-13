@@ -91,6 +91,8 @@ class AddRecordDialog extends StatelessWidget {
                       visualDensity: VisualDensity.compact,
                     ),
                     onPressed: () async {
+                      // Navigator.of(context).pop();
+
                       final result = await Navigator.push<GridItem>(
                         context,
                         MaterialPageRoute(
@@ -110,6 +112,9 @@ class AddRecordDialog extends StatelessWidget {
                               return MyMusicRecordScreen(
                                 item: item,
                               );
+                            } else if (nextScreen.runtimeType ==
+                                MySentenceRecordScreen) {
+                              return MySentenceRecordScreen(item: item);
                             } else {
                               return nextScreen;
                             }

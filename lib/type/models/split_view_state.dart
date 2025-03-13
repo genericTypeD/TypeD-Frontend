@@ -12,4 +12,14 @@ class SplitViewState {
       verticalFlexValues: List.generate(3, (_) => 1.0),
     );
   }
+
+  SplitViewState copyWith({
+    List<List<double>>? horizontalFlexValues,
+    List<double>? verticalFlexValues,
+  }) {
+    return SplitViewState(
+      horizontalFlexValues: horizontalFlexValues ?? this.horizontalFlexValues,
+      verticalFlexValues: verticalFlexValues ?? this.verticalFlexValues,
+    );
+  }
 }
