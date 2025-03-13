@@ -53,10 +53,13 @@ class _BookSearchScreenState extends ConsumerState<BookSearchScreen> {
     return DefaultLayout(
       backgroundColor: AppColors.backgroundSecondary,
       appBar: CustomAppBar(
-        bottomLeftWidget: Text(
-          _bookScreenTitle,
-          textAlign: TextAlign.left,
-          style: AppTheme.title3,
+        bottomLeftWidget: GestureDetector(
+          onTap: () => context.pop(),
+          child: Text(
+            '돌아가기',
+            textAlign: TextAlign.left,
+            style: AppTheme.title3,
+          ),
         ),
       ),
       child: Column(
