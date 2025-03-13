@@ -4,9 +4,9 @@ import 'package:dio/io.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:typed/config/env.dart';
-import 'package:typed/review/models/review_model.dart';
-import 'package:typed/review/repositories/review_repository.dart';
-import 'package:typed/review/viewmodels/review/review_viewmodel.dart';
+import 'package:typed/review/data/models/review_model.dart';
+import 'package:typed/review/data/repositories/review_repository.dart';
+import 'package:typed/review/viewmodels/review_list_notifier.dart';
 
 /// SSL 인증서 검증을 우회하는 HttpClient 객체 생성 메소드
 HttpClient createUnsecureClient() {
@@ -45,9 +45,9 @@ final reviewRepositoryProvider = Provider<ReviewRepository>((ref) {
 
 /// 서평 목록 상태 관리 Provider
 final reviewListProvider =
-    StateNotifierProvider<ReviewListViewModel, AsyncValue<List<Review>>>((ref) {
+    StateNotifierProvider<ReviewListNotifier, AsyncValue<List<Review>>>((ref) {
   final repository = ref.read(reviewRepositoryProvider);
-  return ReviewListViewModel(repository);
+  return ReviewListNotifier(repository);
 });
 
 /// 공개 서평 필터링 Provider

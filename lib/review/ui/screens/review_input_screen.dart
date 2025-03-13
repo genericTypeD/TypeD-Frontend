@@ -4,10 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:typed/common/const/app_colors.dart';
 import 'package:typed/common/const/app_themes.dart';
 import 'package:typed/common/index.dart';
-import 'package:typed/review/models/book_model.dart';
-import 'package:typed/review/models/lock_enum.dart';
-import 'package:typed/review/viewmodels/book/book_providers.dart';
-import 'package:typed/review/viewmodels/review/review_providers.dart';
+import 'package:typed/review/data/models/book_model.dart';
+import 'package:typed/review/data/models/lock_enum.dart';
+import 'package:typed/review/viewmodels/book_providers.dart';
+import 'package:typed/review/viewmodels/review_providers.dart';
 
 class ReviewInputScreen extends ConsumerStatefulWidget {
   const ReviewInputScreen({super.key});

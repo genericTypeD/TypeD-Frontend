@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:typed/common/const/index.dart';
 import 'package:typed/common/index.dart';
-import 'package:typed/review/models/lock_enum.dart';
+import 'package:typed/review/data/models/lock_enum.dart';
 import 'package:typed/sentence/model/sentence_model.dart';
 import 'package:typed/sentence/provider/sentence_provider.dart';
 

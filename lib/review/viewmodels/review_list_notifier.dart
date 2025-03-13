@@ -1,11 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:typed/review/models/review_model.dart';
-import 'package:typed/review/repositories/review_repository.dart';
+import 'package:typed/review/data/models/review_model.dart';
+import 'package:typed/review/data/repositories/review_repository.dart';
 
-class ReviewListViewModel extends StateNotifier<AsyncValue<List<Review>>> {
+class ReviewListNotifier extends StateNotifier<AsyncValue<List<Review>>> {
   final ReviewRepository _repository;
 
-  ReviewListViewModel(this._repository) : super(const AsyncValue.loading()) {
+  ReviewListNotifier(this._repository) : super(const AsyncValue.loading()) {
     _fetchReviews();
   }
 

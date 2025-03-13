@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:typed/common/const/index.dart';
 import 'package:typed/common/index.dart';
-import 'package:typed/review/viewmodels/book/book_providers.dart';
-import 'package:typed/review/models/book_model.dart';
+import 'package:typed/review/viewmodels/book_providers.dart';
+import 'package:typed/review/data/models/book_model.dart';
 
 class BookSearchScreen extends ConsumerStatefulWidget {
   const BookSearchScreen({super.key});

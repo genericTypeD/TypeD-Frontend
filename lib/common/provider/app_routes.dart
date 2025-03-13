@@ -4,7 +4,7 @@ import 'package:typed/common/screen/splash.dart';
 import 'package:typed/feed/provider/feed_routes.dart';
 import 'package:typed/feed/screen/feed_public.dart';
 import 'package:typed/review/ui/screens/book_search_screen.dart';
-import 'package:typed/review/provider/review_routes.dart';
+import 'package:typed/review/routes/review_routes.dart';
 import 'package:typed/review/ui/screens/review_list_screen.dart';
 import 'package:typed/sentence/provider/sentence_routes.dart';
 import 'package:typed/sentence/screen/sentence_list.dart';
