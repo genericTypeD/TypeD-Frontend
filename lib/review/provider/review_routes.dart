@@ -2,13 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:typed/common/const/index.dart';
 import 'package:typed/common/index.dart';
-import 'package:typed/review/review_edit_screen.dart';
-import 'package:typed/review/review_input_screen.dart';
-import 'package:typed/review/book_search_screen.dart';
-import 'package:typed/review/review_list_screen.dart';
+import 'package:typed/review/screen/review_edit_screen.dart';
+import 'package:typed/review/screen/review_input_screen.dart';
+import 'package:typed/review/screen/book_search_screen.dart';
+import 'package:typed/review/screen/review_list_screen.dart';
 
 class ReviewRoutes {
   static final List<GoRoute> routes = [
+    /// 서평 목록 화면
+    GoRoute(
+      path: '/review_list',
+      builder: (context, state) => const ReviewListScreen(),
+    ),
+
     /// 책 검색 화면
     GoRoute(
       path: '/book_search',
@@ -18,6 +24,7 @@ class ReviewRoutes {
     /// 서평 작성 화면
     GoRoute(
       path: '/review_input',
+      name: 'review_input_screen',
       pageBuilder: (context, state) {
         return CustomTransitionPage(
           key: state.pageKey,
@@ -34,12 +41,6 @@ class ReviewRoutes {
           transitionDuration: const Duration(milliseconds: 300),
         );
       },
-    ),
-
-    /// 서평 목록 화면
-    GoRoute(
-      path: '/review_list',
-      builder: (context, state) => const ReviewListScreen(),
     ),
 
     /// 서평 수정 화면

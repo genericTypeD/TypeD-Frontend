@@ -2,22 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:typed/common/const/index.dart';
-import 'package:typed/common/index.dart';
+import 'package:typed/common/layout/default_layout.dart';
+import 'package:typed/common/widgets/app_bar/custom_app_bar.dart';
 import 'package:typed/review/models/lock_enum.dart';
-import 'package:typed/sentence/model/sentence_model.dart';
-import 'package:typed/sentence/provider/sentence_provider.dart';
+import 'package:typed/review/models/review_model.dart';
+import 'package:typed/review/viewmodels/review/review_providers.dart';
 
-class SentenceList extends ConsumerStatefulWidget {
-  const SentenceList({super.key});
+class ReviewListScreen extends ConsumerStatefulWidget {
+  const ReviewListScreen({super.key});
 
   @override
-  _SentenceListState createState() => _SentenceListState();
+  ConsumerState<ReviewListScreen> createState() => _ReviewListScreenState();
 }
 
-class _SentenceListState extends ConsumerState<SentenceList>
+class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
     with SingleTickerProviderStateMixin {
-  static const _sentenceListScreenTitle = '문장 목록';
-  static const _sentenceEmptyListText = '저장된 문장이 없습니다';
+  static const _reviewListScreenTitle = '서평 목록';
+  static const _reviewEmptyListText = '저장된 서평이 없습니다';
 
   late LockStatus _currentLockState;
 
@@ -27,22 +28,22 @@ class _SentenceListState extends ConsumerState<SentenceList>
     _currentLockState = LockStatus.closed;
 
     Future.microtask(() {
-      ref.read(sentenceListProvider.notifier);
+      ref.read(reviewListProvider.notifier);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final sentencesState = ref.watch(sentenceListProvider);
+    final reviewsState = ref.watch(reviewListProvider);
 
-    return sentencesState.when(
-      data: (sentences) {
-        final privateSentences = ref.watch(privateSentencesProvider);
-        final publicSentences = ref.watch(publicSentencesProvider);
+    return reviewsState.when(
+      data: (reviews) {
+        final privateReviews = ref.watch(privateReviewsProvider);
+        final publicReviews = ref.watch(publicReviewsProvider);
 
-        final displaySentences = _currentLockState == LockStatus.closed
-            ? privateSentences
-            : publicSentences;
+        final displayReviews = _currentLockState == LockStatus.closed
+            ? privateReviews
+            : publicReviews;
 
         return DefaultLayout(
           backgroundColor: AppColors.backgroundSecondary,
@@ -78,7 +79,7 @@ class _SentenceListState extends ConsumerState<SentenceList>
                         color: AppColors.backgroundSecondary,
                         border: Border(bottom: AppBarStyle.borderStyle),
                       ),
-                      child: _buildSentenceList(displaySentences),
+                      child: _buildReviewList(displayReviews),
                     ),
                   ),
                 ),
@@ -112,15 +113,15 @@ class _SentenceListState extends ConsumerState<SentenceList>
     );
   }
 
-  Widget _buildSentenceList(List<Sentence> sentences) {
-    if (sentences.isEmpty) {
-      return _buildEmptySentenceListScreen();
+  Widget _buildReviewList(List<dynamic> reviews) {
+    if (reviews.isEmpty) {
+      return _buildEmptyReviewListScreen();
     }
 
     return ListView.builder(
-      itemCount: sentences.length,
+      itemCount: reviews.length,
       itemBuilder: (context, index) {
-        final sentence = sentences[index];
+        final review = reviews[index];
 
         return Container(
           decoration: BoxDecoration(
@@ -133,17 +134,34 @@ class _SentenceListState extends ConsumerState<SentenceList>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ListTile(
+                leading: review.thumbnail?.isNotEmpty ?? false
+                    ? Image.network(
+                        review.thumbnail!,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, _) =>
+                            _buildPlaceholder(0.06),
+                      )
+                    : _buildPlaceholder(0.06),
                 title: Text(
-                  sentence.content,
+                  review.bookTitle,
                   style: AppTheme.body1,
-                  // maxLines: 1,
-                  // overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 subtitle: Text(
-                  sentence.createdAt != null
-                      ? 'createdAt: ${sentence.createdAt!.substring(0, 10)}'
+                  review.createdAt != null
+                      ? 'createdAt: ${review.createdAt!.substring(0, 10)}'
                       : '',
                   style: AppTheme.body3,
+                ),
+              ),
+
+              // 서평 내용
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Text(
+                  review.content,
+                  style: AppTheme.body2,
                 ),
               ),
 
@@ -157,11 +175,13 @@ class _SentenceListState extends ConsumerState<SentenceList>
                       icon: const Icon(Icons.edit, size: 20),
                       onPressed: () {
                         context.push(
-                          '/sentence_edit',
+                          '/review_edit',
                           extra: {
-                            'sentenceId': sentence.id,
-                            'initialContent': sentence.content,
-                            'isPublic': sentence.isPublic,
+                            'reviewId': review.id,
+                            'initialContent': review.content,
+                            'isPublic': review.isPublic,
+                            'bookTitle': review.bookTitle,
+                            'thumbnail': review.thumbnail,
                           },
                         );
                       },
@@ -171,18 +191,18 @@ class _SentenceListState extends ConsumerState<SentenceList>
                       onPressed: () async {
                         final confirmed = await showDialog<bool>(
                           context: context,
-                          builder: (context) => _buildAlertDialog(sentence),
+                          builder: (context) => _buildAlertDialog(review),
                         );
 
                         if (confirmed == true && context.mounted) {
                           try {
                             await ref
-                                .read(sentenceListProvider.notifier)
-                                .deleteSentence(sentence);
+                                .read(reviewListProvider.notifier)
+                                .deleteReview(review);
                             if (context.mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                  content: Text('문장이 성공적으로 삭제되었습니다.'),
+                                  content: Text('서평이 성공적으로 삭제되었습니다.'),
                                 ),
                                 snackBarAnimationStyle: AnimationStyle(
                                   duration: Duration(seconds: 1),
@@ -194,7 +214,7 @@ class _SentenceListState extends ConsumerState<SentenceList>
                               debugPrint('$error');
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text('오류로 인해 문장이 삭제되지 않았습니다.'),
+                                  content: Text('오류로 인해 서평이 삭제되지 않았습니다.'),
                                 ),
                                 snackBarAnimationStyle: AnimationStyle(
                                   duration: Duration(seconds: 1),
@@ -215,7 +235,7 @@ class _SentenceListState extends ConsumerState<SentenceList>
     );
   }
 
-  Widget _buildAlertDialog(Sentence sentence) {
+  Widget _buildAlertDialog(Review review) {
     return AlertDialog(
       titlePadding: EdgeInsets.zero,
       contentPadding: EdgeInsets.zero,
@@ -231,12 +251,12 @@ class _SentenceListState extends ConsumerState<SentenceList>
         children: [
           const SizedBox(height: 16),
           Text(
-            '문장 삭제',
+            '서평 삭제',
             style: AppTheme.title2,
           ),
           const SizedBox(height: 8),
           Text(
-            '이 문장을 삭제하시겠습니까?',
+            '이 서평을 삭제하시겠습니까?',
             style: AppTheme.body1,
           ),
           const SizedBox(height: 8),
@@ -300,7 +320,7 @@ class _SentenceListState extends ConsumerState<SentenceList>
     );
   }
 
-  Widget _buildEmptySentenceListScreen() {
+  Widget _buildEmptyReviewListScreen() {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -308,7 +328,7 @@ class _SentenceListState extends ConsumerState<SentenceList>
           _buildPlaceholder(0.1),
           const SizedBox(height: 16),
           Text(
-            _sentenceEmptyListText,
+            _reviewEmptyListText,
             style: AppTheme.body2,
           ),
         ],
@@ -338,7 +358,7 @@ class _SentenceListState extends ConsumerState<SentenceList>
       appBar: _buildLoadingErrorAppbar(),
       child: Center(
         child: Text(
-          '🙏 문장 목록을 불러오는 중 오류가 발생했습니다.',
+          '🙏 서평 목록을 불러오는 중 오류가 발생했습니다.',
           style: AppTheme.body1,
           textAlign: TextAlign.center,
         ),
@@ -349,7 +369,7 @@ class _SentenceListState extends ConsumerState<SentenceList>
   PreferredSizeWidget _buildLoadingErrorAppbar() {
     return CustomAppBar(
       bottomLeftWidget: Text(
-        _sentenceListScreenTitle,
+        _reviewListScreenTitle,
         style: AppTheme.title3,
         textAlign: TextAlign.left,
       ),
@@ -359,7 +379,7 @@ class _SentenceListState extends ConsumerState<SentenceList>
   PreferredSizeWidget _buildAppbar() {
     return CustomAppBar(
       bottomLeftWidget: Text(
-        _sentenceListScreenTitle,
+        _reviewListScreenTitle,
         style: AppTheme.title3,
         textAlign: TextAlign.left,
       ),

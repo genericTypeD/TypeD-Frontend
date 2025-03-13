@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:typed/config/env.dart';
-import 'package:typed/review/book_respository.dart';
-import 'package:typed/review/model/book_model.dart';
+import 'package:typed/review/repositories/book_respository.dart';
+import 'package:typed/review/models/book_model.dart';
 
 /// 책 검색 API를 위한 Repository Provider
 // TODO: - dispose
