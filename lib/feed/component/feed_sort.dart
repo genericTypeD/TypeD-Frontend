@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:typed/common/const/app_themes.dart';
 
 class FeedSort extends StatelessWidget {
   final bool isPublic;
@@ -14,12 +15,8 @@ class FeedSort extends StatelessWidget {
         TextButton(
           onPressed: onToggle,
           child: Text(
-            isPublic ? '공개된' : '내 피드',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              decoration: TextDecoration.underline,
-            ),
+            isPublic ? '서평메모' : '문장수집',
+            style: AppTheme.body1,
           ),
         ),
       ],

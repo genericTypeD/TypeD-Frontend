@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:typed/common/const/app_colors.dart';
 import 'package:typed/common/const/app_themes.dart';
 import 'package:typed/common/index.dart';
+import 'package:typed/feed/component/feed_filter_dropdown.dart';
 import 'package:typed/feed/component/feed_list.dart';
 import 'package:typed/feed/provider/feed_provider.dart';
 import 'package:typed/feed/provider/feed_search_provider.dart';
@@ -12,6 +13,9 @@ final searchControllerProvider = StateProvider<TextEditingController>(
   (ref) => TextEditingController(),
 );
 
+// 필터 상태 관리 (랜덤, 서평메모, 문장수집)
+final feedFilterProvider = StateProvider<String>((ref) => 'random');
+
 class FeedPublic extends ConsumerWidget {
   const FeedPublic({super.key});
 
@@ -20,24 +24,26 @@ class FeedPublic extends ConsumerWidget {
     final feeds = ref.watch(feedProvider);
     final searchQuery = ref.watch(feedSearchProvider);
     final searchController = ref.watch(searchControllerProvider);
+    final selectedFilter = ref.watch(feedFilterProvider);
 
-    final filteredFeeds = feeds
-        .where((feed) =>
-            feed.content.contains(searchQuery) || // 검색어가 내용에 포함되었는지 확인
-            feed.hashtags?.any((tag) => tag.contains(searchQuery)) ==
-                true) // 해시태그 검색
-        .toList(); // 검색 결과 필터링
+    final filteredFeeds = feeds.where((feed) {
+      if (selectedFilter == 'random') {
+        return true; // 랜덤 피드는 전체 출력
+      } else if (selectedFilter == 'review') {
+        return feed.type == 'review'; // 서평메모만 필터링
+      } else if (selectedFilter == 'sentence') {
+        return feed.type == 'sentence'; // 문장수집만 필터링
+      }
+      return false;
+    }).toList();
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: DefaultLayout(
         appBar: CustomAppBar(
-          bottomLeftWidget: Text(
-            '공개된',
-            style: AppTheme.title3,
-          ),
+          bottomLeftWidget: FeedFilterDropdown(),
           bottomRightWidget: Padding(
-            padding: const EdgeInsets.only(right: 12.0),
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: SizedBox(
               width: 200,
               height: 38,
@@ -52,35 +58,29 @@ class FeedPublic extends ConsumerWidget {
                   filled: true,
                   fillColor: AppColors.backgroundTertiary,
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
+                    borderRadius: BorderRadius.circular(16),
                     borderSide: BorderSide.none,
                   ),
                   contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                   prefixIcon: const Icon(
                     Icons.search,
                     color: Colors.black54,
                     size: 20,
                   ),
-                  prefixIconConstraints: const BoxConstraints(
-                    minWidth: 40,
-                    minHeight: 20,
-                  ), // 왼쪽에 돋보기 아이콘 배치
-                  suffixIcon:
-                      searchController.text.isNotEmpty // 입력값이 있을 때만 X 버튼 표시
-                          ? IconButton(
-                              icon: const Icon(
-                                Icons.cancel,
-                                color: Colors.black54,
-                                size: 20,
-                              ),
-                              onPressed: () {
-                                searchController.clear(); // 입력값 초기화
-                                ref.read(feedSearchProvider.notifier).state =
-                                    ''; // 검색 상태 초기화
-                              },
-                            )
-                          : null,
+                  suffixIcon: searchController.text.isNotEmpty
+                      ? IconButton(
+                          icon: const Icon(
+                            Icons.cancel,
+                            color: Colors.black54,
+                            size: 20,
+                          ),
+                          onPressed: () {
+                            searchController.clear();
+                            ref.read(feedSearchProvider.notifier).state = '';
+                          },
+                        )
+                      : null,
                 ),
               ),
             ),

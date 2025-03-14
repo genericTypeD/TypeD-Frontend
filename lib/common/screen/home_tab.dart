@@ -39,9 +39,9 @@ class HomeTab extends StatelessWidget {
             // 1: 서평
             const BottomNavigationBarItem(
               icon: Icon(
-                Icons.menu_book_sharp,
+                Icons.menu_book_outlined,
               ),
-              label: '서평',
+              label: '서평메모',
             ),
 
             // 2: 기록
@@ -75,17 +75,17 @@ class HomeTab extends StatelessWidget {
             // 3: 문장
             const BottomNavigationBarItem(
               icon: Icon(
-                Icons.text_snippet_sharp,
+                Icons.text_snippet_outlined,
               ),
-              label: '문장',
+              label: '문장수집',
             ),
 
             // 4: 피드
             const BottomNavigationBarItem(
               icon: Icon(
-                Icons.album_outlined,
+                Icons.radio_button_checked_rounded,
               ),
-              label: '취향 탐색',
+              label: '취향탐색',
             ),
           ],
         ),
