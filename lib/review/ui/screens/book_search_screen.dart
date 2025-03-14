@@ -7,6 +7,7 @@ import 'package:typed/review/ui/components/custom_placeholder.dart';
 import 'package:typed/review/ui/components/custom_progress_indicator.dart';
 import 'package:typed/review/ui/screens/review_error_screen.dart';
 import 'package:typed/review/ui/widgets/book_search_result_widget.dart';
+import 'package:typed/review/ui/widgets/book_search_text_field.dart';
 import 'package:typed/review/viewmodels/book_providers.dart';
 
 class BookSearchScreen extends ConsumerStatefulWidget {
@@ -18,7 +19,6 @@ class BookSearchScreen extends ConsumerStatefulWidget {
 
 class _BookSearchScreenState extends ConsumerState<BookSearchScreen> {
   static const _bookScreenTitle = '서평 메모';
-  static const _bookSearchTextFieldHintText = '책 제목, 저자 등을 입력하세요';
   static const _bookSearchBodyText = '검색어를 입력해주세요';
   static const _emptyBookResult = '검색 결과가 없습니다';
 
@@ -62,7 +62,20 @@ class _BookSearchScreenState extends ConsumerState<BookSearchScreen> {
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: _buildBookSearchTextField(),
+            // child: _buildBookSearchTextField(),
+            child: BookSearchTextField(
+                searchController: _searchController,
+                searchFocusNode: _searchFocusNode,
+                onClearButtonPressed: () {
+                  _searchController.clear();
+                  ref.read(searchQueryProvider.notifier).state = '';
+                },
+                onSubmitted: (_) {
+                  final query = _searchController.text.trim();
+                  if (query.isNotEmpty) {
+                    ref.read(searchQueryProvider.notifier).state = query;
+                  }
+                }),
           ),
           Expanded(
             child: searchResults.when(
@@ -101,40 +114,6 @@ class _BookSearchScreenState extends ConsumerState<BookSearchScreen> {
     );
   }
 
-  Widget _buildBookSearchTextField() {
-    return TextField(
-      controller: _searchController,
-      focusNode: _searchFocusNode,
-      autofocus: false,
-      decoration: InputDecoration(
-        hintText: _bookSearchTextFieldHintText,
-        prefixIcon: const Icon(Icons.search),
-        suffixIcon: IconButton(
-          icon: const Icon(Icons.clear),
-          onPressed: () {
-            _searchController.clear();
-            ref.read(searchQueryProvider.notifier).state = '';
-          },
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.zero),
-          borderSide: BorderSide(
-            color: AppColors.borderBlack,
-            width: 0.3,
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.zero),
-          borderSide: BorderSide(
-            color: AppColors.borderBlack,
-            width: 0.6,
-          ),
-        ),
-      ),
-      onSubmitted: (_) => _performSearch(),
-    );
-  }
-
   Widget _buildBookSearchBody() {
     return Center(
       child: Column(
@@ -165,12 +144,5 @@ class _BookSearchScreenState extends ConsumerState<BookSearchScreen> {
         ],
       ),
     );
-  }
-
-  void _performSearch() {
-    final query = _searchController.text.trim();
-    if (query.isNotEmpty) {
-      ref.read(searchQueryProvider.notifier).state = query;
-    }
   }
 }
