@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:typed/common/const/index.dart';
-import 'package:typed/common/index.dart';
 import 'package:typed/review/data/models/review_model.dart';
 import 'package:typed/review/ui/screens/review_edit_screen.dart';
+import 'package:typed/review/ui/screens/review_error_screen.dart';
 import 'package:typed/review/ui/screens/review_input_screen.dart';
 import 'package:typed/review/ui/screens/book_search_screen.dart';
 import 'package:typed/review/ui/screens/review_list_screen.dart';
@@ -53,21 +52,9 @@ class ReviewRoutes {
         if (args == null) {
           return CustomTransitionPage(
             key: state.pageKey,
-            child: DefaultLayout(
-              backgroundColor: AppColors.backgroundSecondary,
-              appBar: CustomAppBar(
-                bottomLeftWidget: Text(
-                  'error',
-                  textAlign: TextAlign.left,
-                  style: AppTheme.title3,
-                ),
-              ),
-              child: Center(
-                child: Text(
-                  '잘못된 접근입니다.',
-                  style: AppTheme.title3,
-                ),
-              ),
+            child: ReviewErrorScreen.invalidAccess(
+              onBackButtonTap: () => Navigator.of(context).canPop(),
+              onRefreshButtonTap: () => debugPrint('새로고침'),
             ),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {

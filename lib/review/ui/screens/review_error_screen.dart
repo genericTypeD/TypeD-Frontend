@@ -3,14 +3,42 @@ import 'package:typed/common/const/index.dart';
 import 'package:typed/common/index.dart';
 
 class ReviewErrorScreen extends StatelessWidget {
+  final String message;
   final VoidCallback onBackButtonTap;
   final VoidCallback onRefreshButtonTap;
 
-  const ReviewErrorScreen({
+  const ReviewErrorScreen._({
+    required this.message,
     required this.onBackButtonTap,
     required this.onRefreshButtonTap,
     super.key,
   });
+
+  factory ReviewErrorScreen.error({
+    required VoidCallback onBackButtonTap,
+    required VoidCallback onRefreshButtonTap,
+    Key? key,
+  }) {
+    return ReviewErrorScreen._(
+      message: '오류가 발생했습니다.',
+      onBackButtonTap: onBackButtonTap,
+      onRefreshButtonTap: onRefreshButtonTap,
+      key: key,
+    );
+  }
+
+  factory ReviewErrorScreen.invalidAccess({
+    required VoidCallback onBackButtonTap,
+    required VoidCallback onRefreshButtonTap,
+    Key? key,
+  }) {
+    return ReviewErrorScreen._(
+      message: '잘못된 접근입니다.',
+      onBackButtonTap: onBackButtonTap,
+      onRefreshButtonTap: onRefreshButtonTap,
+      key: key,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +65,7 @@ class ReviewErrorScreen extends StatelessWidget {
           )),
       child: Center(
         child: Text(
-          '오류가 발생했습니다.',
+          message,
           style: AppTheme.body1,
           textAlign: TextAlign.center,
         ),

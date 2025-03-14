@@ -81,7 +81,7 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
       loading: () => ReviewLoadingScreen(
         loadingScreenTitle: '서평 목록',
       ),
-      error: (error, stackTrace) => ReviewErrorScreen(
+      error: (error, stackTrace) => ReviewErrorScreen.error(
         onBackButtonTap: () => Navigator.of(context).canPop(),
         onRefreshButtonTap: () => debugPrint('새로고침'),
       ),
