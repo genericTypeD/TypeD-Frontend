@@ -7,8 +7,7 @@ import 'package:typed/common/widgets/app_bar/custom_app_bar.dart';
 import 'package:typed/review/data/models/lock_enum.dart';
 import 'package:typed/review/data/models/review_model.dart';
 import 'package:typed/review/ui/components/bordered_empty_container.dart';
-import 'package:typed/review/ui/widgets/empty_review_list_content.dart';
-import 'package:typed/review/ui/widgets/review_list_content.dart';
+import 'package:typed/review/ui/widgets/index.dart';
 import 'package:typed/review/viewmodels/review_providers.dart';
 
 class ReviewListScreen extends ConsumerStatefulWidget {
@@ -103,32 +102,21 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
       builder: (context) => _buildAlertDialog(review),
     );
 
-    if (confirmed == true && context.mounted) {
-      try {
-        await ref.read(reviewListProvider.notifier).deleteReview(review);
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('서평이 성공적으로 삭제되었습니다.'),
-            ),
-            snackBarAnimationStyle: AnimationStyle(
-              duration: Duration(seconds: 1),
-            ),
-          );
-        }
-      } catch (error) {
-        if (context.mounted) {
-          debugPrint('$error');
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('오류로 인해 서평이 삭제되지 않았습니다.'),
-            ),
-            snackBarAnimationStyle: AnimationStyle(
-              duration: Duration(seconds: 1),
-            ),
-          );
-        }
-      }
+    if (confirmed != true || !mounted) return;
+
+    final isDeleteSuccess = await ref
+        .read(ReviewProviders.reviewListProvider.notifier)
+        .deleteReview(review);
+
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(isDeleteSuccess
+              ? '서평이 성공적으로 삭제되었습니다.'
+              : '오류로 인해 서평이 삭제되지 않았습니다.'),
+          duration: Duration(seconds: 1),
+        ),
+      );
     }
   }
 
