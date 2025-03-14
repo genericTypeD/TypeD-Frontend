@@ -6,6 +6,7 @@ import 'package:typed/review/data/models/lock_enum.dart';
 import 'package:typed/review/data/models/review_model.dart';
 import 'package:typed/review/ui/components/bordered_empty_container.dart';
 import 'package:typed/review/ui/components/custom_placeholder.dart';
+import 'package:typed/review/ui/widgets/review_edit_book_info_widget.dart';
 import 'package:typed/review/ui/widgets/review_edit_text_field.dart';
 import 'package:typed/review/ui/widgets/review_public_toggle_button.dart';
 import 'package:typed/review/viewmodels/review_providers.dart';
@@ -76,51 +77,9 @@ class _ReviewEditScreenState extends ConsumerState<ReviewEditScreen> {
                   padding: const EdgeInsets.all(16),
                   child: Column(
                     children: [
-                      Row(
-                        children: [
-                          if (widget.review.thumbnail != null &&
-                              widget.review.thumbnail!.isNotEmpty)
-                            Container(
-                              width: 70,
-                              height: 90,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: AppColors.borderBlack,
-                                  width: 0.3,
-                                ),
-                                borderRadius: BorderRadius.zero,
-                              ),
-                              clipBehavior: Clip.antiAlias,
-                              child: Image.network(
-                                widget.review.thumbnail!,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, _) =>
-                                    CustomPlaceholder(size: 0.06),
-                              ),
-                            )
-                          else
-                            Container(
-                              width: 60,
-                              height: 90,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: AppColors.borderBlack,
-                                  width: 0.3,
-                                ),
-                                borderRadius: BorderRadius.zero,
-                              ),
-                              child: CustomPlaceholder(size: 0.06),
-                            ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: Text(
-                              widget.review.bookTitle,
-                              style: AppTheme.title3,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
+                      ReviewEditBookInfoWidget(
+                        thumbnail: widget.review.thumbnail,
+                        bookTitle: widget.review.bookTitle,
                       ),
                       const SizedBox(height: 16),
                       Expanded(
