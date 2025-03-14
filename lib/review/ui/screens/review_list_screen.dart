@@ -30,18 +30,19 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
     _currentLockState = LockStatus.closed;
 
     Future.microtask(() {
-      ref.read(reviewListProvider.notifier);
+      ref.read(ReviewProviders.reviewListProvider.notifier);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final reviewsState = ref.watch(reviewListProvider);
+    final reviewsState = ref.watch(ReviewProviders.reviewListProvider);
 
     return reviewsState.when(
       data: (reviews) {
-        final privateReviews = ref.watch(privateReviewsProvider);
-        final publicReviews = ref.watch(publicReviewsProvider);
+        final privateReviews =
+            ref.watch(ReviewProviders.privateReviewsProvider);
+        final publicReviews = ref.watch(ReviewProviders.publicReviewsProvider);
 
         final displayReviews = _currentLockState == LockStatus.closed
             ? privateReviews

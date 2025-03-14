@@ -112,7 +112,9 @@ class _ReviewInputScreenState extends ConsumerState<ReviewInputScreen> {
               final isPublic = !_isPrivate;
 
               try {
-                await ref.read(reviewListProvider.notifier).addReview(
+                await ref
+                    .read(ReviewProviders.reviewListProvider.notifier)
+                    .addReview(
                       selectedBook.isbn,
                       selectedBook.title,
                       content,
