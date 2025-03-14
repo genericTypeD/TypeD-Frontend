@@ -6,6 +6,7 @@ import 'package:typed/review/data/models/lock_enum.dart';
 import 'package:typed/review/data/models/review_model.dart';
 import 'package:typed/review/ui/components/bordered_empty_container.dart';
 import 'package:typed/review/ui/components/custom_placeholder.dart';
+import 'package:typed/review/ui/widgets/review_edit_text_field.dart';
 import 'package:typed/review/viewmodels/review_providers.dart';
 import '../../../common/index.dart';
 
@@ -22,21 +23,20 @@ class ReviewEditScreen extends ConsumerStatefulWidget {
 }
 
 class _ReviewEditScreenState extends ConsumerState<ReviewEditScreen> {
-  static const _textFieldHintText = '서평을 입력하세요...';
-
-  late TextEditingController _controller;
+  late TextEditingController _reviewEditingController;
   bool _isPrivate = true;
 
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(text: widget.review.content);
+    _reviewEditingController =
+        TextEditingController(text: widget.review.content);
     _isPrivate = !widget.review.isPublic;
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _reviewEditingController.dispose();
     super.dispose();
   }
 
@@ -123,39 +123,8 @@ class _ReviewEditScreenState extends ConsumerState<ReviewEditScreen> {
                       ),
                       const SizedBox(height: 16),
                       Expanded(
-                        child: TextField(
-                          controller: _controller,
-                          maxLines: null,
-                          expands: true,
-                          style: AppTheme.body2,
-                          textAlign: TextAlign.left,
-                          textAlignVertical: TextAlignVertical.top,
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: AppColors.backgroundSecondary,
-                            hintText: _textFieldHintText,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.zero,
-                              borderSide: const BorderSide(
-                                color: AppColors.borderBlack,
-                                width: 0.3,
-                              ),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.zero,
-                              borderSide: const BorderSide(
-                                color: AppColors.borderBlack,
-                                width: 0.3,
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.zero,
-                              borderSide: const BorderSide(
-                                color: AppColors.borderBlack,
-                                width: 0.6,
-                              ),
-                            ),
-                          ),
+                        child: ReviewEditTextField(
+                          controller: _reviewEditingController,
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -197,7 +166,7 @@ class _ReviewEditScreenState extends ConsumerState<ReviewEditScreen> {
   }
 
   void _handleEdit() async {
-    final content = _controller.text.trim();
+    final content = _reviewEditingController.text.trim();
     if (content.isNotEmpty) {
       final isEditSuccess = await _updateReviewContent(
         widget.review.id,
