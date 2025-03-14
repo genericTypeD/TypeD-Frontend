@@ -54,33 +54,20 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
                 width: AppBarStyle.borderContainerWidth,
                 decoration: const BoxDecoration(
                   color: AppColors.backgroundSecondary,
-                  border: Border(right: AppBarStyle.borderStyle),
-                ),
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: SafeArea(
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            border: Border(bottom: AppBarStyle.borderStyle),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                  border: Border(
+                    right: AppBarStyle.borderStyle,
+                    bottom: AppBarStyle.borderStyle,
+                  ),
                 ),
               ),
               Expanded(
-                child: Container(
-                  color: AppColors.backgroundSecondary,
-                  child: SafeArea(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: AppColors.backgroundSecondary,
-                        border: Border(bottom: AppBarStyle.borderStyle),
-                      ),
-                      child: _buildReviewList(displayReviews),
+                child: SafeArea(
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: AppColors.backgroundTertiary,
+                      border: Border(bottom: AppBarStyle.borderStyle),
                     ),
+                    child: _buildReviewList(displayReviews),
                   ),
                 ),
               ),
@@ -88,20 +75,10 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
                 width: AppBarStyle.borderContainerWidth,
                 decoration: const BoxDecoration(
                   color: AppColors.backgroundSecondary,
-                  border: Border(left: AppBarStyle.borderStyle),
-                ),
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: SafeArea(
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            border: Border(bottom: AppBarStyle.borderStyle),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                  border: Border(
+                    left: AppBarStyle.borderStyle,
+                    bottom: AppBarStyle.borderStyle,
+                  ),
                 ),
               ),
             ],
