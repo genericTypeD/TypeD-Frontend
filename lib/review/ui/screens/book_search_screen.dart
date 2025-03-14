@@ -65,16 +65,8 @@ class _BookSearchScreenState extends ConsumerState<BookSearchScreen> {
             child: BookSearchTextField(
               searchController: _searchController,
               searchFocusNode: _searchFocusNode,
-              onClearButtonPressed: () {
-                _searchController.clear();
-                ref.read(searchQueryProvider.notifier).state = '';
-              },
-              onSubmitted: (_) {
-                final query = _searchController.text.trim();
-                if (query.isNotEmpty) {
-                  ref.read(searchQueryProvider.notifier).state = query;
-                }
-              },
+              onClearButtonPressed: _handleClear,
+              onSubmitted: (_) => _handleSubmit(),
             ),
           ),
           Expanded(
@@ -147,5 +139,17 @@ class _BookSearchScreenState extends ConsumerState<BookSearchScreen> {
         ],
       ),
     );
+  }
+
+  void _handleClear() {
+    _searchController.clear();
+    ref.read(searchQueryProvider.notifier).state = '';
+  }
+
+  void _handleSubmit() {
+    final query = _searchController.text.trim();
+    if (query.isNotEmpty) {
+      ref.read(searchQueryProvider.notifier).state = query;
+    }
   }
 }

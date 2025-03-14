@@ -54,22 +54,11 @@ class _ReviewEditScreenState extends ConsumerState<ReviewEditScreen> {
           ),
         ),
         bottomRightWidget: TextButton(
-          onPressed: () async {
-            final content = _controller.text.trim();
-            if (content.isNotEmpty) {
-              await ref
-                  .read(ReviewProviders.reviewListProvider.notifier)
-                  .updateReview(
-                    widget.review.id,
-                    content,
-                    widget.review.isPublic,
-                  );
-              if (context.mounted) {
-                context.go('/home/review');
-              }
-            }
-          },
-          child: Text('서평 수정', style: AppTheme.title3),
+          onPressed: () async => _handleEdit(),
+          child: Text(
+            '서평 수정',
+            style: AppTheme.title3,
+          ),
         ),
       ),
       child: Row(
@@ -205,5 +194,56 @@ class _ReviewEditScreenState extends ConsumerState<ReviewEditScreen> {
         ],
       ),
     );
+  }
+
+  void _handleEdit() async {
+    final content = _controller.text.trim();
+    if (content.isNotEmpty) {
+      final isEditSuccess = await _updateReviewContent(
+        widget.review.id,
+        content,
+        widget.review.isPublic,
+      );
+
+      _showSnackBar(isEditSuccess);
+
+      if (isEditSuccess) {
+        _navigateToReviewList();
+      }
+    }
+  }
+
+  Future<bool> _updateReviewContent(
+    int reviewId,
+    String reviewContent,
+    bool isPublic,
+  ) async {
+    try {
+      await ref.read(ReviewProviders.reviewListProvider.notifier).updateReview(
+            reviewId,
+            reviewContent,
+            isPublic,
+          );
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  void _showSnackBar(isEditSuccess) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          isEditSuccess ? '서평이 성공적으로 수정되었습니다.' : '오류로 인해 서평이 수정되지 않았습니다.',
+        ),
+        duration: Duration(seconds: 1),
+      ),
+    );
+  }
+
+  void _navigateToReviewList() {
+    if (mounted) {
+      context.go('/home/review');
+    }
   }
 }
