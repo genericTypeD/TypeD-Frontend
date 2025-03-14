@@ -3,11 +3,11 @@ import 'package:typed/common/const/index.dart';
 import 'package:typed/review/data/models/book_model.dart';
 import 'package:typed/review/ui/components/custom_placeholder.dart';
 
-class BookSearchResultWidget extends StatelessWidget {
+class BookListItem extends StatelessWidget {
   final Book book;
   final VoidCallback onTap;
 
-  const BookSearchResultWidget({
+  const BookListItem({
     required this.book,
     required this.onTap,
     super.key,

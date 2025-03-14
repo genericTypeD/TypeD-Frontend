@@ -3,10 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:typed/common/const/index.dart';
 import 'package:typed/common/index.dart';
+import 'package:typed/review/data/models/book_model.dart';
 import 'package:typed/review/ui/components/custom_placeholder.dart';
 import 'package:typed/review/ui/components/custom_progress_indicator.dart';
 import 'package:typed/review/ui/screens/review_error_screen.dart';
-import 'package:typed/review/ui/widgets/book_search_result_widget.dart';
+import 'package:typed/review/ui/widgets/book_list_item.dart';
 import 'package:typed/review/ui/widgets/book_search_text_field.dart';
 import 'package:typed/review/viewmodels/book_providers.dart';
 
@@ -83,24 +84,11 @@ class _BookSearchScreenState extends ConsumerState<BookSearchScreen> {
                 if (searchQuery.isEmpty) {
                   return _buildBookSearchBody();
                 }
-
                 if (books.isEmpty) {
                   return _buildEmptyBookResult();
                 }
 
-                return ListView.builder(
-                  itemCount: books.length,
-                  itemBuilder: (context, index) {
-                    final book = books[index];
-                    return BookSearchResultWidget(
-                      book: book,
-                      onTap: () {
-                        ref.read(selectedBookProvider.notifier).state = book;
-                        context.push('/review_input');
-                      },
-                    );
-                  },
-                );
+                return _buildBookList(books);
               },
               loading: () => CustomProgressIndicator(),
               error: (error, stackTrace) => ReviewErrorScreen.error(
@@ -111,6 +99,22 @@ class _BookSearchScreenState extends ConsumerState<BookSearchScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildBookList(List<Book> books) {
+    return ListView.builder(
+      itemCount: books.length,
+      itemBuilder: (context, index) {
+        final book = books[index];
+        return BookListItem(
+          book: book,
+          onTap: () {
+            ref.read(selectedBookProvider.notifier).state = book;
+            context.push('/review_input');
+          },
+        );
+      },
     );
   }
 
