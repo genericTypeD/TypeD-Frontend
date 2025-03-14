@@ -118,37 +118,7 @@ class _ReviewInputScreenState extends ConsumerState<ReviewInputScreen> {
       ),
       actions: [
         TextButton(
-          onPressed: () async {
-            final content = _reviewEditingController.text.trim();
-
-            if (content.isNotEmpty) {
-              final isPublic = !_isPrivate;
-
-              try {
-                await ref
-                    .read(ReviewProviders.reviewListProvider.notifier)
-                    .addReview(
-                      selectedBook.isbn,
-                      selectedBook.title,
-                      content,
-                      isPublic,
-                      selectedBook.thumbnail,
-                    );
-
-                if (context.mounted) {
-                  context.go('/home/review');
-                }
-              } catch (error) {
-                if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('실패! (오류: $error)'),
-                    ),
-                  );
-                }
-              }
-            }
-          },
+          onPressed: () => _handleInput(selectedBook),
           style: TextButton.styleFrom(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             overlayColor: Colors.transparent,
@@ -188,5 +158,66 @@ class _ReviewInputScreenState extends ConsumerState<ReviewInputScreen> {
         ),
       ),
     );
+  }
+
+  void _handleInput(
+    Book selectedBook,
+  ) async {
+    final content = _reviewEditingController.text.trim();
+    if (content.isNotEmpty) {
+      final isPublic = !_isPrivate;
+
+      final isInputSuccess = await _inputReview(
+        selectedBook.isbn,
+        selectedBook.title,
+        content,
+        isPublic,
+        selectedBook.thumbnail,
+      );
+
+      _showSnackBar(isInputSuccess);
+
+      if (isInputSuccess) {
+        _navigateToReviewList();
+      }
+    }
+  }
+
+  Future<bool> _inputReview(
+    String isbn,
+    String title,
+    String content,
+    bool isPublic,
+    String thumbnail,
+  ) async {
+    try {
+      await ref.read(ReviewProviders.reviewListProvider.notifier).addReview(
+            isbn,
+            title,
+            content,
+            isPublic,
+            thumbnail,
+          );
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  void _showSnackBar(bool isInputSuccess) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          isInputSuccess ? '서평이 성공적으로 저장되었습니다.' : '오류로 인해 서평이 저장되지 않았습니다.',
+        ),
+        duration: Duration(seconds: 1),
+      ),
+    );
+  }
+
+  void _navigateToReviewList() {
+    if (mounted) {
+      context.go('/home/review');
+    }
   }
 }
