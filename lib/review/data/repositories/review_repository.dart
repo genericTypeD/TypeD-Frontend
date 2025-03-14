@@ -1,6 +1,13 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:typed/review/data/models/review_model.dart';
 
+enum SortOption {
+  id,
+  bookTitle,
+  createdAt,
+  updatedAt,
+}
+
 class ReviewRepository {
   final Box<Review> _box = Hive.box<Review>('review');
 
