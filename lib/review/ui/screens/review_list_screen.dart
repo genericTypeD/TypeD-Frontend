@@ -10,6 +10,7 @@ import 'package:typed/review/ui/components/bordered_empty_container.dart';
 import 'package:typed/review/ui/screens/review_error_screen.dart';
 import 'package:typed/review/ui/screens/review_loading_screen.dart';
 import 'package:typed/review/ui/widgets/index.dart';
+import 'package:typed/review/ui/widgets/review_delete_alert_dialog.dart';
 import 'package:typed/review/viewmodels/review_providers.dart';
 
 class ReviewListScreen extends ConsumerStatefulWidget {
@@ -103,7 +104,15 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
   Future<void> _handleDelete(Review review) async {
     final confirmed = await showDialog<bool>(
       context: context,
-      builder: (context) => _buildAlertDialog(review),
+      builder: (context) => ReviewDeleteAlertDialog(
+        onDeleteButtonPressed: () {
+          if (context.canPop()) {
+            context.pop(true);
+          } else {
+            Navigator.of(context, rootNavigator: true).pop(true);
+          }
+        },
+      ),
     );
 
     if (confirmed != true || !mounted) return;
@@ -122,123 +131,6 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
         ),
       );
     }
-  }
-
-  Widget _buildAlertDialog(Review review) {
-    return AlertDialog(
-      titlePadding: EdgeInsets.zero,
-      contentPadding: EdgeInsets.zero,
-      actionsPadding: EdgeInsets.zero,
-      shape: LinearBorder(
-          side: BorderSide(
-        width: 0.3,
-        color: AppColors.borderBlack,
-      )),
-      backgroundColor: Colors.white,
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const SizedBox(height: 16),
-          Text(
-            '서평 삭제',
-            style: AppTheme.title2,
-          ),
-          const SizedBox(height: 8),
-          Text(
-            '이 서평을 삭제하시겠습니까?',
-            style: AppTheme.body1,
-          ),
-          const SizedBox(height: 8),
-          Divider(
-            thickness: 0.3,
-            color: AppColors.borderBlack,
-          ),
-          const SizedBox(height: 8),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Expanded(
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                    overlayColor: Colors.transparent,
-                    padding: EdgeInsets.zero,
-                    minimumSize: Size.zero,
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    visualDensity: VisualDensity.compact,
-                  ),
-                  onPressed: () {
-                    if (context.canPop()) {
-                      context.pop(false);
-                    } else {
-                      Navigator.of(context, rootNavigator: true).pop(false);
-                    }
-                  },
-                  child: Text(
-                    '취소',
-                    style: AppTheme.body2,
-                  ),
-                ),
-              ),
-              Expanded(
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                    overlayColor: Colors.transparent,
-                    padding: EdgeInsets.zero,
-                    minimumSize: Size.zero,
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    visualDensity: VisualDensity.compact,
-                  ),
-                  onPressed: () {
-                    if (context.canPop()) {
-                      context.pop(true);
-                    } else {
-                      Navigator.of(context, rootNavigator: true).pop(true);
-                    }
-                  },
-                  child: Text(
-                    '삭제',
-                    style: AppTheme.body2,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildLoadingScreen() {
-    return DefaultLayout(
-      appBar: _buildLoadingErrorAppbar(),
-      child: const Center(
-        child: CircularProgressIndicator(),
-      ),
-    );
-  }
-
-  Widget _buildErrorScreen() {
-    return DefaultLayout(
-      appBar: _buildLoadingErrorAppbar(),
-      child: Center(
-        child: Text(
-          '🙏 서평 목록을 불러오는 중 오류가 발생했습니다.',
-          style: AppTheme.body1,
-          textAlign: TextAlign.center,
-        ),
-      ),
-    );
-  }
-
-  PreferredSizeWidget _buildLoadingErrorAppbar() {
-    return CustomAppBar(
-      bottomLeftWidget: Text(
-        _reviewListScreenTitle,
-        style: AppTheme.title3,
-        textAlign: TextAlign.left,
-      ),
-    );
   }
 
   PreferredSizeWidget _buildReviewListAppBar() {
