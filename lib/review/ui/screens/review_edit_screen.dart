@@ -114,7 +114,7 @@ class _ReviewEditScreenState extends ConsumerState<ReviewEditScreen> {
       final isEditSuccess = await _updateReviewContent(
         widget.review.id,
         content,
-        widget.review.isPublic,
+        !_isPrivate,
       );
 
       _showSnackBar(isEditSuccess);
