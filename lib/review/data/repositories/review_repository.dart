@@ -89,4 +89,13 @@ class ReviewRepository {
 
     return maxId + 1;
   }
+
+  // 에러 로깅 유틸리티 메소드
+  void _logError(String operation, dynamic error) {
+    final timestamp = DateTime.now().toIso8601String();
+    final errorMessage =
+        '[${timestamp}] [Repository Error] $operation 실패: $error';
+
+    debugPrint(errorMessage);
+  }
 }
