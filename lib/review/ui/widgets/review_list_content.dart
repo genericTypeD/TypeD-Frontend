@@ -18,6 +18,7 @@ class ReviewListContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      physics: ClampingScrollPhysics(),
       itemCount: reviews.length,
       itemBuilder: (context, index) {
         final review = reviews[index];
