@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:typed/common/const/index.dart';
 import 'package:typed/review/data/models/lock_enum.dart';
+import 'package:typed/review/ui/components/bordered_empty_container.dart';
 import 'package:typed/review/viewmodels/review_providers.dart';
 import '../../../common/index.dart';
 
@@ -77,26 +78,7 @@ class _ReviewEditScreenState extends ConsumerState<ReviewEditScreen> {
       ),
       child: Row(
         children: [
-          Container(
-            width: AppBarStyle.borderContainerWidth,
-            decoration: const BoxDecoration(
-              color: AppColors.backgroundSecondary,
-              border: Border(right: AppBarStyle.borderStyle),
-            ),
-            child: Column(
-              children: [
-                Expanded(
-                  child: SafeArea(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        border: Border(bottom: AppBarStyle.borderStyle),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          BorderedEmptyContainer.left(),
           Expanded(
             child: SafeArea(
               child: Container(
@@ -223,26 +205,7 @@ class _ReviewEditScreenState extends ConsumerState<ReviewEditScreen> {
               ),
             ),
           ),
-          Container(
-            width: AppBarStyle.borderContainerWidth,
-            decoration: const BoxDecoration(
-              color: AppColors.backgroundSecondary,
-              border: Border(left: AppBarStyle.borderStyle),
-            ),
-            child: Column(
-              children: [
-                Expanded(
-                  child: SafeArea(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        border: Border(bottom: AppBarStyle.borderStyle),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          BorderedEmptyContainer.right(),
         ],
       ),
     );

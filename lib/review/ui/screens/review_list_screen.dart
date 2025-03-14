@@ -6,6 +6,7 @@ import 'package:typed/common/layout/default_layout.dart';
 import 'package:typed/common/widgets/app_bar/custom_app_bar.dart';
 import 'package:typed/review/data/models/lock_enum.dart';
 import 'package:typed/review/data/models/review_model.dart';
+import 'package:typed/review/ui/components/bordered_empty_container.dart';
 import 'package:typed/review/viewmodels/review_providers.dart';
 
 class ReviewListScreen extends ConsumerStatefulWidget {
@@ -50,16 +51,7 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
           appBar: _buildReviewListAppBar(),
           child: Row(
             children: [
-              Container(
-                width: AppBarStyle.borderContainerWidth,
-                decoration: const BoxDecoration(
-                  color: AppColors.backgroundSecondary,
-                  border: Border(
-                    right: AppBarStyle.borderStyle,
-                    bottom: AppBarStyle.borderStyle,
-                  ),
-                ),
-              ),
+              BorderedEmptyContainer.left(),
               Expanded(
                 child: SafeArea(
                   child: Container(
@@ -71,16 +63,7 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
                   ),
                 ),
               ),
-              Container(
-                width: AppBarStyle.borderContainerWidth,
-                decoration: const BoxDecoration(
-                  color: AppColors.backgroundSecondary,
-                  border: Border(
-                    left: AppBarStyle.borderStyle,
-                    bottom: AppBarStyle.borderStyle,
-                  ),
-                ),
-              ),
+              BorderedEmptyContainer.right(),
             ],
           ),
         );
