@@ -23,6 +23,7 @@ class ReviewListContent extends StatelessWidget {
         final review = reviews[index];
 
         return Container(
+          padding: EdgeInsets.symmetric(vertical: 8),
           decoration: BoxDecoration(
             color: AppColors.backgroundSecondary,
             border: Border(
@@ -64,21 +65,24 @@ class ReviewListContent extends StatelessWidget {
               ),
 
               // 액션 버튼들(편집 + 삭제)
-              Padding(
-                padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.edit, size: 20),
-                      onPressed: () => onEditButtonPressed(review),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.delete, size: 20),
-                      onPressed: () => onDeleteButtonPressed(review),
-                    ),
-                  ],
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.edit, size: 20),
+                    onPressed: () => onEditButtonPressed(review),
+                    padding: EdgeInsets.zero,
+                    constraints: BoxConstraints(),
+                    visualDensity: VisualDensity.compact,
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.delete, size: 20),
+                    onPressed: () => onDeleteButtonPressed(review),
+                    padding: EdgeInsets.zero,
+                    constraints: BoxConstraints(),
+                    visualDensity: VisualDensity.compact,
+                  ),
+                ],
               ),
             ],
           ),
