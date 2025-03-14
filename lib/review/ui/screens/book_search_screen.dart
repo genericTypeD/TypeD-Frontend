@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:typed/common/const/index.dart';
 import 'package:typed/common/index.dart';
 import 'package:typed/review/ui/components/custom_placeholder.dart';
+import 'package:typed/review/ui/components/custom_progress_indicator.dart';
+import 'package:typed/review/ui/screens/review_error_screen.dart';
 import 'package:typed/review/viewmodels/book_providers.dart';
 import 'package:typed/review/data/models/book_model.dart';
 
@@ -88,21 +90,11 @@ class _BookSearchScreenState extends ConsumerState<BookSearchScreen> {
                   },
                 );
               },
-              loading: () => const Center(
-                child: CircularProgressIndicator(),
+              loading: () => CustomProgressIndicator(),
+              error: (error, stackTrace) => ReviewErrorScreen.error(
+                onBackButtonTap: () => Navigator.of(context).canPop(),
+                onRefreshButtonTap: () => debugPrint('새로고침'),
               ),
-              error: (error, stack) {
-                debugPrint('[검색 오류] $error');
-                return Center(
-                  child: Text(
-                    '검색 중 오류가 발생했습니다 🙏',
-                    style: AppTheme.body2.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                );
-              },
             ),
           ),
         ],

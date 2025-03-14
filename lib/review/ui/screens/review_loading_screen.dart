@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:typed/common/const/index.dart';
 import 'package:typed/common/index.dart';
+import 'package:typed/review/ui/components/custom_progress_indicator.dart';
 
 class ReviewLoadingScreen extends StatelessWidget {
   final String loadingScreenTitle;
@@ -20,13 +21,7 @@ class ReviewLoadingScreen extends StatelessWidget {
           textAlign: TextAlign.left,
         ),
       ),
-      child: Center(
-        child: CircularProgressIndicator(
-          backgroundColor: AppColors.backgroundSecondary,
-          color: AppColors.borderBlack,
-          strokeWidth: AppSizes.borderWidth,
-        ),
-      ),
+      child: CustomProgressIndicator(),
     );
   }
 }
