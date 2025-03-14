@@ -7,6 +7,7 @@ import 'package:typed/review/data/models/review_model.dart';
 import 'package:typed/review/ui/components/bordered_empty_container.dart';
 import 'package:typed/review/ui/components/custom_placeholder.dart';
 import 'package:typed/review/ui/widgets/review_edit_text_field.dart';
+import 'package:typed/review/ui/widgets/review_public_toggle_button.dart';
 import 'package:typed/review/viewmodels/review_providers.dart';
 import '../../../common/index.dart';
 
@@ -128,30 +129,13 @@ class _ReviewEditScreenState extends ConsumerState<ReviewEditScreen> {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: TextButton.icon(
-                          style: TextButton.styleFrom(
-                            overlayColor: Colors.transparent,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _isPrivate = !_isPrivate;
-                            });
-                          },
-                          icon: Icon(
-                            _isPrivate ? Icons.lock_outline : Icons.lock_open,
-                            size: 20.0,
-                            color: Colors.black,
-                          ),
-                          label: Text(
-                            _isPrivate
-                                ? LockStatus.closed.korName
-                                : LockStatus.open.korName,
-                            style: AppTheme.body2
-                                .copyWith(fontWeight: FontWeight.w500),
-                          ),
-                        ),
+                      ReviewPublicToggleButton(
+                        isPrivate: _isPrivate,
+                        onPressed: () {
+                          setState(() {
+                            _isPrivate = !_isPrivate;
+                          });
+                        },
                       ),
                     ],
                   ),
