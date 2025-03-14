@@ -5,24 +5,15 @@ import 'package:typed/common/const/index.dart';
 import 'package:typed/review/data/models/lock_enum.dart';
 import 'package:typed/review/data/models/review_model.dart';
 import 'package:typed/review/ui/components/bordered_empty_container.dart';
+import 'package:typed/review/ui/components/custom_placeholder.dart';
 import 'package:typed/review/viewmodels/review_providers.dart';
 import '../../../common/index.dart';
 
 class ReviewEditScreen extends ConsumerStatefulWidget {
-  // final int reviewId;
-  // final String initialContent;
-  // final bool isPublic;
-  // final String bookTitle;
-  // final String? thumbnail;
   final Review review;
 
   const ReviewEditScreen({
     super.key,
-    // required this.reviewId,
-    // required this.initialContent,
-    // required this.isPublic,
-    // required this.bookTitle,
-    // this.thumbnail,
     required this.review,
   });
 
@@ -39,8 +30,6 @@ class _ReviewEditScreenState extends ConsumerState<ReviewEditScreen> {
   @override
   void initState() {
     super.initState();
-    // _controller = TextEditingController(text: widget.initialContent);
-    // _isPrivate = !widget.isPublic;
     _controller = TextEditingController(text: widget.review.content);
     _isPrivate = !widget.review.isPublic;
   }
@@ -118,7 +107,7 @@ class _ReviewEditScreenState extends ConsumerState<ReviewEditScreen> {
                                 widget.review.thumbnail!,
                                 fit: BoxFit.cover,
                                 errorBuilder: (context, error, _) =>
-                                    _buildPlaceholder(0),
+                                    CustomPlaceholder(size: 0.06),
                               ),
                             )
                           else
@@ -132,7 +121,7 @@ class _ReviewEditScreenState extends ConsumerState<ReviewEditScreen> {
                                 ),
                                 borderRadius: BorderRadius.zero,
                               ),
-                              child: _buildPlaceholder(0),
+                              child: CustomPlaceholder(size: 0.06),
                             ),
                           const SizedBox(width: 16),
                           Expanded(
@@ -217,14 +206,6 @@ class _ReviewEditScreenState extends ConsumerState<ReviewEditScreen> {
           BorderedEmptyContainer.right(),
         ],
       ),
-    );
-  }
-
-  Widget _buildPlaceholder(double size) {
-    return Image.asset(
-      'assets/images/grid_item_placeholder.png',
-      width: MediaQuery.of(context).size.width * size,
-      height: MediaQuery.of(context).size.width * size,
     );
   }
 }

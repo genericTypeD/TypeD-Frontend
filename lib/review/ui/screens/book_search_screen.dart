@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:typed/common/const/index.dart';
 import 'package:typed/common/index.dart';
+import 'package:typed/review/ui/components/custom_placeholder.dart';
 import 'package:typed/review/viewmodels/book_providers.dart';
 import 'package:typed/review/data/models/book_model.dart';
 
@@ -138,12 +139,12 @@ class _BookSearchScreenState extends ConsumerState<BookSearchScreen> {
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
                         return Center(
-                          child: _buildPlaceholder(0.06),
+                          child: CustomPlaceholder(size: 0.06),
                         );
                       },
                     )
                   : Center(
-                      child: _buildPlaceholder(0.1),
+                      child: CustomPlaceholder(size: 0.1),
                     ),
             ),
             const SizedBox(width: 16),
@@ -213,7 +214,7 @@ class _BookSearchScreenState extends ConsumerState<BookSearchScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _buildPlaceholder(0.1),
+          CustomPlaceholder(size: 0.1),
           const SizedBox(height: 8),
           Text(
             _bookSearchBodyText,
@@ -229,7 +230,7 @@ class _BookSearchScreenState extends ConsumerState<BookSearchScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _buildPlaceholder(0.1),
+          CustomPlaceholder(size: 0.1),
           const SizedBox(height: 16),
           Text(
             _emptyBookResult,
@@ -237,14 +238,6 @@ class _BookSearchScreenState extends ConsumerState<BookSearchScreen> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildPlaceholder(double size) {
-    return Image.asset(
-      'assets/images/grid_item_placeholder.png',
-      width: MediaQuery.of(context).size.width * size,
-      height: MediaQuery.of(context).size.width * size,
     );
   }
 }
