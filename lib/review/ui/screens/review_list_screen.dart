@@ -91,13 +91,7 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
   void _handleEdit(Review review) {
     context.push(
       '/review_edit',
-      extra: {
-        'reviewId': review.id,
-        'initialContent': review.content,
-        'isPublic': review.isPublic,
-        'bookTitle': review.bookTitle,
-        'thumbnail': review.thumbnail,
-      },
+      extra: review,
     );
   }
 

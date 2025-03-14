@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:typed/common/const/index.dart';
 import 'package:typed/common/index.dart';
+import 'package:typed/review/data/models/review_model.dart';
 import 'package:typed/review/ui/screens/review_edit_screen.dart';
 import 'package:typed/review/ui/screens/review_input_screen.dart';
 import 'package:typed/review/ui/screens/book_search_screen.dart';
@@ -47,7 +48,8 @@ class ReviewRoutes {
     GoRoute(
       path: '/review_edit',
       pageBuilder: (context, state) {
-        final args = state.extra as Map<String, dynamic>?;
+        // final args = state.extra as Map<String, dynamic>?;
+        final args = state.extra as Review?;
         if (args == null) {
           return CustomTransitionPage(
             key: state.pageKey,
@@ -81,11 +83,12 @@ class ReviewRoutes {
         return CustomTransitionPage(
           key: state.pageKey,
           child: ReviewEditScreen(
-            reviewId: args['reviewId'] as int,
-            initialContent: args['initialContent'] as String,
-            isPublic: args['isPublic'] as bool,
-            bookTitle: args['bookTitle'] as String,
-            thumbnail: args['thumbnail'] as String?,
+            // reviewId: args['reviewId'] as int,
+            // initialContent: args['initialContent'] as String,
+            // isPublic: args['isPublic'] as bool,
+            // bookTitle: args['bookTitle'] as String,
+            // thumbnail: args['thumbnail'] as String?,
+            review: args,
           ),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(

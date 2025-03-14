@@ -3,24 +3,27 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:typed/common/const/index.dart';
 import 'package:typed/review/data/models/lock_enum.dart';
+import 'package:typed/review/data/models/review_model.dart';
 import 'package:typed/review/ui/components/bordered_empty_container.dart';
 import 'package:typed/review/viewmodels/review_providers.dart';
 import '../../../common/index.dart';
 
 class ReviewEditScreen extends ConsumerStatefulWidget {
-  final int reviewId;
-  final String initialContent;
-  final bool isPublic;
-  final String bookTitle;
-  final String? thumbnail;
+  // final int reviewId;
+  // final String initialContent;
+  // final bool isPublic;
+  // final String bookTitle;
+  // final String? thumbnail;
+  final Review review;
 
   const ReviewEditScreen({
     super.key,
-    required this.reviewId,
-    required this.initialContent,
-    required this.isPublic,
-    required this.bookTitle,
-    this.thumbnail,
+    // required this.reviewId,
+    // required this.initialContent,
+    // required this.isPublic,
+    // required this.bookTitle,
+    // this.thumbnail,
+    required this.review,
   });
 
   @override
@@ -36,8 +39,10 @@ class _ReviewEditScreenState extends ConsumerState<ReviewEditScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(text: widget.initialContent);
-    _isPrivate = !widget.isPublic;
+    // _controller = TextEditingController(text: widget.initialContent);
+    // _isPrivate = !widget.isPublic;
+    _controller = TextEditingController(text: widget.review.content);
+    _isPrivate = !widget.review.isPublic;
   }
 
   @override
@@ -66,9 +71,11 @@ class _ReviewEditScreenState extends ConsumerState<ReviewEditScreen> {
               await ref
                   .read(ReviewProviders.reviewListProvider.notifier)
                   .updateReview(
-                    widget.reviewId,
+                    // widget.reviewId,
+                    widget.review.id,
                     content,
-                    widget.isPublic,
+                    // widget.isPublic,
+                    widget.review.isPublic,
                   );
               if (context.mounted) {
                 context.go('/home/review');
@@ -94,8 +101,8 @@ class _ReviewEditScreenState extends ConsumerState<ReviewEditScreen> {
                     children: [
                       Row(
                         children: [
-                          if (widget.thumbnail != null &&
-                              widget.thumbnail!.isNotEmpty)
+                          if (widget.review.thumbnail != null &&
+                              widget.review.thumbnail!.isNotEmpty)
                             Container(
                               width: 70,
                               height: 90,
@@ -108,7 +115,7 @@ class _ReviewEditScreenState extends ConsumerState<ReviewEditScreen> {
                               ),
                               clipBehavior: Clip.antiAlias,
                               child: Image.network(
-                                widget.thumbnail!,
+                                widget.review.thumbnail!,
                                 fit: BoxFit.cover,
                                 errorBuilder: (context, error, _) =>
                                     _buildPlaceholder(0),
@@ -130,7 +137,7 @@ class _ReviewEditScreenState extends ConsumerState<ReviewEditScreen> {
                           const SizedBox(width: 16),
                           Expanded(
                             child: Text(
-                              widget.bookTitle,
+                              widget.review.bookTitle,
                               style: AppTheme.title3,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
