@@ -7,6 +7,8 @@ import 'package:typed/common/widgets/app_bar/custom_app_bar.dart';
 import 'package:typed/review/data/models/lock_enum.dart';
 import 'package:typed/review/data/models/review_model.dart';
 import 'package:typed/review/ui/components/bordered_empty_container.dart';
+import 'package:typed/review/ui/widgets/empty_review_list_content.dart';
+import 'package:typed/review/ui/widgets/review_list_content.dart';
 import 'package:typed/review/viewmodels/review_providers.dart';
 
 class ReviewListScreen extends ConsumerStatefulWidget {
@@ -19,7 +21,6 @@ class ReviewListScreen extends ConsumerStatefulWidget {
 class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
     with SingleTickerProviderStateMixin {
   static const _reviewListScreenTitle = '서평 목록';
-  static const _reviewEmptyListText = '저장된 서평이 없습니다';
 
   late LockStatus _currentLockState;
 
@@ -59,7 +60,15 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
                       color: AppColors.backgroundTertiary,
                       border: Border(bottom: AppBarStyle.borderStyle),
                     ),
-                    child: _buildReviewList(displayReviews),
+                    child: displayReviews.isEmpty
+                        ? EmptyReviewListContent()
+                        : ReviewListContent(
+                            reviews: displayReviews,
+                            onEditButtonPressed: (review) =>
+                                _handleEdit(review),
+                            onDeleteButtonPressed: (review) =>
+                                _handleDelete(review),
+                          ),
                   ),
                 ),
               ),
@@ -73,126 +82,53 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
     );
   }
 
-  Widget _buildReviewList(List<dynamic> reviews) {
-    if (reviews.isEmpty) {
-      return _buildEmptyReviewListScreen();
-    }
-
-    return ListView.builder(
-      itemCount: reviews.length,
-      itemBuilder: (context, index) {
-        final review = reviews[index];
-
-        return Container(
-          decoration: BoxDecoration(
-            color: AppColors.backgroundSecondary,
-            border: Border(
-              bottom: AppBarStyle.borderStyle,
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ListTile(
-                leading: review.thumbnail?.isNotEmpty ?? false
-                    ? Image.network(
-                        review.thumbnail!,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, _) =>
-                            _buildPlaceholder(0.06),
-                      )
-                    : _buildPlaceholder(0.06),
-                title: Text(
-                  review.bookTitle,
-                  style: AppTheme.body1,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                subtitle: Text(
-                  review.createdAt != null
-                      ? 'createdAt: ${review.createdAt!.substring(0, 10)}'
-                      : '',
-                  style: AppTheme.body3,
-                ),
-              ),
-
-              // 서평 내용
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Text(
-                  review.content,
-                  style: AppTheme.body2,
-                ),
-              ),
-
-              // 액션 버튼
-              Padding(
-                padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.edit, size: 20),
-                      onPressed: () {
-                        context.push(
-                          '/review_edit',
-                          extra: {
-                            'reviewId': review.id,
-                            'initialContent': review.content,
-                            'isPublic': review.isPublic,
-                            'bookTitle': review.bookTitle,
-                            'thumbnail': review.thumbnail,
-                          },
-                        );
-                      },
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.delete, size: 20),
-                      onPressed: () async {
-                        final confirmed = await showDialog<bool>(
-                          context: context,
-                          builder: (context) => _buildAlertDialog(review),
-                        );
-
-                        if (confirmed == true && context.mounted) {
-                          try {
-                            await ref
-                                .read(reviewListProvider.notifier)
-                                .deleteReview(review);
-                            if (context.mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('서평이 성공적으로 삭제되었습니다.'),
-                                ),
-                                snackBarAnimationStyle: AnimationStyle(
-                                  duration: Duration(seconds: 1),
-                                ),
-                              );
-                            }
-                          } catch (error) {
-                            if (context.mounted) {
-                              debugPrint('$error');
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('오류로 인해 서평이 삭제되지 않았습니다.'),
-                                ),
-                                snackBarAnimationStyle: AnimationStyle(
-                                  duration: Duration(seconds: 1),
-                                ),
-                              );
-                            }
-                          }
-                        }
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        );
+  // 콜백 핸들러 - 비즈니스 로직 포함
+  void _handleEdit(Review review) {
+    context.push(
+      '/review_edit',
+      extra: {
+        'reviewId': review.id,
+        'initialContent': review.content,
+        'isPublic': review.isPublic,
+        'bookTitle': review.bookTitle,
+        'thumbnail': review.thumbnail,
       },
     );
+  }
+
+  Future<void> _handleDelete(Review review) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => _buildAlertDialog(review),
+    );
+
+    if (confirmed == true && context.mounted) {
+      try {
+        await ref.read(reviewListProvider.notifier).deleteReview(review);
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('서평이 성공적으로 삭제되었습니다.'),
+            ),
+            snackBarAnimationStyle: AnimationStyle(
+              duration: Duration(seconds: 1),
+            ),
+          );
+        }
+      } catch (error) {
+        if (context.mounted) {
+          debugPrint('$error');
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('오류로 인해 서평이 삭제되지 않았습니다.'),
+            ),
+            snackBarAnimationStyle: AnimationStyle(
+              duration: Duration(seconds: 1),
+            ),
+          );
+        }
+      }
+    }
   }
 
   Widget _buildAlertDialog(Review review) {
@@ -277,30 +213,6 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
           const SizedBox(height: 16),
         ],
       ),
-    );
-  }
-
-  Widget _buildEmptyReviewListScreen() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _buildPlaceholder(0.1),
-          const SizedBox(height: 16),
-          Text(
-            _reviewEmptyListText,
-            style: AppTheme.body2,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildPlaceholder(double size) {
-    return Image.asset(
-      'assets/images/grid_item_placeholder.png',
-      width: MediaQuery.of(context).size.width * size,
-      height: MediaQuery.of(context).size.width * size,
     );
   }
 
