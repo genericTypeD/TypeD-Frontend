@@ -60,10 +60,8 @@ class _ReviewEditScreenState extends ConsumerState<ReviewEditScreen> {
               await ref
                   .read(ReviewProviders.reviewListProvider.notifier)
                   .updateReview(
-                    // widget.reviewId,
                     widget.review.id,
                     content,
-                    // widget.isPublic,
                     widget.review.isPublic,
                   );
               if (context.mounted) {

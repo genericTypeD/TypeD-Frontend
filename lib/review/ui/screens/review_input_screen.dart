@@ -39,7 +39,6 @@ class _ReviewInputScreenState extends ConsumerState<ReviewInputScreen> {
       });
     });
 
-    // 포커스 해제
     WidgetsBinding.instance.addPostFrameCallback((_) {
       FocusScope.of(context).unfocus();
     });

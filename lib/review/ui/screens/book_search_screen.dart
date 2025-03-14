@@ -19,7 +19,6 @@ class BookSearchScreen extends ConsumerStatefulWidget {
 }
 
 class _BookSearchScreenState extends ConsumerState<BookSearchScreen> {
-  static const _bookScreenTitle = '서평 메모';
   static const _bookSearchBodyText = '검색어를 입력해주세요';
   static const _emptyBookResult = '검색 결과가 없습니다';
 
@@ -63,20 +62,20 @@ class _BookSearchScreenState extends ConsumerState<BookSearchScreen> {
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
-            // child: _buildBookSearchTextField(),
             child: BookSearchTextField(
-                searchController: _searchController,
-                searchFocusNode: _searchFocusNode,
-                onClearButtonPressed: () {
-                  _searchController.clear();
-                  ref.read(searchQueryProvider.notifier).state = '';
-                },
-                onSubmitted: (_) {
-                  final query = _searchController.text.trim();
-                  if (query.isNotEmpty) {
-                    ref.read(searchQueryProvider.notifier).state = query;
-                  }
-                }),
+              searchController: _searchController,
+              searchFocusNode: _searchFocusNode,
+              onClearButtonPressed: () {
+                _searchController.clear();
+                ref.read(searchQueryProvider.notifier).state = '';
+              },
+              onSubmitted: (_) {
+                final query = _searchController.text.trim();
+                if (query.isNotEmpty) {
+                  ref.read(searchQueryProvider.notifier).state = query;
+                }
+              },
+            ),
           ),
           Expanded(
             child: searchResults.when(
