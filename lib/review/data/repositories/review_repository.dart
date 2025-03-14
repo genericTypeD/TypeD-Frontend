@@ -20,8 +20,43 @@ class ReviewRepository {
   }
 
   /// 서평 전체 목록 조회 (GET)
-  Future<List<Review>> fetchAllReviews() async {
-    return _box.values.toList();
+  Future<List<Review>> fetchAllReviews({
+    SortOption? sortBy = SortOption.createdAt,
+    bool ascending = false,
+  }) async {
+    try {
+      List<Review> reviews = _box.values.toList();
+
+      if (sortBy != null) {
+        int comparison;
+
+        reviews.sort((lhs, rhs) {
+          switch (sortBy) {
+            case SortOption.id:
+              comparison = lhs.id.compareTo(rhs.id);
+              break;
+            case SortOption.bookTitle:
+              comparison = lhs.bookTitle.compareTo(rhs.bookTitle);
+              break;
+            case SortOption.createdAt:
+              comparison = lhs.createdAt.compareTo(rhs.createdAt);
+              break;
+            case SortOption.updatedAt:
+              comparison = lhs.updatedAt.compareTo(rhs.updatedAt);
+              break;
+          }
+
+          return ascending ? comparison : -comparison;
+        });
+      }
+
+      return reviews;
+    } catch (error) {
+      final errorString = '서평 전체 목록 조회';
+
+      _logError(errorString, error);
+      throw ReviewStorageException(errorString);
+    }
   }
 
   // TODO: - 검색 키워드가 포함된 bookTitle 혹은 content가 있는 서평 목록 조회(키워드 검색 기능)
