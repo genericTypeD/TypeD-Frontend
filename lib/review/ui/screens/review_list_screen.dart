@@ -7,6 +7,8 @@ import 'package:typed/common/widgets/app_bar/custom_app_bar.dart';
 import 'package:typed/review/data/models/lock_enum.dart';
 import 'package:typed/review/data/models/review_model.dart';
 import 'package:typed/review/ui/components/bordered_empty_container.dart';
+import 'package:typed/review/ui/screens/review_error_screen.dart';
+import 'package:typed/review/ui/screens/review_loading_screen.dart';
 import 'package:typed/review/ui/widgets/index.dart';
 import 'package:typed/review/viewmodels/review_providers.dart';
 
@@ -19,8 +21,6 @@ class ReviewListScreen extends ConsumerStatefulWidget {
 
 class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
     with SingleTickerProviderStateMixin {
-  static const _reviewListScreenTitle = '서평 목록';
-
   late LockStatus _currentLockState;
 
   @override
@@ -77,8 +77,13 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
           ),
         );
       },
-      loading: () => _buildLoadingScreen(),
-      error: (error, stackTrace) => _buildErrorScreen(),
+      loading: () => ReviewLoadingScreen(
+        loadingScreenTitle: '서평 목록',
+      ),
+      error: (error, stackTrace) => ReviewErrorScreen(
+        onBackButtonTap: () => Navigator.of(context).canPop(),
+        onRefreshButtonTap: () => debugPrint('새로고침'),
+      ),
     );
   }
 
