@@ -82,7 +82,6 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
     );
   }
 
-  // 콜백 핸들러 - 비즈니스 로직 포함
   void _handleEdit(Review review) {
     context.push(
       '/review_edit',

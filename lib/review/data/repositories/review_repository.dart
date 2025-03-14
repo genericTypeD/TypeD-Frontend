@@ -14,8 +14,6 @@ class ReviewRepository {
   final Box<Review> _box = Hive.box<Review>('review');
 
   /// 서평 저장 (POST)
-  // TODO: - 새로 추가된 서평을 반환하는 것으로 에러 처리 개선 ✅
-  // TODO: - catch문 내 로깅 함수 추가 ✅
   Future<Review> addReview(Review review) async {
     try {
       await _box.add(review);
@@ -90,7 +88,6 @@ class ReviewRepository {
       final errorString = 'ID로 특정 서평 조회';
 
       _logError(errorString, error);
-      // throw ReviewException('ID로 특정 책의 서평을 불러오는데 실패했습니다: $error');
       return null;
     }
   }
