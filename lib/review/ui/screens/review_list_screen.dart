@@ -10,7 +10,6 @@ import 'package:typed/review/ui/components/bordered_empty_container.dart';
 import 'package:typed/review/ui/screens/review_error_screen.dart';
 import 'package:typed/review/ui/screens/review_loading_screen.dart';
 import 'package:typed/review/ui/widgets/index.dart';
-import 'package:typed/review/ui/widgets/review_delete_alert_dialog.dart';
 import 'package:typed/review/viewmodels/review_providers.dart';
 
 class ReviewListScreen extends ConsumerStatefulWidget {
@@ -78,12 +77,12 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
           ),
         );
       },
+      error: (error, stackTrace) => ReviewErrorScreen.error(
+        // TODO: - 새로 고침 로직 추가
+        onRefreshButtonTap: () => context.pop(),
+      ),
       loading: () => ReviewLoadingScreen(
         loadingScreenTitle: '서평 목록',
-      ),
-      error: (error, stackTrace) => ReviewErrorScreen.error(
-        onBackButtonTap: () => Navigator.of(context).canPop(),
-        onRefreshButtonTap: () => debugPrint('새로고침'),
       ),
     );
   }
@@ -99,13 +98,7 @@ class _ReviewListScreenState extends ConsumerState<ReviewListScreen>
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => ReviewDeleteAlertDialog(
-        onDeleteButtonPressed: () {
-          if (context.canPop()) {
-            context.pop(true);
-          } else {
-            Navigator.of(context, rootNavigator: true).pop(true);
-          }
-        },
+        onDeleteButtonPressed: () => context.pop(true),
       ),
     );
 
