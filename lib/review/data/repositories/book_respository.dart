@@ -186,5 +186,8 @@ class BookRepository {
     }
   }
 
+  /// 리소스 해제 메소드
+  void dispose() {
+    _client.close();
   }
 }
