@@ -50,7 +50,7 @@ class _BookSearchScreenState extends ConsumerState<BookSearchScreen> {
       backgroundColor: AppColors.backgroundSecondary,
       appBar: CustomAppBar(
         bottomLeftWidget: GestureDetector(
-          onTap: () => context.pop(),
+          onTap: () => _navigateBack(),
           child: Text(
             '돌아가기',
             textAlign: TextAlign.left,
@@ -83,7 +83,8 @@ class _BookSearchScreenState extends ConsumerState<BookSearchScreen> {
               },
               loading: () => CustomProgressIndicator(),
               error: (error, stackTrace) => ReviewErrorScreen.error(
-                onBackButtonTap: () => Navigator.of(context).canPop(),
+                onBackButtonTap: () => _navigateBack(),
+                // TODO: - 새로 고침 로직 추가
                 onRefreshButtonTap: () => debugPrint('새로고침'),
               ),
             ),
@@ -102,7 +103,7 @@ class _BookSearchScreenState extends ConsumerState<BookSearchScreen> {
           book: book,
           onTap: () {
             ref.read(selectedBookProvider.notifier).state = book;
-            context.push('/review_input');
+            _navigateToReviewInput();
           },
         );
       },
@@ -151,5 +152,13 @@ class _BookSearchScreenState extends ConsumerState<BookSearchScreen> {
     if (query.isNotEmpty) {
       ref.read(searchQueryProvider.notifier).state = query;
     }
+  }
+
+  void _navigateToReviewInput() {
+    context.push('/review_input');
+  }
+
+  void _navigateBack() {
+    context.pop();
   }
 }
