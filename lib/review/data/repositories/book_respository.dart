@@ -24,7 +24,7 @@ class BookRepository {
         _client = client ?? http.Client();
 
   /// 책 검색 API
-  Future<List<Book>> searchBooks(
+  Future<BookSearchResult> searchBooks(
     String query, {
     int page = _kakaoDefaultPage,
     int size = _kakaoDefaultPageSize,
@@ -126,7 +126,7 @@ class BookRepository {
   }
 
   /// 응답 처리 메소드
-  List<Book> _processResponse(http.Response response) {
+  BookSearchResult _processResponse(http.Response response) {
     final statusCode = response.statusCode;
 
     // HTTP 상태 코드별 처리
@@ -134,8 +134,7 @@ class BookRepository {
       case 200:
         try {
           final Map<String, dynamic> data = jsonDecode(response.body);
-          final List<dynamic> documents = data['documents'];
-          return documents.map((doc) => Book.fromJson(doc)).toList();
+          return BookSearchResult.fromJson(data);
         } catch (error) {
           debugPrint('[JSON 파싱 오류] ${error.toString()}');
           throw BookSearchException(
