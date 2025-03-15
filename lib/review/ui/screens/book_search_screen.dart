@@ -5,8 +5,8 @@ import 'package:typed/common/const/index.dart';
 import 'package:typed/common/index.dart';
 import 'package:typed/review/data/models/book_model.dart';
 import 'package:typed/review/ui/components/custom_placeholder.dart';
-import 'package:typed/review/ui/components/custom_progress_indicator.dart';
 import 'package:typed/review/ui/screens/review_error_screen.dart';
+import 'package:typed/review/ui/screens/review_loading_screen.dart';
 import 'package:typed/review/ui/widgets/book_list_item.dart';
 import 'package:typed/review/ui/widgets/book_search_text_field.dart';
 import 'package:typed/review/viewmodels/book_providers.dart';
@@ -46,55 +46,62 @@ class _BookSearchScreenState extends ConsumerState<BookSearchScreen> {
     final searchQuery = ref.watch(searchQueryProvider);
     final searchResults = ref.watch(bookSearchProvider(searchQuery));
 
-    return DefaultLayout(
-      backgroundColor: AppColors.backgroundSecondary,
-      appBar: CustomAppBar(
-        bottomLeftWidget: GestureDetector(
-          onTap: () => _navigateBack(),
-          child: Text(
-            '돌아가기',
-            textAlign: TextAlign.left,
-            style: AppTheme.title3,
-          ),
-        ),
-      ),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: BookSearchTextField(
-              searchController: _searchController,
-              searchFocusNode: _searchFocusNode,
-              onClearButtonPressed: _handleClear,
-              onSubmitted: (_) => _handleSubmit(),
-            ),
-          ),
-          Expanded(
-            child: searchResults.when(
-              data: (books) {
-                if (searchQuery.isEmpty) {
-                  return _buildBookSearchBody();
-                }
-                if (books.isEmpty) {
-                  return _buildEmptyBookResult();
-                }
-
-                return _buildBookList(books);
-              },
-              loading: () => CustomProgressIndicator(),
-              error: (error, stackTrace) => ReviewErrorScreen.error(
-                onBackButtonTap: () => _navigateBack(),
-                // TODO: - 새로 고침 로직 추가
-                onRefreshButtonTap: () => debugPrint('새로고침'),
+    return searchResults.when(
+      data: (books) {
+        return DefaultLayout(
+          backgroundColor: AppColors.backgroundSecondary,
+          appBar: CustomAppBar(
+            bottomLeftWidget: GestureDetector(
+              onTap: () => _navigateBack(),
+              child: Text(
+                '돌아가기',
+                textAlign: TextAlign.left,
+                style: AppTheme.title3,
               ),
             ),
           ),
-        ],
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: BookSearchTextField(
+                  searchController: _searchController,
+                  searchFocusNode: _searchFocusNode,
+                  onClearButtonPressed: _handleClear,
+                  onSubmitted: (_) => _handleSubmit(),
+                ),
+              ),
+              Expanded(
+                child: _buildBookList(
+                  searchQuery,
+                  books,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+      error: (error, stackTrace) => ReviewErrorScreen.error(
+        // TODO: - 새로 고침 로직 추가
+        onRefreshButtonTap: () => context.pop(),
+      ),
+      loading: () => ReviewLoadingScreen(
+        loadingScreenTitle: '검색중...',
       ),
     );
   }
 
-  Widget _buildBookList(List<Book> books) {
+  Widget _buildBookList(
+    String searchQuery,
+    List<Book> books,
+  ) {
+    if (searchQuery.isEmpty) {
+      return _buildBookSearchBody();
+    }
+    if (books.isEmpty) {
+      return _buildEmptyBookResult();
+    }
+
     return ListView.builder(
       itemCount: books.length,
       itemBuilder: (context, index) {
