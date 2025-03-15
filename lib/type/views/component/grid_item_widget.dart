@@ -1,35 +1,25 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:typed/common/const/index.dart';
+import 'package:typed/review/ui/components/index.dart';
 import 'package:typed/type/models/grid_item.dart';
 import 'package:typed/type/models/grid_item_type.dart';
-import 'package:typed/type/viewmodels/grid_viewmodel.dart';
-import 'package:typed/type/views/component/add_record_dialog.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class GridItemWidget extends ConsumerWidget {
-  final int verticalIndex;
-  final int horizontalIndex;
-  final double width;
+  final GridItem item;
+  final VoidCallback onTap;
 
   const GridItemWidget({
-    required this.verticalIndex,
-    required this.horizontalIndex,
-    required this.width,
+    required this.item,
+    required this.onTap,
     super.key,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final gridState = ref.watch(gridProvider);
-    final item = gridState.items[verticalIndex][horizontalIndex];
-
     return GestureDetector(
-      onTap: () => _showAddDialog(
-        context,
-        ref,
-        item,
-      ),
+      onTap: onTap,
       child: Container(
         clipBehavior: Clip.hardEdge,
         decoration: BoxDecoration(
@@ -47,13 +37,13 @@ class GridItemWidget extends ConsumerWidget {
 
   Widget _buildContent(GridItem item, BuildContext context) {
     if (item.isEmpty) {
-      return _buildPlaceholder(context);
+      return _buildCustomPlaceholder();
     }
 
     switch (item.type) {
       /// 빈 GridItem
       case GridItemType.empty:
-        return _buildPlaceholder(context);
+        return _buildCustomPlaceholder();
 
       /// 이미지
       case GridItemType.image:
@@ -63,11 +53,11 @@ class GridItemWidget extends ConsumerWidget {
             fit: BoxFit.cover,
             errorBuilder: (context, error, stackTrace) {
               debugPrint('[Image Loading Error] $error');
-              return _buildPlaceholder(context);
+              return _buildCustomPlaceholder();
             },
           );
         }
-        return _buildPlaceholder(context);
+      // TODO: - file 없는 경우
 
       /// 음악
       case GridItemType.music:
@@ -83,11 +73,10 @@ class GridItemWidget extends ConsumerWidget {
             fit: BoxFit.cover,
             errorBuilder: (context, error, stackTrace) {
               debugPrint('[Music Cover Loading Error] $error');
-              return _buildPlaceholder(context);
+              return _buildCustomPlaceholder();
             },
           );
         }
-        return _buildPlaceholder(context);
 
       // 책
       case GridItemType.bookReview:
@@ -100,15 +89,13 @@ class GridItemWidget extends ConsumerWidget {
             fit: BoxFit.cover,
             errorBuilder: (context, error, stackTrace) {
               debugPrint('[Book Cover Loading Error] $error');
-              return _buildPlaceholder(context);
+              return _buildCustomPlaceholder();
             },
           );
         }
-        return _buildPlaceholder(context);
 
-      // 문장
+      /// 문장
       case GridItemType.sentence:
-        // if (item.sentenceContent != null) {
         if (item.isSentence && item.isValid) {
           return Padding(
             padding: const EdgeInsets.all(12),
@@ -121,38 +108,14 @@ class GridItemWidget extends ConsumerWidget {
             ),
           );
         }
-        return _buildPlaceholder(context);
     }
+
+    return _buildCustomPlaceholder();
   }
 
-  Widget _buildPlaceholder(BuildContext context) {
+  Widget _buildCustomPlaceholder() {
     return Center(
-      child: Image.asset(
-        'assets/images/grid_item_placeholder.png',
-        width: MediaQuery.of(context).size.width * 0.06,
-        height: MediaQuery.of(context).size.width * 0.06,
-      ),
+      child: CustomPlaceholder(size: 0.06),
     );
-  }
-
-  void _showAddDialog(
-    BuildContext context,
-    WidgetRef ref,
-    GridItem item,
-  ) async {
-    final result = await showDialog<GridItem>(
-      context: context,
-      builder: (context) => AddRecordDialog(
-        item: item,
-      ),
-    );
-
-    if (result != null) {
-      ref.read(gridProvider.notifier).updateGridItem(
-            verticalIndex,
-            horizontalIndex,
-            result,
-          );
-    }
   }
 }

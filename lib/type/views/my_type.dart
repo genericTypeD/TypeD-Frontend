@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:typed/common/index.dart';
 import 'package:typed/common/const/index.dart';
+import 'package:typed/type/models/grid_item.dart';
 import 'package:typed/type/models/period_type.dart';
 import 'package:typed/type/utils/date_formatter.dart';
 import 'package:typed/type/viewmodels/grid_viewmodel.dart';
 import 'package:typed/type/viewmodels/period_datetime_viewmodel.dart';
+import 'package:typed/type/views/component/add_record_dialog.dart';
 import 'package:typed/type/views/component/grid_item_widget.dart';
 import 'package:typed/type/viewmodels/split_view_viewmodel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -342,11 +344,29 @@ class _MyTypeState extends ConsumerState<MyType> {
                       .updateHorizontalFlex(verticalIndex, flexValues);
                 },
                 builder: (context, horizontalArea) {
+                  final gridState = ref.watch(gridProvider);
+                  final item =
+                      gridState.items[verticalIndex][horizontalArea.index];
+
                   return GridItemWidget(
+                    item: item,
                     key: ValueKey('${verticalIndex}_${horizontalArea.index}'),
-                    verticalIndex: verticalIndex,
-                    horizontalIndex: horizontalArea.index,
-                    width: screenWidth / 2,
+                    onTap: () async {
+                      final result = await showDialog<GridItem>(
+                        context: context,
+                        builder: (context) => AddRecordDialog(
+                          item: item,
+                        ),
+                      );
+
+                      if (result != null) {
+                        ref.read(gridProvider.notifier).updateGridItem(
+                              verticalIndex,
+                              horizontalArea.index,
+                              result,
+                            );
+                      }
+                    },
                   );
                 },
               );
