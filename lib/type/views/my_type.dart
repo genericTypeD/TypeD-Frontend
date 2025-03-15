@@ -348,23 +348,17 @@ class _MyTypeState extends ConsumerState<MyType> {
                   final item =
                       gridState.items[verticalIndex][horizontalArea.index];
 
-                  return GridItemWidget(
+                  return GridItemContainer(
                     item: item,
-                    key: ValueKey('${verticalIndex}_${horizontalArea.index}'),
                     onTap: () async {
                       final result = await showDialog<GridItem>(
                         context: context,
-                        builder: (context) => AddRecordDialog(
-                          item: item,
-                        ),
+                        builder: (context) => AddRecordDialog(item: item),
                       );
 
                       if (result != null) {
                         ref.read(gridProvider.notifier).updateGridItem(
-                              verticalIndex,
-                              horizontalArea.index,
-                              result,
-                            );
+                            verticalIndex, horizontalArea.index, result);
                       }
                     },
                   );
