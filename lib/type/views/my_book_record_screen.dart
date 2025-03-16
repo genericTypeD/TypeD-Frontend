@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:typed/common/const/index.dart';
 import 'package:typed/review/data/models/review_model.dart';
+import 'package:typed/review/ui/components/custom_progress_indicator.dart';
 import 'package:typed/review/viewmodels/review_providers.dart';
 import 'package:typed/type/models/grid_item.dart';
 import 'package:typed/type/views/layout/my_record_layout.dart';
@@ -106,9 +107,7 @@ class _MyBookRecordScreenState extends ConsumerState<MyBookRecordScreen> {
         debugPrint('$error');
         return _buildErrorScreen();
       },
-      loading: () => Center(
-        child: CircularProgressIndicator(),
-      ),
+      loading: () => CustomProgressIndicator(),
     );
   }
 

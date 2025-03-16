@@ -136,8 +136,6 @@ class _MyTypeState extends ConsumerState<MyType> {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-
     // 현재 선택된 기간/날짜 상태 변경 감지
     ref.listen(periodDateProvider, (previous, next) {
       if (previous?.periodType != next.periodType ||
