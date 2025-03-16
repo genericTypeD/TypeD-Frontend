@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:typed/common/const/index.dart';
 import 'package:typed/review/ui/components/index.dart';
 import 'package:typed/sentence/provider/sentence_provider.dart';
 import 'package:typed/type/models/grid_item.dart';
@@ -70,24 +69,9 @@ class _MySentenceRecordScreenState
       ),
       error: (error, stackTrace) {
         debugPrint('$error');
-        return _buildErrorScreen();
+        return MyRecordLayout.error();
       },
       loading: () => CustomProgressIndicator(),
-    );
-  }
-
-  // TODO: - 따로 구현
-  Widget _buildErrorScreen() {
-    return Center(
-      child: Column(
-        children: [
-          CustomPlaceholder(size: 0.1),
-          Text(
-            '오류가 발생했습니다.',
-            style: AppTheme.body1,
-          ),
-        ],
-      ),
     );
   }
 }

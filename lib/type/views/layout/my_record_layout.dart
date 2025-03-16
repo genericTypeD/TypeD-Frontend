@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:typed/common/const/index.dart';
 import 'package:typed/common/index.dart';
+import 'package:typed/review/ui/components/custom_placeholder.dart';
 
-class MyRecordLayout extends StatefulWidget {
+class MyRecordLayout extends StatelessWidget {
   static final _backButtonText = '뒤로 가기';
   static final _saveButtonText = '기록하기';
   static final _errorText = '오류가 발생했습니다.';
@@ -10,9 +11,9 @@ class MyRecordLayout extends StatefulWidget {
   final VoidCallback? onBottomLeftWidgetPressed;
   final VoidCallback? onBottomRightWidgetPressed;
   final Widget? bottomCenterWidget;
-  // final List<Widget> body;
-  final Widget body;
+  final Widget? body;
   final bool useDefaultBackground;
+  final bool isErrorScreen;
 
   const MyRecordLayout({
     this.onBottomLeftWidgetPressed,
@@ -20,6 +21,7 @@ class MyRecordLayout extends StatefulWidget {
     this.bottomCenterWidget,
     required this.body,
     this.useDefaultBackground = true,
+    this.isErrorScreen = false,
     super.key,
   });
 
@@ -29,22 +31,29 @@ class MyRecordLayout extends StatefulWidget {
     this.bottomCenterWidget,
     required this.body,
     this.useDefaultBackground = false,
+    this.isErrorScreen = false,
     super.key,
   });
 
-  @override
-  State<MyRecordLayout> createState() => _MyRecordLayoutState();
-}
+  const MyRecordLayout.error({
+    this.onBottomLeftWidgetPressed,
+    this.onBottomRightWidgetPressed,
+    this.bottomCenterWidget,
+    this.body,
+    this.useDefaultBackground = true,
+    this.isErrorScreen = true,
+    super.key,
+  });
 
-class _MyRecordLayoutState extends State<MyRecordLayout> {
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
       backgroundColor: AppColors.backgroundSecondary,
       appBar: CustomAppBar(
         bottomLeftWidget: _renderBottomLeftWidget(),
-        bottomCenterWidget: widget.bottomCenterWidget,
-        bottomRightWidget: _renderBottomRightWidget(),
+        bottomCenterWidget: bottomCenterWidget,
+        bottomRightWidget:
+            isErrorScreen ? Container() : _renderBottomRightWidget(),
       ),
       child: Row(
         children: [
@@ -58,13 +67,13 @@ class _MyRecordLayoutState extends State<MyRecordLayout> {
 
   Widget _renderBottomLeftWidget() {
     return TextButton(
-      onPressed: widget.onBottomLeftWidgetPressed,
+      onPressed: onBottomLeftWidgetPressed,
       style: TextButton.styleFrom(
         padding: EdgeInsets.zero,
         minimumSize: Size.zero,
       ),
       child: Text(
-        '뒤로 가기',
+        _backButtonText,
         textAlign: TextAlign.left,
         style: AppTheme.title3,
       ),
@@ -73,9 +82,9 @@ class _MyRecordLayoutState extends State<MyRecordLayout> {
 
   Widget _renderBottomRightWidget() {
     return TextButton(
-      onPressed: widget.onBottomRightWidgetPressed,
+      onPressed: onBottomRightWidgetPressed,
       child: Text(
-        '기록하기',
+        _saveButtonText,
         style: AppTheme.title3.copyWith(
           height: 1,
         ),
@@ -136,18 +145,29 @@ class _MyRecordLayoutState extends State<MyRecordLayout> {
         child: SafeArea(
           child: Container(
             decoration: BoxDecoration(
-              color: widget.useDefaultBackground
+              color: useDefaultBackground
                   ? Colors.white
                   : AppColors.backgroundSecondary,
               border: Border(bottom: AppBarStyle.borderStyle),
             ),
-            // child: Column(
-            //   children: widget.body,
-            // ),
-            child: widget.body,
+            child: isErrorScreen ? _renderErrorContent() : body,
           ),
         ),
       ),
+    );
+  }
+
+  Widget _renderErrorContent() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        CustomPlaceholder(size: 0.1),
+        SizedBox(height: 8),
+        Text(
+          _errorText,
+          style: AppTheme.body1,
+        ),
+      ],
     );
   }
 }

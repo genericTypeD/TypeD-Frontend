@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:typed/common/const/index.dart';
 import 'package:typed/review/data/models/review_model.dart';
+import 'package:typed/review/ui/components/custom_placeholder.dart';
 import 'package:typed/review/ui/components/custom_progress_indicator.dart';
 import 'package:typed/review/viewmodels/review_providers.dart';
 import 'package:typed/type/models/grid_item.dart';
@@ -96,7 +98,7 @@ class _MyBookRecordScreenState extends ConsumerState<MyBookRecordScreen> {
                     });
                   },
                   isSelected: selectedBookIndex == index,
-                  placeholder: _buildPlaceholder(),
+                  placeholder: CustomPlaceholder(size: 0.1),
                 );
               },
             ),
@@ -105,35 +107,12 @@ class _MyBookRecordScreenState extends ConsumerState<MyBookRecordScreen> {
       },
       error: (error, stackTrace) {
         debugPrint('$error');
-        return _buildErrorScreen();
+
+        return MyRecordLayout.error(
+          onBottomLeftWidgetPressed: () => context.pop(),
+        );
       },
       loading: () => CustomProgressIndicator(),
-    );
-  }
-
-  // TODO: - common으로 빼기
-  Widget _buildPlaceholder() {
-    return Center(
-      child: Image.asset(
-        'assets/images/grid_item_placeholder.png',
-        width: MediaQuery.of(context).size.width * 0.1,
-        height: MediaQuery.of(context).size.width * 0.1,
-        fit: BoxFit.contain,
-      ),
-    );
-  }
-
-  Widget _buildErrorScreen() {
-    return Center(
-      child: Column(
-        children: [
-          _buildPlaceholder(),
-          Text(
-            '오류가 발생했습니다.',
-            style: AppTheme.body1,
-          ),
-        ],
-      ),
     );
   }
 }
