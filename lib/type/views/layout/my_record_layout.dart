@@ -3,6 +3,10 @@ import 'package:typed/common/const/index.dart';
 import 'package:typed/common/index.dart';
 
 class MyRecordLayout extends StatefulWidget {
+  static final _backButtonText = '뒤로 가기';
+  static final _saveButtonText = '기록하기';
+  static final _errorText = '오류가 발생했습니다.';
+
   final VoidCallback? onBottomLeftWidgetPressed;
   final VoidCallback? onBottomRightWidgetPressed;
   final Widget? bottomCenterWidget;
