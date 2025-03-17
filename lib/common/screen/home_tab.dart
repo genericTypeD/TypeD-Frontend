@@ -47,18 +47,7 @@ class HomeTab extends StatelessWidget {
             // 2: 기록
             BottomNavigationBarItem(
               icon: GestureDetector(
-                onTap: () {
-                  // 현재 활성화된 탭에 따라 다른 화면으로 이동
-                  final currentIndex = navigationShell.currentIndex;
-
-                  if (currentIndex == 1) {
-                    // 인덱스가 1일 때 (서평 탭에 있을 때), 책 검색 화면으로 이동
-                    context.push('/book_search');
-                  } else if (currentIndex == 3) {
-                    // 인덱스가 3일 때 (문장 탭에 있을 때), 문장 작성 화면으로 이동
-                    context.push('/sentence_input');
-                  }
-                },
+                onTap: () => context.push('/sentence_input'),
                 child: CircleAvatar(
                   radius: 20,
                   backgroundColor: AppColors.backgroundTertiary,

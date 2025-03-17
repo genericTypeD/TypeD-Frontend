@@ -3,10 +3,9 @@ import 'package:typed/common/screen/home_tab.dart';
 import 'package:typed/common/screen/splash.dart';
 import 'package:typed/feed/provider/feed_routes.dart';
 import 'package:typed/feed/screen/feed_public.dart';
-import 'package:typed/review/screen/book_search_screen.dart';
-import 'package:typed/review/provider/review_routes.dart';
-import 'package:typed/review/screen/review_input_screen.dart';
-import 'package:typed/review/screen/review_list_screen.dart';
+import 'package:typed/review/ui/screens/book_search_screen.dart';
+import 'package:typed/review/routes/review_routes.dart';
+import 'package:typed/review/ui/screens/review_list_screen.dart';
 import 'package:typed/sentence/provider/sentence_routes.dart';
 import 'package:typed/sentence/screen/sentence_list.dart';
 import 'package:typed/type/routes/type_routes.dart';
@@ -61,16 +60,6 @@ class AppRoutes {
             ),
           ]),
         ],
-      ),
-      GoRoute(
-        path: '/book_search',
-        name: 'direct_book_search_screen',
-        builder: (context, state) => const BookSearchScreen(),
-      ),
-      GoRoute(
-        path: '/review_input',
-        name: 'direct_review_input_screen',
-        builder: (context, state) => const ReviewInputScreen(),
       ),
       ...TypeRoutes.routes,
       ...ReviewRoutes.routes,

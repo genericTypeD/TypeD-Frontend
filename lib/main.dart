@@ -5,7 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:typed/common/const/index.dart';
 import 'package:typed/common/provider/app_routes.dart';
-import 'package:typed/review/models/review_model.dart';
+import 'package:typed/review/data/models/review_model.dart';
 import 'package:typed/sentence/model/sentence_model.dart';
 import 'package:typed/type/models/grid_data.dart';
 import 'package:typed/type/models/split_view_data.dart';
