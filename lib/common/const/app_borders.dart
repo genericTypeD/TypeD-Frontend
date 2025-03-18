@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:typed/common/const/app_sizes.dart';
+import 'package:typed/common/const/index.dart';
 
 class AppBorders {
   const AppBorders._();
 
   static const BorderSide defaultBorder = BorderSide(
-    color: Colors.black,
+    color: AppColors.borderBlack,
     width: AppSizes.borderWidth,
   );
 
