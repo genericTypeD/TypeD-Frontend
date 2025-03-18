@@ -1,62 +1,49 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:typed/feed/model/feed_model.dart';
-import 'package:uuid/uuid.dart' show Uuid;
 
 class FeedRepository {
   final Dio _dio = Dio(
     BaseOptions(
       baseUrl: 'https://43.201.193.230',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: {'Content-Type': 'application/json'},
     ),
   );
 
-  /// 디바이스 ID 가져오기 (헤더에 추가)
-  Future<Map<String, dynamic>> _getHeaders() async {
+  /// Access Token 가져오기
+  Future<String?> _getAccessToken() async {
     final prefs = await SharedPreferences.getInstance();
-    String? deviceId = prefs.getString('device_id');
-
-    if (deviceId == null) {
-      deviceId = const Uuid().v4();
-      await prefs.setString('device_id', deviceId);
-    }
-
-    print('ID 요청 헤더 - X-Device-Id: $deviceId');
-
-    return {'X-Device-Id': deviceId};
+    return prefs.getString('access_token');
   }
 
-  /// `/feed` 엔드포인트 호출 (공개 여부 필터링 없이 전체 데이터 가져옴 추후 공개게시글만)
-  Future<List<FeedModel>> fetchFeed() async {
-    try {
-      final headers = await _getHeaders();
-      final response =
-          await _dio.get('/feed', options: Options(headers: headers));
+  /// `/feed` API 호출 (페이징 처리 포함)
+  Future<List<FeedModel>> fetchFeeds({int page = 0, int size = 20}) async {
+    final token = await _getAccessToken();
 
-      print('🔍 서버 응답 상태 코드: ${response.statusCode}');
-      print('🔍 서버 응답 데이터: ${response.data}');
+    if (token == null) {
+      print('❌ Access Token이 없습니다.');
+      return [];
+    }
+
+    try {
+      final response = await _dio.get(
+        '/feeds',
+        queryParameters: {'page': page, 'size': size},
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
 
       if (response.statusCode != 200) {
         print('❌ 서버 오류: 상태 코드 ${response.statusCode}');
         return [];
       }
 
-      return (response.data as List)
-          .map((json) => json != null
-              ? FeedModel.fromJson(json as Map<String, dynamic>)
-              : null)
-          .whereType<FeedModel>()
+      return (response.data['items'] as List)
+          .map((json) => FeedModel.fromJson(json as Map<String, dynamic>))
           .toList();
     } on DioException catch (e) {
-      if (e.error is SocketException) {
-        print('❌ 네트워크 연결 오류: 인터넷을 확인하세요.');
-      } else {
-        print('❌ Dio 오류: ${e.message}');
-      }
+      print('❌ Dio 오류: ${e.message}');
       return [];
     } catch (e) {
       print('❌ 알 수 없는 오류: $e');

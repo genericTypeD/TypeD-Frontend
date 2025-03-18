@@ -13,7 +13,7 @@ class FeedNotifier extends StateNotifier<List<FeedModel>> {
   final _repository = FeedRepository();
 
   Future<void> loadFeed() async {
-    final feeds = await _repository.fetchFeed();
+    final feeds = await _repository.fetchFeeds();
     state = feeds;
   }
 }
