@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:spotify/spotify.dart';
-import 'package:typed/review/models/review_model.dart';
+import 'package:typed/review/data/models/review_model.dart';
 import 'package:typed/sentence/model/sentence_model.dart';
 import 'package:typed/type/models/grid_data.dart';
 import 'package:typed/type/models/grid_item.dart';

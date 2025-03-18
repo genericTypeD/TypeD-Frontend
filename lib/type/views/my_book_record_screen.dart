@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:typed/common/const/index.dart';
-import 'package:typed/review/models/review_model.dart';
-import 'package:typed/review/viewmodels/review/review_providers.dart';
+import 'package:typed/review/data/models/review_model.dart';
+import 'package:typed/review/viewmodels/review_providers.dart';
 import 'package:typed/type/models/grid_item.dart';
 import 'package:typed/type/views/layout/my_record_layout.dart';
 import 'package:uuid/uuid.dart';
@@ -28,7 +28,7 @@ class _MyBookRecordScreenState extends ConsumerState<MyBookRecordScreen> {
     super.initState();
 
     Future.microtask(() {
-      ref.read(reviewListProvider.notifier);
+      ref.read(ReviewProviders.reviewListProvider.notifier);
     });
   }
 
@@ -38,7 +38,7 @@ class _MyBookRecordScreenState extends ConsumerState<MyBookRecordScreen> {
     super.didChangeDependencies();
 
     if (widget.item != null && widget.item!.isBook && widget.item!.isValid) {
-      final reviewsState = ref.read(reviewListProvider);
+      final reviewsState = ref.read(ReviewProviders.reviewListProvider);
 
       reviewsState.whenOrNull(
         data: (reviews) {
@@ -54,7 +54,7 @@ class _MyBookRecordScreenState extends ConsumerState<MyBookRecordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final reviewsState = ref.watch(reviewListProvider);
+    final reviewsState = ref.watch(ReviewProviders.reviewListProvider);
 
     return reviewsState.when(
       data: (reviews) {
