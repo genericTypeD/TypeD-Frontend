@@ -1,8 +1,11 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:typed/common/const/index.dart';
+import 'package:typed/core/exceptions/image_exception.dart';
 import 'package:typed/review/ui/components/index.dart';
 import 'package:typed/type/models/grid_item.dart';
 import 'package:typed/type/models/grid_item_type.dart';
+import 'package:typed/core/services/image_service.dart';
 
 class GridItemContainer extends StatelessWidget {
   final GridItem item;
@@ -86,24 +89,58 @@ class ImageGridItemWidget extends GridItemContentWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (item.track != null &&
-        item.isValid &&
-        item.isMusic &&
-        item.track!.album != null &&
-        item.track!.album!.images != null &&
-        item.track!.album!.images!.isNotEmpty &&
-        item.track!.album!.images!.first.url != null) {
-      return Image.network(
-        item.track!.album!.images!.first.url!,
-        fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) {
-          debugPrint('[Music Cover Loading Error] $error');
-          return _buildCustomPlaceholder();
-        },
-      );
+    if (!item.isImage || !item.isValid) {
+      return _buildCustomPlaceholder();
     }
 
-    return _buildCustomPlaceholder();
+    return FutureBuilder<File?>(
+      future: _loadImageFile(item.imagePath!),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CustomProgressIndicator();
+        }
+
+        if (snapshot.hasData && snapshot.data != null) {
+          return Image.file(
+            snapshot.data!,
+            fit: BoxFit.cover,
+            errorBuilder: (buildContext, object, stackTrace) =>
+                _buildCustomPlaceholder(),
+          );
+        }
+
+        if (snapshot.hasError) {
+          debugPrint('[Image Loading Error] ${snapshot.error}');
+        }
+
+        return _buildCustomPlaceholder();
+      },
+    );
+  }
+
+  Future<File?> _loadImageFile(String relativePath) async {
+    try {
+      if (ImageService.isValidImagePath(relativePath)) {
+        final absolutePath = await ImageService.getAbsolutePath(relativePath);
+
+        final file = File(absolutePath);
+        final exists = await file.exists();
+
+        if (exists) {
+          return file;
+        } else {
+          throw ImageException('이미지 파일을 찾을 수 없습니다.');
+        }
+      }
+
+      return null;
+    } on ImageException catch (error) {
+      debugPrint('[Image Exception] ${error.message}');
+      return null;
+    } catch (error) {
+      debugPrint('[Image Loading Error] $error');
+      return null;
+    }
   }
 }
 
