@@ -3,7 +3,7 @@ import 'package:spotify/spotify.dart';
 import 'package:typed/review/data/models/review_model.dart';
 import 'package:typed/sentence/model/sentence_model.dart';
 import 'package:typed/type/models/grid_item_type.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:typed/core/services/image_service.dart';
 
 part 'grid_item.freezed.dart';
 
@@ -15,7 +15,7 @@ abstract class GridItem with _$GridItem {
     Sentence? sentence,
     Review? bookReview,
     Track? track,
-    XFile? imageFile,
+    String? imagePath,
   }) = _GridItem;
 
   const GridItem._();
@@ -64,13 +64,16 @@ abstract class GridItem with _$GridItem {
   /// 이미지 그리드 아이템 팩토리 생성자
   factory GridItem.image({
     required String id,
-    required XFile imageFile,
-  }) =>
-      GridItem(
-        id: id,
-        type: GridItemType.image,
-        imageFile: imageFile,
-      );
+    required String imagePath,
+  }) {
+    ImageService.isValidImagePath(imagePath);
+
+    return GridItem(
+      id: id,
+      type: GridItemType.image,
+      imagePath: imagePath,
+    );
+  }
 
   /// 새로운 타입의 아이템으로 변환
   GridItem changeType(GridItemType newType) {
@@ -100,7 +103,7 @@ abstract class GridItem with _$GridItem {
       case GridItemType.music:
         return (track != null);
       case GridItemType.image:
-        return (imageFile != null);
+        return ImageService.isValidImagePath(imagePath);
     }
   }
 }

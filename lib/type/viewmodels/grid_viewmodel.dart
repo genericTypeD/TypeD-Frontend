@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:spotify/spotify.dart';
 import 'package:typed/review/data/models/review_model.dart';
 import 'package:typed/sentence/model/sentence_model.dart';
@@ -117,9 +116,10 @@ class GridViewModel extends StateNotifier<GridState> {
                 }
                 break;
 
+              // TODO: - 매핑 수정
               case GridItemType.image:
-                if (item.imageFile != null) {
-                  json['imagePath'] = item.imageFile!.path;
+                if (item.imagePath != null) {
+                  json['imagePath'] = item.imagePath!;
                 }
                 break;
 
@@ -285,10 +285,12 @@ class GridViewModel extends StateNotifier<GridState> {
                     if (itemJson.containsKey('imagePath')) {
                       try {
                         final imagePath = itemJson['imagePath'] as String;
-                        final xFile = XFile(imagePath);
-                        return GridItem.image(id: id, imageFile: xFile);
+                        return GridItem.image(
+                          id: id,
+                          imagePath: imagePath,
+                        );
                       } catch (error) {
-                        debugPrint('[XFile 생성 오류] error: $error');
+                        debugPrint('[imagePath 생성 오류] error: $error');
                       }
                     }
                     break;
@@ -300,7 +302,7 @@ class GridViewModel extends StateNotifier<GridState> {
                 debugPrint('[그리드 아이템 변환 오류] error: $error');
                 // 변환 오류 발생 시 기본값 반환
                 return GridItem.empty(
-                  id: 'item_${vertIndex}_${horizIndex}',
+                  id: 'item_${vertIndex}_$horizIndex',
                 );
               }
             },
@@ -350,11 +352,11 @@ class GridViewModel extends StateNotifier<GridState> {
   }
 
   /// 이미지 타입으로 변경 및 데이터 설정
-  void setImage(int verticalIndex, int horizontalIndex, XFile imageFile) {
+  void setImage(int verticalIndex, int horizontalIndex, String imagePath) {
     final currentItem = state.items[verticalIndex][horizontalIndex];
     final updatedItem = currentItem.copyWith(
       type: GridItemType.image,
-      imageFile: imageFile,
+      imagePath: imagePath,
     );
     updateGridItem(verticalIndex, horizontalIndex, updatedItem);
   }
