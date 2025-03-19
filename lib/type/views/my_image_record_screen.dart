@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:typed/common/const/index.dart';
-import 'package:typed/common/index.dart';
+import 'package:typed/review/ui/components/index.dart';
 import 'package:typed/type/models/grid_item.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:typed/core/services/image_service.dart';
+import 'package:typed/type/views/layout/my_record_layout.dart';
 import 'package:uuid/uuid.dart';
 
 class MyImageRecordScreen extends ConsumerStatefulWidget {
@@ -23,23 +27,53 @@ class MyImageRecordScreen extends ConsumerStatefulWidget {
 class _MyImageScreenState extends ConsumerState<MyImageRecordScreen> {
   final ImagePicker _picker = ImagePicker();
 
-  XFile? _selectedImageFile;
-  final List<XFile> _currentImageFiles = [];
+  String? _selectedImagePath;
+  final List<File> _currentImageFiles = [];
 
   Future<void> _pickImage() async {
     if (await _checkGalleryPermission()) {
       try {
-        final XFile? image =
+        final pickedImage =
             await _picker.pickImage(source: ImageSource.gallery);
 
-        if (image != null) {
-          setState(
-            () {
-              _selectedImageFile = image;
-              // // TODO: - 이미지 중복 체크
-              _currentImageFiles.insert(0, image);
-            },
-          );
+        if (pickedImage != null) {
+          final pickedImagePath = pickedImage.path;
+          final pickedImageFile = File(pickedImagePath);
+
+          // 앱 문서 디렉토리
+          final directory = await getApplicationDocumentsDirectory();
+          final appDirectoryPath = directory.path;
+
+          // 이미지를 저장할 디렉토리 경로
+          final imageDirectoryPath = '$appDirectoryPath/images';
+          // 디렉토리가 없으면 생성
+          await Directory(imageDirectoryPath).create(recursive: true);
+
+          // 저장할 이미지 이름
+          final uuid = const Uuid().v4().substring(0, 8);
+          final imageName =
+              '${DateTime.now().millisecondsSinceEpoch}_$uuid.png';
+          // 저장할 이미지 디렉토리 경로
+          final savedImagePath = '$imageDirectoryPath/$imageName';
+
+          // 선택된 이미지를 복사해서 앱 내부 경로에 저장
+          final savedImageFile = await pickedImageFile.copy(savedImagePath);
+
+          // 복사된 이미지 파일 저장 성공 여부(앱 내부 디렉토리에 존재 여부) 확인
+          if (await savedImageFile.exists()) {
+            debugPrint('[Image Saved Successfully] path: $savedImagePath');
+
+            setState(
+              () {
+                _selectedImagePath = savedImagePath;
+                _currentImageFiles.insert(0, savedImageFile);
+              },
+            );
+          } else {
+            debugPrint(
+                '[Image Saved Failed(Error: 복사된 파일이 존재하지 않습니다)] path: $savedImagePath');
+            return;
+          }
         }
       } catch (e) {
         debugPrint('[Picking Image Error] $e');
@@ -174,225 +208,151 @@ class _MyImageScreenState extends ConsumerState<MyImageRecordScreen> {
   @override
   void initState() {
     super.initState();
-
-    if (widget.item != null && widget.item!.isValid && widget.item!.isImage) {
-      // FIXME: - Null Safety 확실하게
-      final imageFile = widget.item!.imageFile ?? XFile('');
-      _selectedImageFile = imageFile;
-      _currentImageFiles.add(imageFile);
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
 
-    return DefaultLayout(
-      backgroundColor: const Color(0xffF3F3F2),
-      appBar: CustomAppBar(
-        bottomLeftWidget: TextButton(
-          onPressed: () => Navigator.pop(context),
-          style: TextButton.styleFrom(
-            padding: EdgeInsets.zero,
-            minimumSize: Size.zero,
-          ),
-          child: Text(
-            '뒤로 가기',
-            textAlign: TextAlign.left,
-            style: AppTheme.title3,
-          ),
-        ),
-        bottomRightWidget: TextButton(
-          onPressed: _selectedImageFile != null
-              ? () {
-                  final result = GridItem.image(
-                    id: Uuid().v4(),
-                    imageFile: _selectedImageFile!,
-                  );
-                  Navigator.pop(context, result);
-                }
-              : null,
-          child: Text(
-            '기록하기',
-            style: AppTheme.title3.copyWith(
-              height: 1,
+    return MyRecordLayout(
+      onBottomLeftWidgetPressed: () {
+        context.pop(null);
+      },
+      onBottomRightWidgetPressed: () async {
+        if (_selectedImagePath != null) {
+          try {
+            final relativePath =
+                await ImageService.getRelativePath(_selectedImagePath!);
+            final result = GridItem.image(
+              id: Uuid().v4(),
+              imagePath: relativePath,
+            );
+
+            if (context.mounted) {
+              context.pop(result);
+            }
+          } catch (error) {
+            if (context.mounted) {
+              debugPrint('[이미지 저장 오류] $error');
+              _buildSnackBar('이미지 저장 중 오류가 발생했습니다');
+            }
+          }
+        } else {
+          if (context.mounted) {
+            _buildSnackBar('이미지를 선택해주세요');
+          }
+        }
+      },
+      body: SafeArea(
+        child: Container(
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            border: Border(
+              bottom: AppBarStyle.borderStyle,
             ),
           ),
-        ),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: AppBarStyle.borderContainerWidth,
-            decoration: const BoxDecoration(
-              color: Color(0xffF3F3F2),
-              border: Border(right: AppBarStyle.borderStyle),
-            ),
-            child: Column(
-              children: [
-                Expanded(
-                  child: SafeArea(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        border: Border(bottom: AppBarStyle.borderStyle),
-                      ),
+          child: Column(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(
+                    AppSpacings.spacing16,
+                  ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: AppBorders.all,
                     ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Container(
-              color: const Color(0xffF3F3F2),
-              child: SafeArea(
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    border: Border(bottom: AppBarStyle.borderStyle),
-                  ),
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(16),
+                    child: Stack(
+                      children: [
+                        _selectedImagePath != null
+                            ? Image.file(
+                                File(_selectedImagePath!),
+                                height: double.infinity,
+                                fit: BoxFit.cover,
+                              )
+                            : Container(),
+                        GestureDetector(
+                          onTap: _pickImage,
                           child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.black,
-                                width: 0.3,
+                            width: screenWidth * 0.1,
+                            height: screenWidth * 0.1,
+                            decoration: const BoxDecoration(
+                              color: AppColors.backgroundSecondary,
+                              border: AppBorders.bottomRight,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(
+                                AppSpacings.spacing8,
+                              ),
+                              child: CustomPlaceholder(
+                                size: 0.06,
                               ),
                             ),
-                            child: Stack(
-                              children: [
-                                _selectedImageFile != null
-                                    ? Image.file(
-                                        File(
-                                          _selectedImageFile!.path,
-                                        ),
-                                        height: double.infinity,
-                                        fit: BoxFit.cover,
-                                      )
-                                    : Container(),
-                                GestureDetector(
-                                  onTap: _pickImage,
-                                  child: Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.1,
-                                    height:
-                                        MediaQuery.of(context).size.width * 0.1,
-                                    decoration: const BoxDecoration(
-                                      color: Color(0xffF3F3F2),
-                                      border: Border(
-                                        bottom: BorderSide(
-                                          color: Colors.black,
-                                          width: 0.3,
-                                        ),
-                                        right: BorderSide(
-                                          color: Colors.black,
-                                          width: 0.3,
-                                        ),
-                                      ),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8),
-                                      child: Image.asset(
-                                        'assets/images/grid_item_placeholder.png',
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.06,
-                                        height:
-                                            MediaQuery.of(context).size.width *
-                                                0.06,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
                           ),
                         ),
-                      ),
-                      Container(
-                        height: screenHeight * 0.16,
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          border: Border(
-                            top: BorderSide(
-                              color: Colors.black,
-                              width: 0.3,
-                            ),
-                          ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: GridView.builder(
-                            scrollDirection: Axis.horizontal,
-                            gridDelegate:
-                                SliverGridDelegateWithMaxCrossAxisExtent(
-                              maxCrossAxisExtent: screenHeight * 0.16,
-                              mainAxisSpacing: 16,
-                            ),
-                            itemCount: _currentImageFiles.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    _selectedImageFile =
-                                        _currentImageFiles[index];
-                                  });
-                                },
-                                // onDoubleTap: () {
-                                //   setState(() {
-                                //     _currentImageFiles
-                                //         .remove(_currentImageFiles[index]);
-                                //   });
-                                // },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xffF3F3F2),
-                                    border: Border.all(
-                                      color: Colors.black,
-                                      width: 0.3,
-                                    ),
-                                  ),
-                                  child: Image.file(
-                                    File(_currentImageFiles[index].path),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ),
-          Container(
-            width: AppBarStyle.borderContainerWidth,
-            decoration: const BoxDecoration(
-              color: Color(0xffF3F3F2),
-              border: Border(left: AppBarStyle.borderStyle),
-            ),
-            child: Column(
-              children: [
-                Expanded(
-                  child: SafeArea(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        border: Border(bottom: AppBarStyle.borderStyle),
-                      ),
+              Container(
+                height: screenHeight * 0.16,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  border: AppBorders.top,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(
+                    AppSpacings.spacing16,
+                  ),
+                  child: GridView.builder(
+                    scrollDirection: Axis.horizontal,
+                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: screenHeight * 0.16,
+                      mainAxisSpacing: AppSpacings.spacing16,
                     ),
+                    itemCount: _currentImageFiles.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _selectedImagePath = _currentImageFiles[index].path;
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: AppColors.backgroundSecondary,
+                            border: AppBorders.all,
+                          ),
+                          child: Image.file(
+                            File(_currentImageFiles[index].path),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
+        ),
+      ),
+    );
+  }
+
+  void _buildSnackBar(String text) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          text,
+          style: AppTheme.body3.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: AppColors.backgroundQuaternary,
+        duration: Duration(seconds: 2),
       ),
     );
   }
