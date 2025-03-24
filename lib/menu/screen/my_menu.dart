@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:typed/common/const/app_themes.dart';
 import 'package:typed/common/index.dart';
 
+import 'package:go_router/go_router.dart';
 import '../../common/const/app_colors.dart';
 import '../../common/screen/login_screen.dart';
 
@@ -14,9 +16,22 @@ class MyMenu extends StatefulWidget {
 class _MyMenuState extends State<MyMenu> {
   @override
   Widget build(BuildContext context) {
-    return DefaultLayout(
+    // return DefaultLayout(
+    //   backgroundColor: AppColors.backgroundSecondary,
+    //   appBar: CustomAppBar.myPage(),
+    //   child: Column(
+    //     children: [
+    //       SizedBox(
+    //         height: 80,
+    //       ),
+    //       _buildProfileCard(),
+    //       _buildMenuList(),
+    //     ],
+    //   ),
+    // );
+    return Drawer(
       backgroundColor: AppColors.backgroundSecondary,
-      appBar: CustomAppBar.myPage(),
+      shape: Border.all(width: 0),
       child: Column(
         children: [
           SizedBox(
@@ -59,11 +74,12 @@ class _MyMenuState extends State<MyMenu> {
           const SizedBox(height: 12),
           GestureDetector(
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => const LoginScreen(), // 로그인 스크린 위젯
-                ),
-              );
+              // Navigator.of(context).push(
+              //   MaterialPageRoute(
+              //     builder: (_) => const LoginScreen(), // 로그인 스크린 위젯
+              //   ),
+              // );
+              context.goNamed('login');
             },
             child: Center(
               child: const Row(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:typed/menu/screen/my_menu.dart';
 
 class DefaultLayout extends StatelessWidget {
   final Color? backgroundColor;
@@ -23,6 +24,7 @@ class DefaultLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      endDrawer: MyMenu(),
       backgroundColor: backgroundColor,
       appBar: appBar,
       body: child,
