@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:typed/common/index.dart';
 import 'package:typed/common/const/index.dart';
+import 'package:typed/type/models/grid_item.dart';
 import 'package:typed/type/models/period_type.dart';
 import 'package:typed/type/utils/date_formatter.dart';
 import 'package:typed/type/viewmodels/grid_viewmodel.dart';
 import 'package:typed/type/viewmodels/period_datetime_viewmodel.dart';
+import 'package:typed/type/views/component/add_record_dialog.dart';
 import 'package:typed/type/views/component/grid_item_widget.dart';
 import 'package:typed/type/viewmodels/split_view_viewmodel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -134,8 +137,6 @@ class _MyTypeState extends ConsumerState<MyType> {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-
     // 현재 선택된 기간/날짜 상태 변경 감지
     ref.listen(periodDateProvider, (previous, next) {
       if (previous?.periodType != next.periodType ||
@@ -176,8 +177,6 @@ class _MyTypeState extends ConsumerState<MyType> {
                   setState(() {
                     _selectedPeriod = value;
                   });
-
-                  // 기간 변경 시 데이터 로드
                   ref.read(periodDateProvider.notifier).updatePeriodType(value);
                 }
               },
@@ -273,8 +272,6 @@ class _MyTypeState extends ConsumerState<MyType> {
               setState(() {
                 if (result != null) {
                   _selectedDateTime = result;
-
-                  // 날짜 변경 시 데이터 로드
                   ref.read(periodDateProvider.notifier).updateDateTime(result);
                 }
               });
@@ -342,11 +339,35 @@ class _MyTypeState extends ConsumerState<MyType> {
                       .updateHorizontalFlex(verticalIndex, flexValues);
                 },
                 builder: (context, horizontalArea) {
-                  return GridItemWidget(
-                    key: ValueKey('${verticalIndex}_${horizontalArea.index}'),
-                    verticalIndex: verticalIndex,
-                    horizontalIndex: horizontalArea.index,
-                    width: screenWidth / 2,
+                  final gridState = ref.watch(gridProvider);
+                  final item =
+                      gridState.items[verticalIndex][horizontalArea.index];
+
+                  return GridItemContainer(
+                    item: item,
+                    onTap: () async {
+                      final result = await showDialog<GridItem>(
+                        context: context,
+                        builder: (context) => AddRecordDialog(
+                          item: item,
+                          onResetButtonTapped: () {
+                            ref.read(gridProvider.notifier).clearItem(
+                                  verticalIndex,
+                                  horizontalArea.index,
+                                );
+                            context.pop();
+                          },
+                        ),
+                      );
+
+                      if (result != null) {
+                        ref.read(gridProvider.notifier).updateGridItem(
+                              verticalIndex,
+                              horizontalArea.index,
+                              result,
+                            );
+                      }
+                    },
                   );
                 },
               );

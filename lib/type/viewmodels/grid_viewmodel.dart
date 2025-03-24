@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:spotify/spotify.dart';
 import 'package:typed/review/data/models/review_model.dart';
 import 'package:typed/sentence/model/sentence_model.dart';
@@ -28,11 +27,9 @@ class GridViewModel extends StateNotifier<GridState> {
       _currentPeriodType = periodType;
       _currentDateTime = dateTime;
 
-      await _loadFromHive(); // Hive에서 데이터 로드
+      await _loadFromHive();
     } catch (error) {
-      // 오류 발생 시 기본값 사용
       state = GridState.initial();
-      debugPrint('[PeriodType/날짜 변경 중 오류] error: $error');
     }
   }
 
@@ -117,9 +114,10 @@ class GridViewModel extends StateNotifier<GridState> {
                 }
                 break;
 
+              // TODO: - 매핑 수정
               case GridItemType.image:
-                if (item.imageFile != null) {
-                  json['imagePath'] = item.imageFile!.path;
+                if (item.imagePath != null) {
+                  json['imagePath'] = item.imagePath!;
                 }
                 break;
 
@@ -129,8 +127,6 @@ class GridViewModel extends StateNotifier<GridState> {
 
             return json;
           } catch (error) {
-            debugPrint('[GridItem JSON 변환 중 오류] error: $error');
-            // 오류 발생 시에는 기본 정보만 포함
             return {
               'id': item.id,
               'type': item.type.index,
@@ -139,15 +135,13 @@ class GridViewModel extends StateNotifier<GridState> {
         }).toList();
       }).toList();
 
-      // 저장할 데이터 생성
       final data = GridData(
         periodTypeStr: _currentPeriodType.name,
         dateTime: _currentDateTime,
         gridItemsJson: gridItemsJson,
       );
 
-      await box.put(key, data); // 박스에 저장
-      debugPrint('[Grid 데이터 저장 완료] key: $key');
+      await box.put(key, data);
     } catch (error) {
       debugPrint('[Grid 데이터 저장 실패] error: $error');
     }
@@ -175,14 +169,12 @@ class GridViewModel extends StateNotifier<GridState> {
                 final id = itemJson['id'] as String;
                 final typeIndex = itemJson['type'] as int;
 
-                // 타입 인덱스 유효성 검사
                 if (typeIndex < 0 || typeIndex >= GridItemType.values.length) {
                   return GridItem.empty(id: id);
                 }
 
                 final type = GridItemType.values[typeIndex];
 
-                // 타입에 따른 GridItem 반환
                 switch (type) {
                   case GridItemType.empty:
                     return GridItem.empty(id: id);
@@ -225,7 +217,6 @@ class GridViewModel extends StateNotifier<GridState> {
                       );
                     } else if (itemJson.containsKey('bookIsbn') &&
                         itemJson.containsKey('bookTitle')) {
-                      // 대체 형식 지원
                       return GridItem.bookReview(
                         id: id,
                         bookReview: Review(
@@ -248,9 +239,6 @@ class GridViewModel extends StateNotifier<GridState> {
                         final track = Track.fromJson(trackData);
                         return GridItem.music(id: id, track: track);
                       } catch (error) {
-                        debugPrint('[Track 변환 오류] error: $error');
-
-                        // 에러 발생 시 기본 정보로 설정
                         final track = Track();
                         if (itemJson.containsKey('trackName')) {
                           track.name = itemJson['trackName'];
@@ -265,7 +253,6 @@ class GridViewModel extends StateNotifier<GridState> {
                         return GridItem.music(id: id, track: track);
                       }
                     } else if (itemJson.containsKey('trackName')) {
-                      // 대체 형식 지원
                       final track = Track();
                       track.name = itemJson['trackName'];
                       track.id = itemJson['trackId'];
@@ -285,37 +272,33 @@ class GridViewModel extends StateNotifier<GridState> {
                     if (itemJson.containsKey('imagePath')) {
                       try {
                         final imagePath = itemJson['imagePath'] as String;
-                        final xFile = XFile(imagePath);
-                        return GridItem.image(id: id, imageFile: xFile);
+                        return GridItem.image(
+                          id: id,
+                          imagePath: imagePath,
+                        );
                       } catch (error) {
-                        debugPrint('[XFile 생성 오류] error: $error');
+                        debugPrint('[imagePath 생성 오류] error: $error');
                       }
                     }
                     break;
                 }
 
-                // 타입별 처리가 실패하면 GridItem empty로 기본값 반환
                 return GridItem.empty(id: id);
               } catch (error) {
-                debugPrint('[그리드 아이템 변환 오류] error: $error');
-                // 변환 오류 발생 시 기본값 반환
                 return GridItem.empty(
-                  id: 'item_${vertIndex}_${horizIndex}',
+                  id: 'item_${vertIndex}_$horizIndex',
                 );
               }
             },
           ),
         );
 
-        state = GridState(items: items); // 상태 업데이트
-        debugPrint('[Grid 데이터 로드 완료] key: $key');
+        state = GridState(items: items);
       } catch (error) {
-        state = GridState.initial(); // 변환 오류 발생 시 기본값 사용
-        debugPrint('[Grid 데이터 변환 중 오류 발생 -> 로드 실패] error: $error');
+        state = GridState.initial();
       }
     } else {
-      state = GridState.initial(); // 해당 PeriodType/날짜의 데이터가 없으면 기본값 사용
-      debugPrint('[Grid 데이터 없을 때 기본 데이터 사용] key: $key');
+      state = GridState.initial();
     }
   }
 
@@ -326,7 +309,12 @@ class GridViewModel extends StateNotifier<GridState> {
       type: GridItemType.sentence,
       sentence: sentence,
     );
-    updateGridItem(verticalIndex, horizontalIndex, updatedItem);
+
+    updateGridItem(
+      verticalIndex,
+      horizontalIndex,
+      updatedItem,
+    );
   }
 
   /// 책 타입으로 변경 및 데이터 설정
@@ -336,7 +324,12 @@ class GridViewModel extends StateNotifier<GridState> {
       type: GridItemType.bookReview,
       bookReview: bookReview,
     );
-    updateGridItem(verticalIndex, horizontalIndex, updatedItem);
+
+    updateGridItem(
+      verticalIndex,
+      horizontalIndex,
+      updatedItem,
+    );
   }
 
   /// 음악 타입으로 변경 및 데이터 설정
@@ -346,17 +339,27 @@ class GridViewModel extends StateNotifier<GridState> {
       type: GridItemType.music,
       track: track,
     );
-    updateGridItem(verticalIndex, horizontalIndex, updatedItem);
+
+    updateGridItem(
+      verticalIndex,
+      horizontalIndex,
+      updatedItem,
+    );
   }
 
   /// 이미지 타입으로 변경 및 데이터 설정
-  void setImage(int verticalIndex, int horizontalIndex, XFile imageFile) {
+  void setImage(int verticalIndex, int horizontalIndex, String imagePath) {
     final currentItem = state.items[verticalIndex][horizontalIndex];
     final updatedItem = currentItem.copyWith(
       type: GridItemType.image,
-      imageFile: imageFile,
+      imagePath: imagePath,
     );
-    updateGridItem(verticalIndex, horizontalIndex, updatedItem);
+
+    updateGridItem(
+      verticalIndex,
+      horizontalIndex,
+      updatedItem,
+    );
   }
 
   /// 그리드 아이템 초기화

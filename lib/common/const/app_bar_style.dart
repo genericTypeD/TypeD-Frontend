@@ -14,7 +14,7 @@ class AppBarStyle {
   static const double bottomLeftWidgetWidthMultiplier = 0.22;
 
   static const BorderSide borderStyle = BorderSide(
-    color: Colors.black,
+    color: AppColors.borderBlack,
     width: 0.3,
   );
 

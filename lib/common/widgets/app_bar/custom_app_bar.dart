@@ -69,17 +69,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   style: AppBarStyle.titleTextStyle,
                 ),
               ),
-              iconButton: isShowingNotifications
-                  ? GestureDetector(
-                      onTap: () {
-                        context.push('/notifications');
-                      },
-                      child: const Icon(
-                        Icons.notifications,
-                        color: Colors.black,
-                      ),
-                    )
-                  : null,
+              iconButton: GestureDetector(
+                onTap: () {
+                  Scaffold.of(context).openEndDrawer();
+                },
+                child: const Icon(
+                  Icons.menu_sharp,
+                  color: Colors.black,
+                ),
+              ),
             ),
             if (!isMyPage)
               BottomSection(

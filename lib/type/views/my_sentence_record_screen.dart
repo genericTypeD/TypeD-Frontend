@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:typed/common/const/index.dart';
+import 'package:typed/review/ui/components/index.dart';
 import 'package:typed/sentence/provider/sentence_provider.dart';
 import 'package:typed/type/models/grid_item.dart';
 import 'package:typed/type/views/component/my_sentence_widget.dart';
@@ -69,37 +69,9 @@ class _MySentenceRecordScreenState
       ),
       error: (error, stackTrace) {
         debugPrint('$error');
-        return _buildErrorScreen();
+        return MyRecordLayout.error();
       },
-      loading: () => Center(
-        child: CircularProgressIndicator(),
-      ),
-    );
-  }
-
-  // TODO: - common으로 빼기
-  Widget _buildPlaceholder() {
-    return Center(
-      child: Image.asset(
-        'assets/images/grid_item_placeholder.png',
-        width: MediaQuery.of(context).size.width * 0.1,
-        height: MediaQuery.of(context).size.width * 0.1,
-        fit: BoxFit.contain,
-      ),
-    );
-  }
-
-  Widget _buildErrorScreen() {
-    return Center(
-      child: Column(
-        children: [
-          _buildPlaceholder(),
-          Text(
-            '오류가 발생했습니다.',
-            style: AppTheme.body1,
-          ),
-        ],
-      ),
+      loading: () => CustomProgressIndicator(),
     );
   }
 }

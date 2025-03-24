@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:typed/common/component/custom_text_form_field.dart';
 import 'package:typed/common/const/app_colors.dart';
 import 'package:typed/common/const/app_strings.dart';
@@ -87,9 +88,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 8),
-                    Text(
-                      'TypeD',
-                      style: AppTheme.heading1,
+                    GestureDetector(
+                      onTap: () => context.go('/home/type'),
+                      child: Text(
+                        'TypeD',
+                        style: AppTheme.heading1,
+                      ),
                     ),
                   ],
                 ),

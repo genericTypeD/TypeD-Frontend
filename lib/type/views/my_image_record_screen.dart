@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'dart:io';
 import 'package:typed/common/const/index.dart';
-import 'package:typed/common/index.dart';
+import 'package:typed/review/ui/components/index.dart';
 import 'package:typed/type/models/grid_item.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:typed/core/services/image_service.dart';
+import 'package:typed/type/viewmodels/image_picker_notifier.dart';
+import 'package:typed/type/viewmodels/image_picker_providers.dart';
+import 'package:typed/type/views/layout/my_record_layout.dart';
 import 'package:uuid/uuid.dart';
 
 class MyImageRecordScreen extends ConsumerStatefulWidget {
@@ -21,53 +25,189 @@ class MyImageRecordScreen extends ConsumerStatefulWidget {
 }
 
 class _MyImageScreenState extends ConsumerState<MyImageRecordScreen> {
-  final ImagePicker _picker = ImagePicker();
+  @override
+  void initState() {
+    super.initState();
+  }
 
-  XFile? _selectedImageFile;
-  final List<XFile> _currentImageFiles = [];
+  @override
+  Widget build(BuildContext context) {
+    final imagePickerState = ref.watch(imagePickerProvider);
+    final imagePickerNotifier = ref.read(imagePickerProvider.notifier);
 
-  Future<void> _pickImage() async {
-    if (await _checkGalleryPermission()) {
-      try {
-        final XFile? image =
-            await _picker.pickImage(source: ImageSource.gallery);
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
 
-        if (image != null) {
-          setState(
-            () {
-              _selectedImageFile = image;
-              // // TODO: - 이미지 중복 체크
-              _currentImageFiles.insert(0, image);
-            },
-          );
+    return MyRecordLayout(
+      onBottomLeftWidgetPressed: () {
+        context.pop(null);
+      },
+      onBottomRightWidgetPressed: () async {
+        final imageData = imagePickerState.valueOrNull;
+        final selectedImagePath = imageData?.selectedImagePath;
+
+        if (selectedImagePath != null) {
+          try {
+            final relativePath =
+                await ImageService.getRelativePath(selectedImagePath);
+            final result = GridItem.image(
+              id: Uuid().v4(),
+              imagePath: relativePath,
+            );
+
+            if (context.mounted) {
+              context.pop(result);
+            }
+          } catch (error) {
+            if (context.mounted) {
+              debugPrint('[이미지 저장 오류] $error');
+              _buildSnackBar('이미지 저장 중 오류가 발생했습니다');
+            }
+          }
+        } else {
+          if (context.mounted) {
+            _buildSnackBar('이미지를 선택해주세요');
+          }
         }
-      } catch (e) {
-        debugPrint('[Picking Image Error] $e');
-      }
+      },
+      body: SafeArea(
+        child: Container(
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            border: Border(
+              bottom: AppBarStyle.borderStyle,
+            ),
+          ),
+          child: imagePickerState.when(
+            error: (_, __) => _buildErrorScreen(),
+            loading: () => _buildLoadingScreen(context),
+            data: (imageData) {
+              final selectedImagePath = imageData.selectedImagePath;
+              final currentImageFiles = imageData.currentImageFiles;
+
+              return Column(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(
+                        AppSpacings.spacing16,
+                      ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: AppBorders.all,
+                        ),
+                        child: Stack(
+                          children: [
+                            selectedImagePath != null
+                                ? Image.file(
+                                    File(selectedImagePath),
+                                    height: double.infinity,
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Container(),
+                            GestureDetector(
+                              onTap: () async =>
+                                  _onGalleryButtonTap(imagePickerNotifier),
+                              child: Container(
+                                width: screenWidth * 0.1,
+                                height: screenWidth * 0.1,
+                                decoration: const BoxDecoration(
+                                  color: AppColors.backgroundSecondary,
+                                  border: AppBorders.bottomRight,
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(
+                                    AppSpacings.spacing8,
+                                  ),
+                                  child: CustomPlaceholder(
+                                    size: 0.06,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: screenHeight * 0.16,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      border: AppBorders.top,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(
+                        AppSpacings.spacing16,
+                      ),
+                      child: GridView.builder(
+                        scrollDirection: Axis.horizontal,
+                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: screenHeight * 0.16,
+                          mainAxisSpacing: AppSpacings.spacing16,
+                        ),
+                        itemCount: currentImageFiles.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return GestureDetector(
+                            onTap: () {
+                              imagePickerNotifier
+                                  .selectImage(currentImageFiles[index].path);
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: AppColors.backgroundSecondary,
+                                border: AppBorders.all,
+                              ),
+                              child: Image.file(
+                                currentImageFiles[index],
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _onGalleryButtonTap(
+    ImagePickerNotifier imagePickerNotifier,
+  ) async {
+    final result = await imagePickerNotifier.pickImageFromGallery();
+    final permissionStatus = result.permissionStatus;
+
+    if (!mounted) return;
+
+    if (permissionStatus == PermissionStatus.denied) {
+      _showPermissionDeniedDialog(false);
+    }
+
+    if (permissionStatus == PermissionStatus.permanentlyDenied) {
+      _showPermissionDeniedDialog(true);
     }
   }
 
-  Future<bool> _checkGalleryPermission() async {
-    final status = await Permission.storage.status;
-
-    debugPrint('[status]: ${status.name}');
-
-    if (status.isGranted) {
-      return true;
-    }
-
-    if (status.isPermanentlyDenied) {
-      _showPermissionDeniedDialog(true);
-      return false;
-    }
-
-    final result = await Permission.photos.request();
-    if (!result.isGranted) {
-      _showPermissionDeniedDialog(false);
-      return false;
-    }
-
-    return true;
+  void _buildSnackBar(String text) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          text,
+          style: AppTheme.body3.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: AppColors.backgroundQuaternary,
+        duration: Duration(seconds: 2),
+      ),
+    );
   }
 
   void _showPermissionDeniedDialog(bool isPermanentlyDenied) {
@@ -84,7 +224,7 @@ class _MyImageScreenState extends ConsumerState<MyImageRecordScreen> {
           width: 0.3,
         ),
         child: SizedBox(
-          width: screenWidth * 0.7,
+          width: screenWidth * 0.75,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -98,7 +238,7 @@ class _MyImageScreenState extends ConsumerState<MyImageRecordScreen> {
                 isPermanentlyDenied
                     ? '설정에서 갤러리 접근 권한을 허용해주세요.'
                     : '갤러리 접근 권한이 필요합니다.',
-                style: AppTheme.body3,
+                style: AppTheme.body2,
               ),
               const SizedBox(height: 16),
               Container(
@@ -139,13 +279,76 @@ class _MyImageScreenState extends ConsumerState<MyImageRecordScreen> {
                       ),
                       Expanded(
                         child: GestureDetector(
-                          onTap: () {
+                          onTap: () async {
                             Navigator.pop(context);
-                            if (isPermanentlyDenied) {
-                              openAppSettings();
-                            } else {
-                              Permission.photos.request();
+
+                            var status = await Permission.photos.status;
+                            debugPrint('[Permission.photos.status] $status');
+
+                            // if (status.isGranted) {
+                            //   debugPrint('📱 [이미 권한 있음]');
+
+                            //   await ref
+                            //       .read(imagePickerProvider.notifier)
+                            //       .pickImageFromGallery();
+                            // }
+                            // if (status.isGranted || status.isLimited) {
+                            //   debugPrint(
+                            //       'status.isGranted || status.isLimited');
+                            //   await ref
+                            //       .read(imagePickerProvider.notifier)
+                            //       .pickImageFromGallery();
+                            //   return;
+                            // }
+
+                            try {
+                              final result = await Permission.photos.request();
+                              debugPrint(
+                                  '[Permission.photos.request()] $result');
+                            } catch (error) {
+                              debugPrint('[Permission Request Error] $error');
                             }
+
+                            // if (status.isDenied) {
+                            //   debugPrint('📱 [권한 요청 시작]');
+
+                            //   // 권한 요청 다이얼로그
+                            //   final result = await Permission.photos.request();
+                            //   debugPrint('📱 [권한 요청 결과] $result');
+
+                            //   // 요청 후 권한 상태 다시 확인
+                            //   status = await Permission.photos.status;
+                            //   debugPrint('📱 [요청 후 상태] $status');
+                            // }
+
+                            // // if (isPermanentlyDenied) {
+                            // if (status.isPermanentlyDenied) {
+                            //   debugPrint('isPermanentlyDenied!!!');
+                            //   await openAppSettings();
+                            //   // } else {
+                            //   //   final result = await Permission.photos.request();
+                            //   //   debugPrint('result: $result');
+
+                            //   //   if (result.isGranted) {
+                            //   //     if (context.mounted) {
+                            //   //       await ref
+                            //   //           .read(imagePickerProvider.notifier)
+                            //   //           .pickImageFromGallery();
+                            //   //     }
+                            //   //   }
+                            //   // }
+                            // }
+                            // // } else {
+                            // //   // 권한 요청
+                            // //   final result = await Permission.photos.request();
+                            // //   debugPrint('🔍 권한 요청 결과: $result');
+
+                            // //   if (result.isGranted && context.mounted) {
+                            // //     await ref
+                            // //         .read(imagePickerProvider.notifier)
+                            // //         .pickImageFromGallery();
+                            // //   }
+                            // // }
                           },
                           child: Container(
                             decoration: const BoxDecoration(
@@ -171,229 +374,70 @@ class _MyImageScreenState extends ConsumerState<MyImageRecordScreen> {
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-
-    if (widget.item != null && widget.item!.isValid && widget.item!.isImage) {
-      // FIXME: - Null Safety 확실하게
-      final imageFile = widget.item!.imageFile ?? XFile('');
-      _selectedImageFile = imageFile;
-      _currentImageFiles.add(imageFile);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-
-    return DefaultLayout(
-      backgroundColor: const Color(0xffF3F3F2),
-      appBar: CustomAppBar(
-        bottomLeftWidget: TextButton(
-          onPressed: () => Navigator.pop(context),
-          style: TextButton.styleFrom(
-            padding: EdgeInsets.zero,
-            minimumSize: Size.zero,
-          ),
-          child: Text(
-            '뒤로 가기',
-            textAlign: TextAlign.left,
-            style: AppTheme.title3,
-          ),
-        ),
-        bottomRightWidget: TextButton(
-          onPressed: _selectedImageFile != null
-              ? () {
-                  final result = GridItem.image(
-                    id: Uuid().v4(),
-                    imageFile: _selectedImageFile!,
-                  );
-                  Navigator.pop(context, result);
-                }
-              : null,
-          child: Text(
-            '기록하기',
-            style: AppTheme.title3.copyWith(
-              height: 1,
-            ),
-          ),
-        ),
-      ),
-      child: Row(
+  Widget _buildErrorScreen() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        spacing: 8,
         children: [
-          Container(
-            width: AppBarStyle.borderContainerWidth,
-            decoration: const BoxDecoration(
-              color: Color(0xffF3F3F2),
-              border: Border(right: AppBarStyle.borderStyle),
-            ),
-            child: Column(
-              children: [
-                Expanded(
-                  child: SafeArea(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        border: Border(bottom: AppBarStyle.borderStyle),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Container(
-              color: const Color(0xffF3F3F2),
-              child: SafeArea(
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    border: Border(bottom: AppBarStyle.borderStyle),
-                  ),
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.black,
-                                width: 0.3,
-                              ),
-                            ),
-                            child: Stack(
-                              children: [
-                                _selectedImageFile != null
-                                    ? Image.file(
-                                        File(
-                                          _selectedImageFile!.path,
-                                        ),
-                                        height: double.infinity,
-                                        fit: BoxFit.cover,
-                                      )
-                                    : Container(),
-                                GestureDetector(
-                                  onTap: _pickImage,
-                                  child: Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.1,
-                                    height:
-                                        MediaQuery.of(context).size.width * 0.1,
-                                    decoration: const BoxDecoration(
-                                      color: Color(0xffF3F3F2),
-                                      border: Border(
-                                        bottom: BorderSide(
-                                          color: Colors.black,
-                                          width: 0.3,
-                                        ),
-                                        right: BorderSide(
-                                          color: Colors.black,
-                                          width: 0.3,
-                                        ),
-                                      ),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8),
-                                      child: Image.asset(
-                                        'assets/images/grid_item_placeholder.png',
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.06,
-                                        height:
-                                            MediaQuery.of(context).size.width *
-                                                0.06,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        height: screenHeight * 0.16,
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          border: Border(
-                            top: BorderSide(
-                              color: Colors.black,
-                              width: 0.3,
-                            ),
-                          ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: GridView.builder(
-                            scrollDirection: Axis.horizontal,
-                            gridDelegate:
-                                SliverGridDelegateWithMaxCrossAxisExtent(
-                              maxCrossAxisExtent: screenHeight * 0.16,
-                              mainAxisSpacing: 16,
-                            ),
-                            itemCount: _currentImageFiles.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    _selectedImageFile =
-                                        _currentImageFiles[index];
-                                  });
-                                },
-                                // onDoubleTap: () {
-                                //   setState(() {
-                                //     _currentImageFiles
-                                //         .remove(_currentImageFiles[index]);
-                                //   });
-                                // },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xffF3F3F2),
-                                    border: Border.all(
-                                      color: Colors.black,
-                                      width: 0.3,
-                                    ),
-                                  ),
-                                  child: Image.file(
-                                    File(_currentImageFiles[index].path),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Container(
-            width: AppBarStyle.borderContainerWidth,
-            decoration: const BoxDecoration(
-              color: Color(0xffF3F3F2),
-              border: Border(left: AppBarStyle.borderStyle),
-            ),
-            child: Column(
-              children: [
-                Expanded(
-                  child: SafeArea(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        border: Border(bottom: AppBarStyle.borderStyle),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+          CustomPlaceholder(size: 0.1),
+          Text(
+            '오류가 발생했습니다.\n뒤로 가기를 눌러주세요.',
+            style: AppTheme.body1,
+            textAlign: TextAlign.center,
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildLoadingScreen(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    return Column(
+      children: [
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(
+              AppSpacings.spacing16,
+            ),
+            child: Container(
+              decoration: BoxDecoration(
+                border: AppBorders.all,
+              ),
+              child: Stack(
+                children: [
+                  CustomProgressIndicator(),
+                  Container(
+                    width: screenWidth * 0.1,
+                    height: screenWidth * 0.1,
+                    decoration: const BoxDecoration(
+                      color: AppColors.backgroundSecondary,
+                      border: AppBorders.bottomRight,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(
+                        AppSpacings.spacing8,
+                      ),
+                      child: CustomPlaceholder(
+                        size: 0.06,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        Container(
+          height: screenHeight * 0.16,
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            border: AppBorders.top,
+          ),
+        ),
+      ],
     );
   }
 }
