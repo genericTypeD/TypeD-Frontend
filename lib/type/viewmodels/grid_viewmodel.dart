@@ -309,7 +309,12 @@ class GridViewModel extends StateNotifier<GridState> {
       type: GridItemType.sentence,
       sentence: sentence,
     );
-    updateGridItem(verticalIndex, horizontalIndex, updatedItem);
+
+    updateGridItem(
+      verticalIndex,
+      horizontalIndex,
+      updatedItem,
+    );
   }
 
   /// 책 타입으로 변경 및 데이터 설정
@@ -319,7 +324,12 @@ class GridViewModel extends StateNotifier<GridState> {
       type: GridItemType.bookReview,
       bookReview: bookReview,
     );
-    updateGridItem(verticalIndex, horizontalIndex, updatedItem);
+
+    updateGridItem(
+      verticalIndex,
+      horizontalIndex,
+      updatedItem,
+    );
   }
 
   /// 음악 타입으로 변경 및 데이터 설정
@@ -329,7 +339,12 @@ class GridViewModel extends StateNotifier<GridState> {
       type: GridItemType.music,
       track: track,
     );
-    updateGridItem(verticalIndex, horizontalIndex, updatedItem);
+
+    updateGridItem(
+      verticalIndex,
+      horizontalIndex,
+      updatedItem,
+    );
   }
 
   /// 이미지 타입으로 변경 및 데이터 설정
@@ -339,7 +354,12 @@ class GridViewModel extends StateNotifier<GridState> {
       type: GridItemType.image,
       imagePath: imagePath,
     );
-    updateGridItem(verticalIndex, horizontalIndex, updatedItem);
+
+    updateGridItem(
+      verticalIndex,
+      horizontalIndex,
+      updatedItem,
+    );
   }
 
   /// 그리드 아이템 초기화

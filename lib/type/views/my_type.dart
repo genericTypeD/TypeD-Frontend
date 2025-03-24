@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:typed/common/index.dart';
 import 'package:typed/common/const/index.dart';
 import 'package:typed/type/models/grid_item.dart';
@@ -176,8 +177,6 @@ class _MyTypeState extends ConsumerState<MyType> {
                   setState(() {
                     _selectedPeriod = value;
                   });
-
-                  // 기간 변경 시 데이터 로드
                   ref.read(periodDateProvider.notifier).updatePeriodType(value);
                 }
               },
@@ -273,8 +272,6 @@ class _MyTypeState extends ConsumerState<MyType> {
               setState(() {
                 if (result != null) {
                   _selectedDateTime = result;
-
-                  // 날짜 변경 시 데이터 로드
                   ref.read(periodDateProvider.notifier).updateDateTime(result);
                 }
               });
@@ -351,12 +348,24 @@ class _MyTypeState extends ConsumerState<MyType> {
                     onTap: () async {
                       final result = await showDialog<GridItem>(
                         context: context,
-                        builder: (context) => AddRecordDialog(item: item),
+                        builder: (context) => AddRecordDialog(
+                          item: item,
+                          onResetButtonTapped: () {
+                            ref.read(gridProvider.notifier).clearItem(
+                                  verticalIndex,
+                                  horizontalArea.index,
+                                );
+                            context.pop();
+                          },
+                        ),
                       );
 
                       if (result != null) {
                         ref.read(gridProvider.notifier).updateGridItem(
-                            verticalIndex, horizontalArea.index, result);
+                              verticalIndex,
+                              horizontalArea.index,
+                              result,
+                            );
                       }
                     },
                   );
