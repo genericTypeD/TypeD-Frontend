@@ -1,8 +1,10 @@
 import 'package:go_router/go_router.dart';
 import 'package:typed/common/screen/home_tab.dart';
+import 'package:typed/common/screen/login_screen.dart';
 import 'package:typed/common/screen/splash.dart';
 import 'package:typed/feed/provider/feed_routes.dart';
 import 'package:typed/feed/screen/feed_public.dart';
+import 'package:typed/menu/screen/my_menu.dart';
 import 'package:typed/review/ui/screens/book_search_screen.dart';
 import 'package:typed/review/routes/review_routes.dart';
 import 'package:typed/review/ui/screens/review_list_screen.dart';
@@ -18,6 +20,16 @@ class AppRoutes {
       GoRoute(
         path: '/splash',
         builder: (context, state) => const SplashScreen(),
+      ),
+      GoRoute(
+        path: '/mymenu',
+        name: 'mymenu',
+        builder: (context, state) => const MyMenu(),
+      ),
+      GoRoute(
+        path: '/login',
+        name: 'login',
+        builder: (context, state) => const LoginScreen(),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {

@@ -27,11 +27,9 @@ class GridViewModel extends StateNotifier<GridState> {
       _currentPeriodType = periodType;
       _currentDateTime = dateTime;
 
-      await _loadFromHive(); // Hive에서 데이터 로드
+      await _loadFromHive();
     } catch (error) {
-      // 오류 발생 시 기본값 사용
       state = GridState.initial();
-      debugPrint('[PeriodType/날짜 변경 중 오류] error: $error');
     }
   }
 
@@ -129,8 +127,6 @@ class GridViewModel extends StateNotifier<GridState> {
 
             return json;
           } catch (error) {
-            debugPrint('[GridItem JSON 변환 중 오류] error: $error');
-            // 오류 발생 시에는 기본 정보만 포함
             return {
               'id': item.id,
               'type': item.type.index,
@@ -139,15 +135,13 @@ class GridViewModel extends StateNotifier<GridState> {
         }).toList();
       }).toList();
 
-      // 저장할 데이터 생성
       final data = GridData(
         periodTypeStr: _currentPeriodType.name,
         dateTime: _currentDateTime,
         gridItemsJson: gridItemsJson,
       );
 
-      await box.put(key, data); // 박스에 저장
-      debugPrint('[Grid 데이터 저장 완료] key: $key');
+      await box.put(key, data);
     } catch (error) {
       debugPrint('[Grid 데이터 저장 실패] error: $error');
     }
@@ -175,14 +169,12 @@ class GridViewModel extends StateNotifier<GridState> {
                 final id = itemJson['id'] as String;
                 final typeIndex = itemJson['type'] as int;
 
-                // 타입 인덱스 유효성 검사
                 if (typeIndex < 0 || typeIndex >= GridItemType.values.length) {
                   return GridItem.empty(id: id);
                 }
 
                 final type = GridItemType.values[typeIndex];
 
-                // 타입에 따른 GridItem 반환
                 switch (type) {
                   case GridItemType.empty:
                     return GridItem.empty(id: id);
@@ -225,7 +217,6 @@ class GridViewModel extends StateNotifier<GridState> {
                       );
                     } else if (itemJson.containsKey('bookIsbn') &&
                         itemJson.containsKey('bookTitle')) {
-                      // 대체 형식 지원
                       return GridItem.bookReview(
                         id: id,
                         bookReview: Review(
@@ -248,9 +239,6 @@ class GridViewModel extends StateNotifier<GridState> {
                         final track = Track.fromJson(trackData);
                         return GridItem.music(id: id, track: track);
                       } catch (error) {
-                        debugPrint('[Track 변환 오류] error: $error');
-
-                        // 에러 발생 시 기본 정보로 설정
                         final track = Track();
                         if (itemJson.containsKey('trackName')) {
                           track.name = itemJson['trackName'];
@@ -265,7 +253,6 @@ class GridViewModel extends StateNotifier<GridState> {
                         return GridItem.music(id: id, track: track);
                       }
                     } else if (itemJson.containsKey('trackName')) {
-                      // 대체 형식 지원
                       final track = Track();
                       track.name = itemJson['trackName'];
                       track.id = itemJson['trackId'];
@@ -296,11 +283,8 @@ class GridViewModel extends StateNotifier<GridState> {
                     break;
                 }
 
-                // 타입별 처리가 실패하면 GridItem empty로 기본값 반환
                 return GridItem.empty(id: id);
               } catch (error) {
-                debugPrint('[그리드 아이템 변환 오류] error: $error');
-                // 변환 오류 발생 시 기본값 반환
                 return GridItem.empty(
                   id: 'item_${vertIndex}_$horizIndex',
                 );
@@ -309,15 +293,12 @@ class GridViewModel extends StateNotifier<GridState> {
           ),
         );
 
-        state = GridState(items: items); // 상태 업데이트
-        debugPrint('[Grid 데이터 로드 완료] key: $key');
+        state = GridState(items: items);
       } catch (error) {
-        state = GridState.initial(); // 변환 오류 발생 시 기본값 사용
-        debugPrint('[Grid 데이터 변환 중 오류 발생 -> 로드 실패] error: $error');
+        state = GridState.initial();
       }
     } else {
-      state = GridState.initial(); // 해당 PeriodType/날짜의 데이터가 없으면 기본값 사용
-      debugPrint('[Grid 데이터 없을 때 기본 데이터 사용] key: $key');
+      state = GridState.initial();
     }
   }
 
