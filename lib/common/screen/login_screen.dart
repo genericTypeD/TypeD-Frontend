@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:typed/common/component/custom_text_form_field.dart';
 import 'package:typed/common/const/app_colors.dart';
 import 'package:typed/common/const/app_strings.dart';
 import 'package:typed/common/const/app_themes.dart';
 import 'package:typed/common/layout/default_layout.dart';
+import 'package:typed/common/provider/auth_provider.dart'; // 추가: auth_provider import
 import 'package:typed/common/repository/auth_repository.dart';
 import 'package:typed/common/screen/sign_up_screen.dart';
-import 'package:typed/type/views/my_type.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -23,7 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isLoading = false;
 
   // 로그인 처리 함수
-  Future<void> _login() async {
+  Future<void> _login(WidgetRef ref) async {
     if (email.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -38,26 +39,26 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     try {
-      final token = await authRepository.login(
-        email: email,
-        password: password,
-      );
+      // AuthProvider를 사용하여 로그인
+      final success = await ref.read(authProvider.notifier).login(
+            email,
+            password,
+          );
 
-      // 로그인 성공 후 처리
-      if (mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (_) => const MyType(),
+      if (success && mounted) {
+        context.go('/home/type');
+      } else if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('로그인에 실패했습니다'),
           ),
         );
       }
     } catch (e) {
-      // 에러 처리
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('로그인에 실패했습니다'),
+          SnackBar(
+            content: Text(e.toString()),
           ),
         );
       }
@@ -142,23 +143,38 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
                 const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: isLoading ? null : _login,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.backgroundTertiary,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child: const Text(
-                    '로그인',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
+                // Consumer 위젯을 사용하여 로그인 버튼 구현
+                Consumer(
+                  builder: (context, ref, child) {
+                    return ElevatedButton(
+                      onPressed: isLoading ? null : () => _login(ref),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.backgroundTertiary,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: isLoading
+                          ? const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.black),
+                              ),
+                            )
+                          : const Text(
+                              '로그인',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                    );
+                  },
                 ),
                 const SizedBox(height: 16),
                 Center(
