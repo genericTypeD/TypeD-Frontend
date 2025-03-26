@@ -1,34 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:typed/common/const/app_themes.dart';
-import 'package:typed/common/index.dart';
-
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../common/const/app_colors.dart';
-import '../../common/screen/login_screen.dart';
 
-class MyMenu extends StatefulWidget {
+import '../../common/const/app_colors.dart';
+import '../../common/provider/auth_provider.dart';
+
+class MyMenu extends ConsumerStatefulWidget {
   const MyMenu({super.key});
 
   @override
-  State<MyMenu> createState() => _MyMenuState();
+  ConsumerState<MyMenu> createState() => _MyMenuState();
 }
 
-class _MyMenuState extends State<MyMenu> {
+class _MyMenuState extends ConsumerState<MyMenu> {
   @override
   Widget build(BuildContext context) {
-    // return DefaultLayout(
-    //   backgroundColor: AppColors.backgroundSecondary,
-    //   appBar: CustomAppBar.myPage(),
-    //   child: Column(
-    //     children: [
-    //       SizedBox(
-    //         height: 80,
-    //       ),
-    //       _buildProfileCard(),
-    //       _buildMenuList(),
-    //     ],
-    //   ),
-    // );
+    // AuthProvider의 상태 가져오기
+    final authState = ref.watch(authProvider);
+
     return Drawer(
       backgroundColor: AppColors.backgroundSecondary,
       shape: Border.all(width: 0),
@@ -45,6 +34,9 @@ class _MyMenuState extends State<MyMenu> {
   }
 
   Widget _buildProfileCard() {
+    // 로그인 상태 확인
+    final authState = ref.watch(authProvider);
+
     return Container(
       padding: const EdgeInsets.all(16.0),
       margin: const EdgeInsets.all(16.0),
@@ -72,41 +64,42 @@ class _MyMenuState extends State<MyMenu> {
             ),
           ),
           const SizedBox(height: 12),
-          GestureDetector(
-            onTap: () {
-              // Navigator.of(context).push(
-              //   MaterialPageRoute(
-              //     builder: (_) => const LoginScreen(), // 로그인 스크린 위젯
-              //   ),
-              // );
-              context.goNamed('login');
-            },
-            child: Center(
-              child: const Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text(
-                    '로그인이 필요합니다',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+          // 로그인 상태에 따라 다른 UI 표시
+          authState.isLoggedIn
+              ? Text(
+                  '${authState.nickname ?? "사용자"}님',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
-                  Icon(Icons.chevron_right)
-                ],
-              ),
-            ),
-          ),
+                )
+              : GestureDetector(
+                  onTap: () {
+                    context.goNamed('login');
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: const [
+                      Text(
+                        '로그인이 필요합니다',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Icon(Icons.chevron_right)
+                    ],
+                  ),
+                ),
           const SizedBox(height: 16),
           // 통계 정보
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildStatItem('8', '내가 읽은 책'),
+              Expanded(child: _buildStatItem('8', '나의 문장')),
               _buildDivider(),
-              _buildStatItem('-', '북마크'),
+              Expanded(child: _buildStatItem('2', '나의 서평')),
               _buildDivider(),
-              _buildStatItem('80%', '문장 수집률'),
+              Expanded(child: _buildStatItem('5', '북마크')),
             ],
           ),
         ],

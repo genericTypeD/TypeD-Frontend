@@ -46,6 +46,11 @@ class AuthRepository {
       await storage.write(key: REFRESH_TOKEN_KEY, value: refreshToken);
       await storage.write(key: ACCESS_TOKEN_KEY, value: accessToken);
 
+      final nickname = response.data['nickname'];
+      final memberId = response.data['memberId'];
+      await storage.write(key: 'USER_NICKNAME', value: nickname);
+      await storage.write(key: 'USER_ID', value: memberId.toString());
+
       return accessToken;
     } on DioException catch (e) {
       print('DioError: ${e.message}');
